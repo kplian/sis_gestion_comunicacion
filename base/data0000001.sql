@@ -59,3 +59,14 @@ select pxp.f_insert_tprocedimiento ('GC_CONCSV_UPD', 'Modificacion consumo valor
 select pxp.f_insert_tprocedimiento ('GC_CON_ELI', 'Eliminacion de registros', 'si', '', '', 'gecom.ft_consumo_ime');
 
 /*****************************F-DAT-JRR-GECOM-0-27/07/2014*************************************/
+
+
+/*****************************I-DAT-JRR-GECOM-0-29/07/2014*************************************/
+
+select pxp.f_insert_trol ('Registro de Servicios Telefónicos', 'Registro de Servicios', 'GECOM');
+select pxp.f_insert_trol ('Registro de Números Corporativos', 'Registro de Números Corporativos', 'GECOM');
+select pxp.f_insert_trol ('Asignación de Números Corporativos', 'Asignación de Números Corporativos', 'GECOM');
+select pxp.f_insert_trol ('Registro de Consumo Corporativo', 'Registro de Consumo Corporativo', 'GECOM');
+
+
+/*****************************F-DAT-JRR-GECOM-0-29/07/2014*************************************/
