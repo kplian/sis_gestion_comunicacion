@@ -1,8 +1,11 @@
-CREATE OR REPLACE FUNCTION "gecom"."ft_numero_celular_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
-
+CREATE OR REPLACE FUNCTION gecom.ft_numero_celular_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Gestión de Comunicación
  FUNCION: 		gecom.ft_numero_celular_ime
@@ -27,6 +30,7 @@ DECLARE
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
 	v_id_numero_celular	integer;
+    v_registros				record;
 			    
 BEGIN
 
@@ -72,6 +76,13 @@ BEGIN
 			
 			
 			)RETURNING id_numero_celular into v_id_numero_celular;
+            
+            for v_registros in (select * from gecom.tservicio s 
+            					where s.defecto = 'si' and 
+                                	id_proveedor = v_parametros.id_proveedor) loop
+            	insert into gecom.tnumero_servicio (id_servicio,id_numero_celular,fecha_inicio)
+                values(v_registros.id_servicio, v_id_numero_celular, now());
+            end loop;
 			
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Numeros de Celular almacenado(a) con exito (id_numero_celular'||v_id_numero_celular||')'); 
@@ -152,7 +163,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "gecom"."ft_numero_celular_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

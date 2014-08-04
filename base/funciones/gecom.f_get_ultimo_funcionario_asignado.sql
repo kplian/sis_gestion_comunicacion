@@ -35,8 +35,8 @@ BEGIN
     	
 	select id_funcionario into v_id_funcionario
 	from gecom.tfuncionario_celular fc
-	where fc.fecha_inicio <= v_periodo.fecha_fin and (fc.fecha_fin >= v_periodo.fecha_inicio or fc.fecha_fin is null)
-	and fc.estado_reg = 'activo' and fc.id_numero_celular = 1
+	where fc.fecha_inicio <= v_periodo.fecha_fin and (fc.fecha_fin >= v_periodo.fecha_ini or fc.fecha_fin is null)
+	and fc.estado_reg = 'activo' and fc.id_numero_celular = p_id_numero_celular
 	order by fc.fecha_inicio desc limit 1;
 
 	return v_id_funcionario;
