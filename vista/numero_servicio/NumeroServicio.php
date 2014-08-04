@@ -128,7 +128,7 @@ Phx.vista.NumeroServicio=Ext.extend(Phx.gridInterfaz,{
 				anchor: '80%',
 				gwidth: 100
 			},
-				type:'TextField',
+				type:'TextArea',
 				filters:{pfiltro:'numser.observaciones',type:'string'},
 				id_grupo:1,
 				grid:true,
