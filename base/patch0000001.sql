@@ -76,3 +76,12 @@ WITHOUT OIDS;
 
 
 /***********************************F-SCP-JRR-GECOM-0-21/07/2014****************************************/
+
+/***********************************I-SCP-JRR-GECOM-0-24/09/2014****************************************/
+ALTER TABLE gecom.tnumero_celular
+  ADD COLUMN tipo VARCHAR(20) DEFAULT 'celular' NOT NULL;
+
+COMMENT ON COLUMN gecom.tnumero_celular.tipo
+IS 'El Tipo puede ser celular|4g|fijo';
+
+/***********************************F-SCP-JRR-GECOM-0-24/09/2014****************************************/

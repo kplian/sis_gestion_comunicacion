@@ -35,6 +35,7 @@ class MODNumeroCelular extends MODbase{
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		$this->captura('desc_proveedor','varchar');
+		$this->captura('tipo','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -55,6 +56,7 @@ class MODNumeroCelular extends MODbase{
 		$this->setParametro('numero','numero','varchar');
 		$this->setParametro('observaciones','observaciones','text');
 		$this->setParametro('roaming','roaming','varchar');
+		$this->setParametro('tipo','tipo','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 
 		//Ejecuta la instruccion
@@ -77,6 +79,7 @@ class MODNumeroCelular extends MODbase{
 		$this->setParametro('numero','numero','varchar');
 		$this->setParametro('observaciones','observaciones','text');
 		$this->setParametro('roaming','roaming','varchar');
+		$this->setParametro('tipo','tipo','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 
 		//Ejecuta la instruccion

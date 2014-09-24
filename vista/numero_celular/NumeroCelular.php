@@ -85,6 +85,30 @@ Phx.vista.NumeroCelular=Ext.extend(Phx.gridInterfaz,{
 				form:true
 		},
 		
+		{
+			config:{
+				name: 'tipo',
+				fieldLabel: 'Tipo',
+				allowBlank:false,
+				emptyText:'Tipo...',
+	       		typeAhead: false,
+	       		triggerAction: 'all',
+	       		lazyRender:true,
+	       		mode: 'local',
+				gwidth: 90,
+				store:['celular','4g','fijo'],
+				value:'no'
+			},
+				type:'ComboBox',
+				filters:{	
+	       		         type: 'list',
+	       				 options: ['celular','4g','fijo'],	
+	       		 	},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},	
+		
 		
 		{
 			config:{
@@ -242,6 +266,7 @@ Phx.vista.NumeroCelular=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_numero_celular', type: 'numeric'},
 		{name:'id_proveedor', type: 'numeric'},
 		{name:'numero', type: 'string'},
+		{name:'tipo', type: 'string'},
 		{name:'desc_proveedor', type: 'string'},
 		{name:'observaciones', type: 'string'},
 		{name:'roaming', type: 'string'},
@@ -262,7 +287,8 @@ Phx.vista.NumeroCelular=Ext.extend(Phx.gridInterfaz,{
 	},
 	loadValoresIniciales:function()
     {
-    	this.Cmp.roaming.setValue('no');       
+    	this.Cmp.roaming.setValue('no');  
+    	this.Cmp.tipo.setValue('celular');     
         Phx.vista.NumeroCelular.superclass.loadValoresIniciales.call(this);        
     },
 	bdel:true,

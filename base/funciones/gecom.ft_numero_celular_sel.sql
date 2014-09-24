@@ -59,7 +59,8 @@ BEGIN
 						numcel.id_usuario_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-                        pro.desc_proveedor
+                        pro.desc_proveedor,
+                        numcel.tipo
 						from gecom.tnumero_celular numcel
 						inner join segu.tusuario usu1 on usu1.id_usuario = numcel.id_usuario_reg
                         inner join param.vproveedor pro on pro.id_proveedor = numcel.id_proveedor
