@@ -100,7 +100,7 @@ Phx.vista.NumeroCelular=Ext.extend(Phx.gridInterfaz,{
 				value:'no'
 			},
 				type:'ComboBox',
-				filters:{	
+				filters:{pfiltro:'numcel.tipo'	
 	       		         type: 'list',
 	       				 options: ['celular','4g','fijo'],	
 	       		 	},
