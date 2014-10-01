@@ -82,8 +82,8 @@ BEGIN
             for v_registros in (select * from gecom.tservicio s 
             					where s.defecto = 'si' and 
                                 	id_proveedor = v_parametros.id_proveedor) loop
-            	insert into gecom.tnumero_servicio (id_servicio,id_numero_celular,fecha_inicio)
-                values(v_registros.id_servicio, v_id_numero_celular, now());
+            	insert into gecom.tnumero_servicio (id_usuario_reg,id_servicio,id_numero_celular,fecha_inicio)
+                values(p_id_usuario,v_registros.id_servicio, v_id_numero_celular, now());
             end loop;
 			
 			--Definicion de la respuesta
