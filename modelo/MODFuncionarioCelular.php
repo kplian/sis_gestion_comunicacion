@@ -42,6 +42,7 @@ class MODFuncionarioCelular extends MODbase{
 		$this->captura('nombre_cargo','varchar');
 		$this->captura('desc_funcionario1','text');
 		$this->captura('numero','varchar');
+		$this->captura('tipo','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();

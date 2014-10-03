@@ -91,7 +91,20 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 				grid:false,
 				form:true
 		},	
-		
+		{
+			config:{
+				name: 'tipo',
+				fieldLabel: 'Tipo',
+				gwidth: 100
+			},
+				type:'TextField',
+				filters:{pfiltro:'numcel.tipo',	
+	       		         type: 'list',
+	       				 options: ['celular','4g','fijo'],	
+	       		 	},				
+				grid:true,
+				form:false
+		},
 		{
 			config: {
 				name: 'id_numero_celular',
@@ -366,6 +379,7 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
+		{name:'tipo', type: 'string'},
 		
 	],
 	sortInfo:{

@@ -68,7 +68,8 @@ BEGIN
 						usu2.cuenta as usr_mod,
 						cargo.nombre as nombre_cargo,
 						fun.desc_funcionario1,
-						numcel.numero	
+						numcel.numero,
+						numcel.tipo	
 						from gecom.tfuncionario_celular funcel
 						inner join gecom.tnumero_celular numcel on numcel.id_numero_celular = funcel.id_numero_celular
 						left join orga.vfuncionario fun on fun.id_funcionario = funcel.id_funcionario
