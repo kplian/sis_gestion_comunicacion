@@ -65,7 +65,7 @@ BEGIN
 						inner join segu.tusuario usu1 on usu1.id_usuario = numcel.id_usuario_reg
                         inner join param.vproveedor pro on pro.id_proveedor = numcel.id_proveedor
 						left join segu.tusuario usu2 on usu2.id_usuario = numcel.id_usuario_mod
-				        where  ';
+				        where numcel.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -92,7 +92,7 @@ BEGIN
 					    inner join segu.tusuario usu1 on usu1.id_usuario = numcel.id_usuario_reg
                         inner join param.vproveedor pro on pro.id_proveedor = numcel.id_proveedor
 						left join segu.tusuario usu2 on usu2.id_usuario = numcel.id_usuario_mod
-					    where ';
+					    where numcel.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
