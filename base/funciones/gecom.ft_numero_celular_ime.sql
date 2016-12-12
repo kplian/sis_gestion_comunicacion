@@ -138,7 +138,8 @@ BEGIN
 
 		begin
 			--Sentencia de la eliminacion
-			delete from gecom.tnumero_celular
+			update gecom.tnumero_celular
+            set estado_reg = 'inactivo'
             where id_numero_celular=v_parametros.id_numero_celular;
                
             --Definicion de la respuesta
