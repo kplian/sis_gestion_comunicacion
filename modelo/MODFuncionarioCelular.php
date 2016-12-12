@@ -43,6 +43,7 @@ class MODFuncionarioCelular extends MODbase{
 		$this->captura('desc_funcionario1','text');
 		$this->captura('numero','varchar');
 		$this->captura('tipo','varchar');
+        $this->captura('tipo_asignacion','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -66,6 +67,7 @@ class MODFuncionarioCelular extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('fecha_fin','fecha_fin','date');
 		$this->setParametro('observaciones','observaciones','text');
+        $this->setParametro('tipo_asignacion','tipo_asignacion','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -90,6 +92,7 @@ class MODFuncionarioCelular extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('fecha_fin','fecha_fin','date');
 		$this->setParametro('observaciones','observaciones','text');
+        $this->setParametro('tipo_asignacion','tipo_asignacion','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

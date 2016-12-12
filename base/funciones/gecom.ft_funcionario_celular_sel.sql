@@ -69,7 +69,8 @@ BEGIN
 						cargo.nombre as nombre_cargo,
 						fun.desc_funcionario1,
 						numcel.numero,
-						numcel.tipo	
+						numcel.tipo	,
+						funcel.tipo_asignacion
 						from gecom.tfuncionario_celular funcel
 						inner join gecom.tnumero_celular numcel on numcel.id_numero_celular = funcel.id_numero_celular
 						left join orga.vfuncionario fun on fun.id_funcionario = funcel.id_funcionario

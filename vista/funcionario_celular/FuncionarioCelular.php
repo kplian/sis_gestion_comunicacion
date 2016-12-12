@@ -229,7 +229,30 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:true
 		},
-		{
+        {
+            config:{
+                name: 'tipo_asignacion',
+                fieldLabel: 'Tipo Asignacion',
+                allowBlank:false,
+                emptyText:'Tipo...',
+                typeAhead: false,
+                triggerAction: 'all',
+                lazyRender:true,
+                mode: 'local',
+                gwidth: 90,
+                store:['personal','compartido'],
+                value:'no'
+            },
+            type:'ComboBox',
+            filters:{pfiltro:'funcel.tipo_asignacion',
+                type: 'list',
+                options: ['personal','compartido']
+            },
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
+        {
 			config:{
 				name: 'observaciones',
 				fieldLabel: 'Observaciones',
@@ -365,6 +388,7 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 		{name:'numero', type: 'string'},
 		{name:'id_funcionario', type: 'numeric'},
 		{name:'desc_funcionario1', type: 'string'},
+        {name:'tipo_asignacion', type: 'string'},
 		{name:'id_cargo', type: 'numeric'},
 		{name:'nombre_cargo', type: 'string'},
 		{name:'fecha_inicio', type: 'date',dateFormat:'Y-m-d'},

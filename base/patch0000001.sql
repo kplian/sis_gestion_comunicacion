@@ -85,3 +85,12 @@ COMMENT ON COLUMN gecom.tnumero_celular.tipo
 IS 'El Tipo puede ser celular|4g|fijo';
 
 /***********************************F-SCP-JRR-GECOM-0-24/09/2014****************************************/
+
+/***********************************I-SCP-JRR-GECOM-0-12/12/2016****************************************/
+ALTER TABLE gecom.tfuncionario_celular
+ADD COLUMN tipo_asignacion VARCHAR(20) DEFAULT 'personal' NOT NULL;
+
+COMMENT ON COLUMN gecom.tfuncionario_celular.tipo_asignacion
+IS 'El Tipo puede ser personal|compartido';
+
+/***********************************F-SCP-JRR-GECOM-0-12/12/2016****************************************/
