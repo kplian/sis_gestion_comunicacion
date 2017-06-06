@@ -50,25 +50,7 @@ Phx.vista.NumeroCelular=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:true 
 		},
-		{
-            config:{
-                name:'id_proveedor',
-                hiddenName: 'id_proveedor',
-                origen:'PROVEEDOR',
-                fieldLabel:'Proveedor',
-                allowBlank:true,
-                tinit:false,
-                gwidth:200,
-                valueField: 'id_proveedor',
-                gdisplayField: 'desc_proveedor',
-                renderer:function(value, p, record){return String.format('{0}', record.data['desc_proveedor']);}
-             },
-            type:'ComboRec',//ComboRec
-            id_grupo:0,
-            filters:{pfiltro:'pro.desc_proveedor',type:'string'},
-            grid:true,
-            form:true
-        },
+
 		{
 			config:{
 				name: 'numero',
@@ -82,6 +64,7 @@ Phx.vista.NumeroCelular=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'numcel.numero',type:'string'},
 				id_grupo:1,
 				grid:true,
+				bottom_filter:true,
 				form:true
 		},
 		
@@ -96,7 +79,7 @@ Phx.vista.NumeroCelular=Ext.extend(Phx.gridInterfaz,{
 	       		lazyRender:true,
 	       		mode: 'local',
 				gwidth: 90,
-				store:['celular','4g','fijo'],
+				store:['celular','4g','fijo','interno'],
 				value:'no'
 			},
 				type:'ComboBox',
@@ -106,10 +89,30 @@ Phx.vista.NumeroCelular=Ext.extend(Phx.gridInterfaz,{
 	       		 	},
 				id_grupo:1,
 				grid:true,
-				form:true
-		},	
-		
-		
+				form:true,
+				bottom_filter:true
+		},
+
+		{
+			config:{
+				name:'id_proveedor',
+				hiddenName: 'id_proveedor',
+				origen:'PROVEEDOR',
+				fieldLabel:'Proveedor',
+				allowBlank:true,
+				tinit:false,
+				gwidth:400,
+				valueField: 'id_proveedor',
+				gdisplayField: 'desc_proveedor',
+				renderer:function(value, p, record){return String.format('{0}', record.data['desc_proveedor']);}
+			},
+			type:'ComboRec',//ComboRec
+			id_grupo:0,
+			filters:{pfiltro:'pro.desc_proveedor',type:'string'},
+			grid:true,
+			bottom_filter:true,
+			form:true
+		},
 		{
 			config:{
 				name: 'roaming',
@@ -145,6 +148,7 @@ Phx.vista.NumeroCelular=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'numcel.observaciones',type:'string'},
 				id_grupo:1,
 				grid:true,
+				bottom_filter:true,
 				form:true
 		},
 		
@@ -282,7 +286,7 @@ Phx.vista.NumeroCelular=Ext.extend(Phx.gridInterfaz,{
 		
 	],
 	sortInfo:{
-		field: 'id_numero_celular',
+		field: 'numero',
 		direction: 'ASC'
 	},
 	loadValoresIniciales:function()

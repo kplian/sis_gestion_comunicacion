@@ -89,7 +89,7 @@ Phx.vista.NumeroServicio=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'fecha_inicio',
-				fieldLabel: 'Fecha inicio',
+				fieldLabel: 'Fecha Inicio',
 				allowBlank: false,
 				anchor: '80%',
 				gwidth: 120,
@@ -123,10 +123,10 @@ Phx.vista.NumeroServicio=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'observaciones',
-				fieldLabel: 'observaciones',
+				fieldLabel: 'Observaciones',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100
+				gwidth: 300
 			},
 				type:'TextArea',
 				filters:{pfiltro:'numser.observaciones',type:'string'},

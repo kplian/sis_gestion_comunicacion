@@ -31,25 +31,7 @@ Phx.vista.Servicio=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:true 
 		},
-		{
-            config:{
-                name:'id_proveedor',
-                hiddenName: 'id_proveedor',
-                origen:'PROVEEDOR',
-                fieldLabel:'Proveedor',
-                allowBlank:true,
-                tinit:false,
-                gwidth:200,
-                valueField: 'id_proveedor',
-                gdisplayField: 'desc_proveedor',
-                renderer:function(value, p, record){return String.format('{0}', record.data['desc_proveedor']);}
-             },
-            type:'ComboRec',//ComboRec
-            id_grupo:0,
-            filters:{pfiltro:'pro.desc_proveedor',type:'string'},
-            grid:true,
-            form:true
-        },
+
         
         {
 			config:{
@@ -64,6 +46,7 @@ Phx.vista.Servicio=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'ser.codigo_servicio',type:'string'},
 				id_grupo:1,
 				grid:true,
+				bottom_filter:true,
 				form:true
 		},
         
@@ -73,14 +56,36 @@ Phx.vista.Servicio=Ext.extend(Phx.gridInterfaz,{
 				fieldLabel: 'Nombre',
 				allowBlank: false,
 				anchor: '80%',
-				gwidth: 150,
+				gwidth: 200,
 				maxLength:200
 			},
 				type:'TextField',
 				filters:{pfiltro:'ser.nombre_servicio',type:'string'},
 				id_grupo:1,
 				grid:true,
+				bottom_filter:true,
 				form:true
+		},
+
+		{
+			config:{
+				name:'id_proveedor',
+				hiddenName: 'id_proveedor',
+				origen:'PROVEEDOR',
+				fieldLabel:'Proveedor',
+				allowBlank:true,
+				tinit:false,
+				gwidth:300,
+				valueField: 'id_proveedor',
+				gdisplayField: 'desc_proveedor',
+				renderer:function(value, p, record){return String.format('{0}', record.data['desc_proveedor']);}
+			},
+			type:'ComboRec',//ComboRec
+			id_grupo:0,
+			filters:{pfiltro:'pro.desc_proveedor',type:'string'},
+			grid:true,
+			bottom_filter:true,
+			form:true
 		},
 		
 		{

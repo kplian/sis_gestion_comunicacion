@@ -27,21 +27,23 @@ DECLARE
 	v_parametros  		record;
 	v_nombre_funcion   	text;
 	v_resp				varchar;
-			    
+    v_oficina			varchar;
+    v_gerencia 			varchar;
+
 BEGIN
 
 	v_nombre_funcion = 'gecom.ft_numero_celular_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'GC_NUMCEL_SEL'
  	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		jrivera	
+ 	#AUTOR:		jrivera
  	#FECHA:		23-07-2014 22:43:16
 	***********************************/
 
 	if(p_transaccion='GC_NUMCEL_SEL')then
-     				
+
     	begin
     		--Sentencia de la consulta
 			v_consulta:='select
@@ -65,21 +67,21 @@ BEGIN
 						inner join segu.tusuario usu1 on usu1.id_usuario = numcel.id_usuario_reg
                         inner join param.vproveedor pro on pro.id_proveedor = numcel.id_proveedor
 						left join segu.tusuario usu2 on usu2.id_usuario = numcel.id_usuario_mod
-				        where numcel.estado_reg = ''activo'' and ';
-			
+				        where  ';
+
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
 			--Devuelve la respuesta
 			return v_consulta;
-						
+
 		end;
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'GC_NUMCEL_CONT'
  	#DESCRIPCION:	Conteo de registros
- 	#AUTOR:		jrivera	
+ 	#AUTOR:		jrivera
  	#FECHA:		23-07-2014 22:43:16
 	***********************************/
 
@@ -92,10 +94,55 @@ BEGIN
 					    inner join segu.tusuario usu1 on usu1.id_usuario = numcel.id_usuario_reg
                         inner join param.vproveedor pro on pro.id_proveedor = numcel.id_proveedor
 						left join segu.tusuario usu2 on usu2.id_usuario = numcel.id_usuario_mod
-					    where numcel.estado_reg = ''activo'' and ';
-			
-			--Definicion de la respuesta		    
+					    where ';
+
+			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
+
+			--Devuelve la respuesta
+			return v_consulta;
+
+		end;
+    /*********************************
+ 	#TRANSACCION:  'GC_REPOR_SEL'
+ 	#DESCRIPCION:	Reporte de directorio telefonico
+ 	#AUTOR:		Miguel Alejandro Mamani Villegas
+ 	#FECHA:		02-06-2017
+	***********************************/
+
+	elsif(p_transaccion='GC_REPOR_SEL')then
+    	begin
+        if v_parametros.oficina !='Todos'then
+        	if  v_parametros.uo != 'Todos'then
+        		v_oficina = 'f.oficina_nombre::text =ANY(string_to_array('''||v_parametros.oficina::text||''','','')) and ger.nombre_unidad ='''||v_parametros.uo||''' and ';
+        		else
+                v_oficina = 'f.oficina_nombre::text =ANY(string_to_array('''||v_parametros.oficina::text||''','','')) and ';
+        	end if;
+      	else
+        	v_oficina = '';
+        end if;
+
+          v_consulta:='SELECT distinct 	  cel.id_funcionario as  id_fun,
+                                          f.desc_funcionario1 as nombre_funcionario,
+                                          f.nombre_cargo as nombre_cargo_funcionario,
+                                          upper(f.oficina_nombre)|| COALESCE('' - NÚMERO PILOTO ''||of.telefono,''  '')::varchar as oficina_nombre,
+                                          ger.nombre_unidad as gerencia,
+                                          dep.nombre_unidad as departamento,
+                                          COALESCE(gecom.f_numero_celular_tipo(cel.id_funcionario,''celular''::varchar),'' - '')as celular,
+                                          COALESCE(gecom.f_numero_celular_tipo(cel.id_funcionario,''fijo''::varchar),'' - '')as fijo,
+                                          COALESCE(gecom.f_numero_celular_tipo(cel.id_funcionario,''interno''::varchar),'' - '')as interno
+                                          FROM gecom.tfuncionario_celular cel
+                                          inner join orga.vfuncionario_cargo_lugar f on f.id_funcionario = cel.id_funcionario and cel.fecha_fin is null and cel.estado_reg = ''activo''
+                                          inner  join orga.tuo ou on ou.id_uo = f.id_uo and ou.estado_reg =''activo''
+                                          inner join orga.toficina of on of.id_oficina = f.id_oficina
+                                          JOIN orga.tuo ger ON ger.id_uo = orga.f_get_uo_gerencia(ou.id_uo, NULL::integer, NULL::date)
+                                          JOIN orga.tuo dep ON dep.id_uo = orga.f_get_uo_departamento(ou.id_uo, NULL::integer, NULL::date)
+                                          where '||v_oficina||' ';
+
+			--Definicion de la respuesta
+			v_consulta:=v_consulta||v_parametros.filtro;
+            v_consulta:=v_consulta||'ORDER BY oficina_nombre, gerencia,departamento ,nombre_funcionario';
+
 
 			--Devuelve la respuesta
 			return v_consulta;
