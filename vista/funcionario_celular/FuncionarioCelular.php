@@ -54,7 +54,22 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:true 
 		},
-		
+		{
+			config:{
+				name: 'fecha_inicio',
+				fieldLabel: 'Fecha Asignación',
+				allowBlank: false,
+				anchor: '50%',
+				gwidth: 100,
+				format: 'd/m/Y',
+				renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
+			},
+			type:'DateField',
+			filters:{pfiltro:'funcel.fecha_inicio',type:'date'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
 		{
 			config:{
 				name: 'tipo',
@@ -240,22 +255,7 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 			form:true
 		},
 
-		{
-			config:{
-				name: 'fecha_inicio',
-				fieldLabel: 'Fecha Asignación',
-				allowBlank: false,
-				anchor: '50%',
-				gwidth: 100,
-				format: 'd/m/Y',
-				renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
-			},
-			type:'DateField',
-			filters:{pfiltro:'funcel.fecha_inicio',type:'date'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
+
 		
 		{
 			config:{
@@ -422,7 +422,7 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 	bsave:true,
 
 	iniciarEventos:function() {
-		/*this.Cmp.fecha_inicio.on('change',function() {
+		this.Cmp.fecha_inicio.on('change',function() {
 			
 			this.Cmp.id_numero_celular.enable();
 			this.Cmp.id_numero_celular.reset();
@@ -436,8 +436,8 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 			this.Cmp.id_funcionario.reset();
 			this.Cmp.id_funcionario.modificado = true;
 				
-		},this);*/
-		
+		},this);
+		this.cmpFechaInicio = this.getComponente('fecha_inicio');
 		this.Cmp.tipo.on('select',function(c,r,i) {
 			if ( this.Cmp.tipo.getValue() == 'funcionario') {
 				
@@ -469,6 +469,8 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
     	this.Cmp.tipo.setValue('funcionario');
     	this.Cmp.tipo.fireEvent('select');
 		this.Cmp.id_numero_celular.enable();
+		this.Cmp.fecha_inicio.setValue(new Date());
+		this.Cmp.id_funcionario.store.baseParams.fecha = this.cmpFechaInicio.getValue().dateFormat(this.cmpFechaInicio.format);
         Phx.vista.FuncionarioCelular.superclass.loadValoresIniciales.call(this);
                
     },
