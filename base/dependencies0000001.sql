@@ -364,3 +364,35 @@ select pxp.f_insert_trol_procedimiento_gui ('Asignación de Números Corporativo
 select pxp.f_insert_trol_procedimiento_gui ('Asignación de Números Corporativos', 'RH_FUNCIOCAR_SEL', 'ASIGNUM');
 
 /***********************************F-DEP-JRR-GECOM-0-29/07/2014****************************************/
+/***********************************I-DEP-MMV-GECOM-0-14/06/2017****************************************/
+CREATE VIEW gecom.vfuncionario (
+    id_funcionario,
+    id_cargo,
+    id_oficina,
+    id_uo,
+    desc_funcionario1,
+    nombre_cargo,
+    _cargo,
+    oficina_nombre,
+    telefono)
+AS
+SELECT funcio.id_funcionario,
+    car.id_cargo,
+    of.id_oficina,
+    uo.id_uo,
+    person.nombre_completo1 AS desc_funcionario1,
+    uo.nombre_cargo,
+    car.nombre AS _cargo,
+    of.nombre AS oficina_nombre,
+    of.telefono
+FROM orga.tfuncionario funcio
+     JOIN segu.vpersona person ON funcio.id_persona = person.id_persona
+     JOIN orga.tuo_funcionario uof ON uof.id_funcionario = funcio.id_funcionario
+     JOIN orga.tuo uo ON uo.id_uo = uof.id_uo
+     JOIN orga.tcargo car ON car.id_cargo = uof.id_cargo
+     JOIN orga.toficina of ON of.id_oficina = car.id_oficina
+WHERE uof.estado_reg::text = 'activo'::text AND uof.fecha_finalizacion IS NULL
+    AND uof.tipo::text <> 'funcional'::text
+ORDER BY uof.fecha_reg DESC;
+
+/***********************************F-DEP-MMV-GECOM-0-14/06/2017****************************************/

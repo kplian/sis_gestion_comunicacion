@@ -118,7 +118,9 @@ class MODNumeroCelular extends MODbase{
         $this->setParametro('oficina','oficina','varchar');
        $this->setParametro('uo','uo','varchar');
 
-        $this->captura('id_fun','int4');
+        $this->captura('id_funcionario','int4');
+        $this->captura('id_cargo','int4');
+        $this->captura('id_oficina','int4');
         $this->captura('nombre_funcionario','text');
         $this->captura('nombre_cargo_funcionario','varchar');
         $this->captura('oficina_nombre','text');

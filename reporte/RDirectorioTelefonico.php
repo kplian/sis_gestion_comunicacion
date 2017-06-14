@@ -164,6 +164,7 @@ class RDirectorioTelefonico
         $ti = '';
         $columna =1;
         foreach ($datos as $value){
+           if ($value['oficina_nombre'] != null ) {
             if ($value['oficina_nombre'] != $ofi) {
                 $this->imprimeSubtitulo($fila,$value['oficina_nombre']);
                 $ofi = $value['oficina_nombre'];
@@ -173,23 +174,24 @@ class RDirectorioTelefonico
                     $fila++;
                 }
             }
-            if ($value['gerencia'] != $ger && $value['gerencia'] != $value['oficina_nombre']){
+            if ($value['gerencia'] != $ger && $value['gerencia'] != $value['departamento']){
                 $this->imprimeSubTituloGerencia($fila,$value['gerencia']);
                 $ger = $value['gerencia'];
                 $fila++;
             }
+            if($value['departamento'] != 'A'){
             if ($value['departamento'] != $dep && $value['departamento'] != $value['gerencia']){
                 $this->imprimeSubTituloDepartamento($fila,$value['departamento']);
                 $dep = $value['departamento'];
                 $fila++;
-            }
+            }}
 
 
                 $interno = str_replace(',', '/', trim($value['interno'], '{}'));
                 $fijo = str_replace(',', '/', trim($value['fijo'], '{}'));
                 $celular = str_replace(',', '/', trim($value['celular'], '{}'));
 
-            ///if ($value['interno'] != '-' && $value['fijo'] != '-' && $value['celular'] != '-') {
+
                 $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(1, $fila, $value['nombre_funcionario']);
                 $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(2, $fila, $value['nombre_cargo_funcionario']);
                 $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(3, $fila, $interno);
@@ -198,7 +200,7 @@ class RDirectorioTelefonico
                 $this->docexcel->getActiveSheet()->getStyle("B$fila:F$fila")->applyFromArray($styleBordes);
                 $this->docexcel->getActiveSheet()->getStyle("D$fila:F$fila")->applyFromArray($styleAliniar);
                 $fila++;
-            //}
+            }
         }
 
 
