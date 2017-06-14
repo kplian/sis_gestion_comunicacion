@@ -12,13 +12,13 @@ $body$
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'gecom.tnumero_celular'
  AUTOR: 		 (jrivera)
  FECHA:	        23-07-2014 22:43:16
- COMENTARIOS:	
+ COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+ DESCRIPCION:
+ AUTOR:
+ FECHA:
 ***************************************************************************/
 
 DECLARE
@@ -130,7 +130,7 @@ BEGIN
                                 (case when fun.desc_funcionario1 is null then
                                 cel.observaciones
                                 else
-                                fun.desc_funcionario1
+                                fun.desc_funcionario2
                                 end ::text) as nombre_funcionario,
           						(case when fun.nombre_cargo is null then
                                 ca.nombre
@@ -151,7 +151,12 @@ BEGIN
                                 end::varchar) as departamento,
                                 COALESCE(gecom.f_numero_celular_tipo(cel.id_funcionario,cel.id_cargo,''celular''::varchar),'' - '')as celular,
                                 COALESCE(gecom.f_numero_celular_tipo(cel.id_funcionario,cel.id_cargo,''fijo''::varchar),'' - '')as fijo,
-                                COALESCE(gecom.f_numero_celular_tipo(cel.id_funcionario,cel.id_cargo,''interno''::varchar),'' - '')as interno
+                                COALESCE(gecom.f_numero_celular_tipo(cel.id_funcionario,cel.id_cargo,''interno''::varchar),'' - '')as interno,
+                                (case when og.orden is null then
+                                na.orden
+                                else
+                                og.orden
+                                end::numeric) as orden
                                 from gecom.tfuncionario_celular cel
                                 left join orga.tuo_funcionario ul on (ul.id_funcionario = cel.id_funcionario or ul.id_cargo = cel.id_cargo) and ul.estado_reg = ''activo'' and ul.fecha_finalizacion is null
                                 left join gecom.vfuncionario fun on fun.id_funcionario = cel.id_funcionario and cel.estado_reg = ''activo'' and cel.fecha_fin is null
@@ -164,21 +169,21 @@ BEGIN
 
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
-            v_consulta:=v_consulta||'ORDER BY oficina_nombre, gerencia , departamento asc';
+            v_consulta:=v_consulta||'ORDER BY orden, gerencia , departamento asc, nombre_funcionario';
 			--Devuelve la respuesta
 			return v_consulta;
             --raise exception 'llega';
 
 		end;
-					
+
 	else
-					     
+
 		raise exception 'Transaccion inexistente';
-					         
+
 	end if;
-					
+
 EXCEPTION
-					
+
 	WHEN OTHERS THEN
 			v_resp='';
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);

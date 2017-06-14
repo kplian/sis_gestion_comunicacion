@@ -129,6 +129,7 @@ class MODNumeroCelular extends MODbase{
         $this->captura('celular','varchar');
         $this->captura('fijo','varchar');
         $this->captura('interno','varchar');
+        $this->captura('orden','numeric');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
