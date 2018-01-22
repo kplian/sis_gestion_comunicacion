@@ -70,3 +70,30 @@ select pxp.f_insert_trol ('Registro de Consumo Corporativo', 'Registro de Consum
 
 
 /*****************************F-DAT-JRR-GECOM-0-29/07/2014*************************************/
+
+/*****************************I-DAT-JRR-GECOM-0-29/07/2014*************************************/
+
+----------------------------------
+--COPY LINES TO data.sql FILE
+---------------------------------
+
+select pxp.f_insert_tgui ('GESTIÓN DE MATERIALES', '', 'MAT', 'si', 1, '', 1, '', '', 'MAT');
+select pxp.f_insert_tgui ('Requerimiento de Materiales', 'Requerimiento de Materiales', 'REMA', 'si', 1, 'sis_gestion_materiales/vista/solicitud/RegistroSolicitud.php', 2, '', 'RegistroSolicitud', 'MAT');
+select pxp.f_insert_tgui ('Visto Bueno Solicitud', 'Visto Bueno Solicitud', 'VBS', 'si', 2, 'sis_gestion_materiales/vista/solicitud/SolicitudVistoBueno.php', 2, '', 'SolicitudVistoBueno', 'MAT');
+select pxp.f_insert_tgui ('Abastecimiento', 'Abastecimiento', 'ABS', 'si', 3, 'sis_gestion_materiales/vista/solicitud/AbastecimientoSolicitud.php', 2, '', 'AbastecimientoSolicitud', 'MAT');
+select pxp.f_insert_tgui ('Consulta Requerimientos', 'Consulta Requerimientos', 'CR', 'si', 4, 'sis_gestion_materiales/vista/solicitud/ConsultaRequerimientos.php', 2, '', 'ConsultaRequerimientos', 'MAT');
+----------------------------------
+--COPY LINES TO dependencies.sql FILE
+---------------------------------
+
+select pxp.f_insert_testructura_gui ('MAT', 'SISTEMA');
+select pxp.f_insert_testructura_gui ('REMA', 'MAT');
+select pxp.f_insert_testructura_gui ('VBS', 'MAT');
+select pxp.f_insert_testructura_gui ('ABS', 'MAT');
+select pxp.f_insert_testructura_gui ('CR', 'MAT');
+/*****************************F-DAT-JRR-GECOM-0-29/07/2014*************************************/
+
+/*****************************I-DAT-MMV-GECOM-0-06/06/2017*************************************/
+select pxp.f_insert_tgui ('Directorio TelefÃ³nico', 'Directorio Telefonico', 'DIRT', 'si', 4, 'sis_gestion_comunicacion/vista/directorio_telefonico/DirectorioTelefonico.php', 2, '', 'DirectorioTelefonico', 'GECOM');
+select pxp.f_insert_testructura_gui ('DIRT', 'GECOM');
+/*****************************F-DAT-MMV-GECOM-0-06/06/2017*************************************/

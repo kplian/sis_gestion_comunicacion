@@ -106,6 +106,38 @@ class MODNumeroCelular extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+    function reporteDirectorioTelefonico(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='gecom.ft_numero_celular_sel';
+        $this->transaccion='GC_REPOR_SEL';
+        $this->tipo_procedimiento='SEL';
+        $this->setCount(false);
+
+        //Define los parametros para la funcion
+       // $this->setParametro('id_oficina','id_oficina','int4');
+        $this->setParametro('oficina','oficina','varchar');
+       $this->setParametro('uo','uo','varchar');
+
+        $this->captura('id_funcionario','int4');
+        $this->captura('id_cargo','int4');
+        $this->captura('id_oficina','int4');
+        $this->captura('nombre_funcionario','text');
+        $this->captura('nombre_cargo_funcionario','varchar');
+        $this->captura('oficina_nombre','text');
+        $this->captura('gerencia','varchar');
+        $this->captura('departamento','varchar');
+        $this->captura('celular','varchar');
+        $this->captura('fijo','varchar');
+        $this->captura('interno','varchar');
+        $this->captura('orden','numeric');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+       //var_dump($this->respuesta); exit;
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 			
 }
 ?>

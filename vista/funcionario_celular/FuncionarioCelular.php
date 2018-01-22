@@ -54,7 +54,6 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:true 
 		},
-		
 		{
 			config:{
 				name: 'fecha_inicio',
@@ -62,16 +61,15 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: false,
 				anchor: '50%',
 				gwidth: 100,
-							format: 'd/m/Y', 
-							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
+				format: 'd/m/Y',
+				renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
 			},
-				type:'DateField',
-				filters:{pfiltro:'funcel.fecha_inicio',type:'date'},
-				id_grupo:1,
-				grid:true,
-				form:true
+			type:'DateField',
+			filters:{pfiltro:'funcel.fecha_inicio',type:'date'},
+			id_grupo:1,
+			grid:true,
+			form:true
 		},
-		
 		{
 			config:{
 				name: 'tipo',
@@ -90,19 +88,87 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 				id_grupo:1,
 				grid:false,
 				form:true
-		},	
+		},
+		{
+			config:{
+				name:'id_funcionario',
+				hiddenName: 'id_funcionario',
+				origen:'FUNCIONARIOCAR',
+				fieldLabel:'Funcionario',
+				allowBlank:false,
+				gwidth:250,
+				valueField: 'id_funcionario',
+				gdisplayField: 'desc_funcionario1',
+				disabled:true,
+				renderer:function(value, p, record){return String.format('{0}', record.data['desc_funcionario1']);}
+			},
+			type:'ComboRec',//ComboRec
+			id_grupo:0,
+			filters:{pfiltro:'fun.desc_funcionario1',type:'string'},
+			grid:true,
+			bottom_filter:true,
+			form:true
+		},
+
+		{
+			config: {
+				name: 'id_cargo',
+				fieldLabel: 'Cargo',
+				allowBlank: true,
+				disabled:true,
+				emptyText: 'Elija una opción...',
+				store: new Ext.data.JsonStore({
+					url: '../../sis_organigrama/control/Cargo/listarCargo',
+					id: 'id_cargo',
+					root: 'datos',
+					sortInfo: {
+						field: 'cargo.nombre',
+						direction: 'ASC'
+					},
+					totalProperty: 'total',
+					fields: ['id_cargo', 'nombre', 'codigo'],
+					remoteSort: true,
+					baseParams: {par_filtro: 'cargo.nombre#cargo.codigo'}
+				}),
+				valueField: 'id_cargo',
+				displayField: 'nombre',
+				gdisplayField: 'nombre',
+				hiddenName: 'id_cargo',
+				forceSelection: true,
+				typeAhead: false,
+				triggerAction: 'all',
+				lazyRender: true,
+				mode: 'remote',
+				pageSize: 15,
+				queryDelay: 1000,
+				anchor: '60%',
+				gwidth: 150,
+				minChars: 2,
+				renderer : function(value, p, record) {
+					return String.format('{0}', record.data['nombre_cargo']);
+				}
+			},
+			type: 'ComboBox',
+			id_grupo: 0,
+			filters: {pfiltro: 'cargo.nombre',type: 'string'},
+			grid: true,
+			bottom_filter:true,
+			form: true
+		},
+
 		{
 			config:{
 				name: 'tipo',
-				fieldLabel: 'Tipo',
+				fieldLabel: 'Tipo de Número',
 				gwidth: 100
 			},
 				type:'TextField',
 				filters:{pfiltro:'numcel.tipo',	
 	       		         type: 'list',
-	       				 options: ['celular','4g','fijo'],	
+	       				 options: ['celular','4g','fijo','interno'],
 	       		 	},				
 				grid:true,
+				bottom_filter:true,
 				form:false
 		},
 		{
@@ -147,71 +213,49 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 			id_grupo: 0,
 			filters: {pfiltro: 'numcel.numero',type: 'string'},
 			grid: true,
+			bottom_filter:true,
 			form: true
 		},
+
 		{
-   			config:{
-       		    name:'id_funcionario',
-       		     hiddenName: 'id_funcionario',
-   				origen:'FUNCIONARIOCAR',
-   				fieldLabel:'Funcionario',
-   				allowBlank:false,
-                gwidth:200,
-   				valueField: 'id_funcionario',
-   			    gdisplayField: 'desc_funcionario1',
-   			    disabled:true,
-      			renderer:function(value, p, record){return String.format('{0}', record.data['desc_funcionario1']);}
-       	     },
-   			type:'ComboRec',//ComboRec
-   			id_grupo:0,
-   			filters:{pfiltro:'fun.desc_funcionario1',type:'string'},
-   		    grid:true,
-   			form:true
-		 },
-		{
-			config: {
-				name: 'id_cargo',
-				fieldLabel: 'Cargo',
-				allowBlank: true,
-				disabled:true,
-				emptyText: 'Elija una opción...',
-				store: new Ext.data.JsonStore({
-					url: '../../sis_organigrama/control/Cargo/listarCargo',
-					id: 'id_cargo',
-					root: 'datos',
-					sortInfo: {
-						field: 'cargo.nombre',
-						direction: 'ASC'
-					},
-					totalProperty: 'total',
-					fields: ['id_cargo', 'nombre', 'codigo'],
-					remoteSort: true,
-					baseParams: {par_filtro: 'cargo.nombre#cargo.codigo'}
-				}),
-				valueField: 'id_cargo',
-				displayField: 'nombre',
-				gdisplayField: 'nombre',
-				hiddenName: 'id_cargo',
-				forceSelection: true,
+			config:{
+				name: 'tipo_asignacion',
+				fieldLabel: 'Tipo de Asignación',
+				allowBlank:false,
+				emptyText:'Tipo...',
 				typeAhead: false,
 				triggerAction: 'all',
-				lazyRender: true,
-				mode: 'remote',
-				pageSize: 15,
-				queryDelay: 1000,
-				anchor: '60%',
-				gwidth: 150,
-				minChars: 2,
-				renderer : function(value, p, record) {
-					return String.format('{0}', record.data['nombre_cargo']);
-				}
+				lazyRender:true,
+				mode: 'local',
+				gwidth: 90,
+				store:['personal','compartido'],
+				value:'personal'
 			},
-			type: 'ComboBox',
-			id_grupo: 0,
-			filters: {pfiltro: 'cargo.nombre',type: 'string'},
-			grid: true,
-			form: true
+			type:'ComboBox',
+			filters:{pfiltro:'funcel.tipo_asignacion',
+				type: 'list',
+				options: ['personal','compartido']
+			},
+			id_grupo:1,
+			grid:true,
+			form:true
 		},
+		{
+			config:{
+				name: 'observaciones',
+				fieldLabel: 'Observaciones',
+				allowBlank: true,
+				anchor: '90%',
+				gwidth: 200
+			},
+			type:'TextArea',
+			filters:{pfiltro:'funcel.observaciones',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+
+
 		
 		{
 			config:{
@@ -229,43 +273,7 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:true
 		},
-        {
-            config:{
-                name: 'tipo_asignacion',
-                fieldLabel: 'Tipo Asignacion',
-                allowBlank:false,
-                emptyText:'Tipo...',
-                typeAhead: false,
-                triggerAction: 'all',
-                lazyRender:true,
-                mode: 'local',
-                gwidth: 90,
-                store:['personal','compartido'],
-                value:'no'
-            },
-            type:'ComboBox',
-            filters:{pfiltro:'funcel.tipo_asignacion',
-                type: 'list',
-                options: ['personal','compartido']
-            },
-            id_grupo:1,
-            grid:true,
-            form:true
-        },
-        {
-			config:{
-				name: 'observaciones',
-				fieldLabel: 'Observaciones',
-				allowBlank: true,
-				anchor: '90%',
-				gwidth: 200
-			},
-				type:'TextArea',
-				filters:{pfiltro:'funcel.observaciones',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:true
-		},
+
 		
 		{
 			config:{
@@ -316,7 +324,7 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'fecha_reg',
-				fieldLabel: 'Fecha creación',
+				fieldLabel: 'Fecha Creación',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -407,11 +415,12 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 		
 	],
 	sortInfo:{
-		field: 'id_funcionario_celular',
-		direction: 'DESC'
+		field: 'desc_funcionario1',
+		direction: 'ASC'
 	},
 	bedit:true,
 	bsave:true,
+
 	iniciarEventos:function() {
 		this.Cmp.fecha_inicio.on('change',function() {
 			
@@ -428,35 +437,40 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 			this.Cmp.id_funcionario.modificado = true;
 				
 		},this);
-		
+		this.cmpFechaInicio = this.getComponente('fecha_inicio');
 		this.Cmp.tipo.on('select',function(c,r,i) {
 			if ( this.Cmp.tipo.getValue() == 'funcionario') {
 				
-				if (this.Cmp.fecha_inicio.getValue()!= '') {
+				/*if (this.Cmp.fecha_inicio.getValue()!= '') {
 					this.Cmp.fecha_inicio.fireEvent('change');
-				}
-				
+				}*/
+				this.Cmp.id_funcionario.enable();
+				this.Cmp.id_funcionario.reset();
+				this.Cmp.id_funcionario.allowBlank = false;
 				this.Cmp.id_cargo.disable();
 				this.Cmp.id_cargo.reset();
-				this.Cmp.id_funcionario.allowBlank = false;
 				this.Cmp.id_cargo.allowBlank = true;
 			}
-			if (this.Cmp.tipo.getValue() == 'cargo') { 
+			if (this.Cmp.tipo.getValue() == 'cargo') {
 				this.Cmp.id_cargo.enable();
 				this.Cmp.id_cargo.reset();
-				this.Cmp.id_funcionario.disable();
-				this.Cmp.id_funcionario.allowBlank = true;
 				this.Cmp.id_cargo.allowBlank = false;
+				this.Cmp.id_funcionario.disable();
 				this.Cmp.id_funcionario.reset();
+				this.Cmp.id_funcionario.allowBlank = true;
 			}				
 		},this);
+
 	},
 	loadValoresIniciales:function()
     {
     	this.Cmp.fecha_inicio.enable();
     	this.Cmp.tipo.enable();
-    	this.Cmp.tipo.setValue('funcionario');    
-    	this.Cmp.tipo.fireEvent('select');	      
+    	this.Cmp.tipo.setValue('funcionario');
+    	this.Cmp.tipo.fireEvent('select');
+		this.Cmp.id_numero_celular.enable();
+		this.Cmp.fecha_inicio.setValue(new Date());
+		this.Cmp.id_funcionario.store.baseParams.fecha = this.cmpFechaInicio.getValue().dateFormat(this.cmpFechaInicio.format);
         Phx.vista.FuncionarioCelular.superclass.loadValoresIniciales.call(this);
                
     },
