@@ -21,42 +21,7 @@ select pxp.f_insert_tgui ('Instituciones', 'Instituciones', 'REGNUM.4.3', 'no', 
 select pxp.f_insert_tgui ('Subir foto', 'Subir foto', 'REGNUM.4.2.1', 'no', 0, 'sis_seguridad/vista/persona/subirFotoPersona.php', 5, '', 'subirFotoPersona', 'GECOM');
 select pxp.f_insert_tgui ('Personas', 'Personas', 'REGNUM.4.3.1', 'no', 0, 'sis_seguridad/vista/persona/Persona.php', 5, '', 'persona', 'GECOM');
 select pxp.f_insert_tgui ('Subir foto', 'Subir foto', 'REGNUM.4.3.1.1', 'no', 0, 'sis_seguridad/vista/persona/subirFotoPersona.php', 6, '', 'subirFotoPersona', 'GECOM');
-select pxp.f_insert_tfuncion ('gecom.ft_numero_celular_ime', 'Funcion para tabla     ', 'GECOM');
-select pxp.f_insert_tfuncion ('gecom.ft_servicio_ime', 'Funcion para tabla     ', 'GECOM');
-select pxp.f_insert_tfuncion ('gecom.ft_numero_celular_sel', 'Funcion para tabla     ', 'GECOM');
-select pxp.f_insert_tfuncion ('gecom.ft_servicio_sel', 'Funcion para tabla     ', 'GECOM');
-select pxp.f_insert_tfuncion ('gecom.ft_numero_servicio_sel', 'Funcion para tabla     ', 'GECOM');
-select pxp.f_insert_tfuncion ('gecom.ft_numero_servicio_ime', 'Funcion para tabla     ', 'GECOM');
-select pxp.f_insert_tfuncion ('gecom.ft_funcionario_celular_sel', 'Funcion para tabla     ', 'GECOM');
-select pxp.f_insert_tfuncion ('gecom.ft_funcionario_celular_ime', 'Funcion para tabla     ', 'GECOM');
-select pxp.f_insert_tfuncion ('gecom.ft_consumo_sel', 'Funcion para tabla     ', 'GECOM');
-select pxp.f_insert_tfuncion ('gecom.ft_consumo_ime', 'Funcion para tabla     ', 'GECOM');
-select pxp.f_insert_tprocedimiento ('GC_NUMCEL_INS', 'Insercion de registros', 'si', '', '', 'gecom.ft_numero_celular_ime');
-select pxp.f_insert_tprocedimiento ('GC_NUMCEL_MOD', 'Modificacion de registros', 'si', '', '', 'gecom.ft_numero_celular_ime');
-select pxp.f_insert_tprocedimiento ('GC_NUMCEL_ELI', 'Eliminacion de registros', 'si', '', '', 'gecom.ft_numero_celular_ime');
-select pxp.f_insert_tprocedimiento ('GC_SER_INS', 'Insercion de registros', 'si', '', '', 'gecom.ft_servicio_ime');
-select pxp.f_insert_tprocedimiento ('GC_SER_MOD', 'Modificacion de registros', 'si', '', '', 'gecom.ft_servicio_ime');
-select pxp.f_insert_tprocedimiento ('GC_SER_ELI', 'Eliminacion de registros', 'si', '', '', 'gecom.ft_servicio_ime');
-select pxp.f_insert_tprocedimiento ('GC_NUMCEL_SEL', 'Consulta de datos', 'si', '', '', 'gecom.ft_numero_celular_sel');
-select pxp.f_insert_tprocedimiento ('GC_NUMCEL_CONT', 'Conteo de registros', 'si', '', '', 'gecom.ft_numero_celular_sel');
-select pxp.f_insert_tprocedimiento ('GC_SER_SEL', 'Consulta de datos', 'si', '', '', 'gecom.ft_servicio_sel');
-select pxp.f_insert_tprocedimiento ('GC_SER_CONT', 'Conteo de registros', 'si', '', '', 'gecom.ft_servicio_sel');
-select pxp.f_insert_tprocedimiento ('GC_NUMSER_SEL', 'Consulta de datos', 'si', '', '', 'gecom.ft_numero_servicio_sel');
-select pxp.f_insert_tprocedimiento ('GC_NUMSER_CONT', 'Conteo de registros', 'si', '', '', 'gecom.ft_numero_servicio_sel');
-select pxp.f_insert_tprocedimiento ('GC_NUMSER_INS', 'Insercion de registros', 'si', '', '', 'gecom.ft_numero_servicio_ime');
-select pxp.f_insert_tprocedimiento ('GC_NUMSER_MOD', 'Modificacion de registros', 'si', '', '', 'gecom.ft_numero_servicio_ime');
-select pxp.f_insert_tprocedimiento ('GC_NUMSER_ELI', 'Eliminacion de registros', 'si', '', '', 'gecom.ft_numero_servicio_ime');
-select pxp.f_insert_tprocedimiento ('GC_FUNCEL_SEL', 'Consulta de datos', 'si', '', '', 'gecom.ft_funcionario_celular_sel');
-select pxp.f_insert_tprocedimiento ('GC_FUNCEL_CONT', 'Conteo de registros', 'si', '', '', 'gecom.ft_funcionario_celular_sel');
-select pxp.f_insert_tprocedimiento ('GC_FUNCEL_INS', 'Insercion de registros', 'si', '', '', 'gecom.ft_funcionario_celular_ime');
-select pxp.f_insert_tprocedimiento ('GC_FUNCEL_MOD', 'Modificacion de registros', 'si', '', '', 'gecom.ft_funcionario_celular_ime');
-select pxp.f_insert_tprocedimiento ('GC_FUNCEL_ELI', 'Eliminacion de registros', 'si', '', '', 'gecom.ft_funcionario_celular_ime');
-select pxp.f_insert_tprocedimiento ('GC_CON_SEL', 'Consulta de datos', 'si', '', '', 'gecom.ft_consumo_sel');
-select pxp.f_insert_tprocedimiento ('GC_CON_CONT', 'Conteo de registros', 'si', '', '', 'gecom.ft_consumo_sel');
-select pxp.f_insert_tprocedimiento ('GC_CON_INS', 'Insercion de registros', 'si', '', '', 'gecom.ft_consumo_ime');
-select pxp.f_insert_tprocedimiento ('GC_CON_MOD', 'Modificacion de registros', 'si', '', '', 'gecom.ft_consumo_ime');
-select pxp.f_insert_tprocedimiento ('GC_CONCSV_UPD', 'Modificacion consumo valor csv', 'si', '', '', 'gecom.ft_consumo_ime');
-select pxp.f_insert_tprocedimiento ('GC_CON_ELI', 'Eliminacion de registros', 'si', '', '', 'gecom.ft_consumo_ime');
+
 
 /*****************************F-DAT-JRR-GECOM-0-27/07/2014*************************************/
 
