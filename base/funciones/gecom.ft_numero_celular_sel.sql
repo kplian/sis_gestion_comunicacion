@@ -149,22 +149,22 @@ BEGIN
                                 else
                                 dep.nombre_unidad
                                 end::varchar) as departamento,
-                                COALESCE(gecom.f_numero_celular_tipo(cel.id_funcionario,cel.id_cargo,''celular''::varchar),'' - '')as celular,
-                                COALESCE(gecom.f_numero_celular_tipo(cel.id_funcionario,cel.id_cargo,''fijo''::varchar),'' - '')as fijo,
-                                COALESCE(gecom.f_numero_celular_tipo(cel.id_funcionario,cel.id_cargo,''interno''::varchar),'' - '')as interno,
+                                COALESCE(gecom.f_numero_celular_tipo(cel.id_funcionario,cel.id_cargo,''celular''::varchar,cel.observaciones::varchar),'' - '')as celular,
+                                COALESCE(gecom.f_numero_celular_tipo(cel.id_funcionario,cel.id_cargo,''fijo''::varchar,cel.observaciones::varchar),'' - '')as fijo,
+                                COALESCE(gecom.f_numero_celular_tipo(cel.id_funcionario,cel.id_cargo,''interno''::varchar,cel.observaciones::varchar),'' - '')as interno,
                                 (case when og.orden is null then
                                 na.orden
                                 else
                                 og.orden
                                 end::numeric) as orden
                                 from gecom.tfuncionario_celular cel
-                                left join orga.tuo_funcionario ul on (ul.id_funcionario = cel.id_funcionario or ul.id_cargo = cel.id_cargo) and ul.estado_reg = ''activo'' and ul.fecha_finalizacion is null
-                                left join gecom.vfuncionario fun on fun.id_funcionario = cel.id_funcionario and cel.estado_reg = ''activo'' and cel.fecha_fin is null
-                                left join orga.tcargo ca on ca.id_cargo = cel.id_cargo
+                                left join orga.tuo_funcionario ul on (ul.id_funcionario = cel.id_funcionario or ul.id_cargo = cel.id_cargo) and ul.estado_reg = ''activo'' and  (ul.fecha_finalizacion is null or ul.fecha_finalizacion >= now()::date)
+                                left join gecom.vfuncionario fun on fun.id_funcionario = cel.id_funcionario and cel.estado_reg = ''activo'' and ( cel.fecha_fin is null or cel.fecha_fin >= now()::date)
+                                left join orga.tcargo ca on ca.id_cargo = cel.id_cargo and (ca.fecha_fin is null or ca.fecha_fin >= now()::date)
                                 left join orga.toficina og on og.id_oficina = fun.id_oficina
                                 left join orga.toficina na on na.id_oficina = ca.id_oficina
-                                JOIN orga.tuo ger ON ger.id_uo = orga.f_get_uo_gerencia(ul.id_uo, NULL::integer, NULL::date)
-                                JOIN orga.tuo dep ON dep.id_uo = orga.f_get_uo_departamento(ul.id_uo, NULL::integer, NULL::date)
+                                left join orga.tuo ger ON ger.id_uo = orga.f_get_uo_gerencia(ul.id_uo, NULL::integer, NULL::date)
+                                left join orga.tuo dep ON dep.id_uo = orga.f_get_uo_departamento(ul.id_uo, NULL::integer, NULL::date)
                                 where '||v_oficina||' ';
 
 			--Definicion de la respuesta
