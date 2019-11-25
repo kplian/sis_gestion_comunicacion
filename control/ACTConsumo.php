@@ -7,6 +7,7 @@
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
 */
 
+require_once(dirname(__FILE__).'/../reporte/RCostosTelecomunicaciones.php');																		
 class ACTConsumo extends ACTbase{    
 			
 	function listarConsumo(){
@@ -116,7 +117,38 @@ class ACTConsumo extends ACTbase{
 		//devolver respuesta
 		$this->mensajeRes->imprimirRespuesta($this->mensajeRes->generarJson());
 	}
-			
+
+    function  reporteCostosTelecomunicaciones(){
+
+        $this->objFunc=$this->create('MODConsumo');
+        $this->res=$this->objFunc->reporteCostosTelecomunicaciones($this->objParam);
+        //obtener titulo de reporte
+        //var_dump($this->res);exit;
+        $titulo ='COSTOS DE SERVICIO DE TELECOMUNICACIONES';
+        //Genera el nombre del archivo (aleatorio + titulo)
+        $nombreArchivo=uniqid(md5(session_id()).$titulo);
+        $nombreArchivo.='.xls';
+        $this->objParam->addParametro('nombre_archivo',$nombreArchivo);
+        $this->objParam->addParametro('datos',$this->res->datos);
+        if($this->objParam->getParametro('tipo_facturacion') =='fijo'){
+            $this->objParam->addParametro('tipoFactura','TELEFONIA FIJA');
+        }else if($this->objParam->getParametro('tipo_facturacion') =='celular'){
+            $this->objParam->addParametro('tipoFactura','TELEFONIA MOVIL');
+        }else if($this->objParam->getParametro('tipo_facturacion') =='4g'){
+            $this->objParam->addParametro('tipoFactura','SERVICIO 4G');
+        }
+        //Instancia la clase de excel
+        $this->objReporteFormato=new RReporteTelecomunicaciones($this->objParam);
+        $this->objReporteFormato->generarDatos();
+        $this->objReporteFormato->generarReporte();
+
+        $this->mensajeExito=new Mensaje();
+        $this->mensajeExito->setMensaje('EXITO','Reporte.php','Reporte generado',
+            'Se generó con éxito el reporte: '.$nombreArchivo,'control');
+        $this->mensajeExito->setArchivoGenerado($nombreArchivo);
+        $this->mensajeExito->imprimirRespuesta($this->mensajeExito->generarJson());
+
+    }
 }
 
 ?>

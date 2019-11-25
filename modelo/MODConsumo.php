@@ -130,6 +130,48 @@ class MODConsumo extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
-			
+
+    function reporteCostosTelecomunicaciones(){
+
+        $this->procedimiento ='gecom.ft_consumo_sel';
+        $this->transaccion='GC_COSREP_SEL';
+        $this->tipo_procedimiento='SEL';
+
+        $this->setParametro('id_gestion','id_gestion','int4');
+        $this->setParametro('tipo_facturacion','tipo_facturacion','varchar');
+        $this->setCount(false);
+        $this->captura('gerencia','varchar');
+        $this->captura('departamento','varchar');
+        $this->captura('oficina','varchar');
+        $this->captura('lugar','varchar');
+        $this->captura('usuario','varchar');
+        $this->captura('cargo','varchar');
+        $this->captura('rotulo_comercial','varchar');
+        $this->captura('id_numero_celular','int4');
+        $this->captura('observaciones','text');
+        $this->captura('gestion','int4');
+        $this->captura('numero','varchar');
+        $this->captura('enero','numeric');
+        $this->captura('febrero','numeric');
+        $this->captura('marzo','numeric');
+        $this->captura('abril','numeric');
+        $this->captura('mayo','numeric');
+        $this->captura('junio','numeric');
+        $this->captura('julio','numeric');
+        $this->captura('agosto','numeric');
+        $this->captura('septiembre','numeric');
+        $this->captura('octubre','numeric');
+        $this->captura('noviembre','numeric');
+        $this->captura('diciembre','numeric');
+        $this->captura('tipo','varchar');
+
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+        //var_dump( $this->respuesta);exit;
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 }
 ?>
