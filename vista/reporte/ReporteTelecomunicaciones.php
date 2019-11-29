@@ -64,7 +64,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     mode : 'local',
                     store : new Ext.data.ArrayStore({
                         fields : ['codigo', 'nombre'],
-                        data : [['fijo', 'TELEFONIA FIJA'], ['celular', 'TELEFONIA MOVIL'], ['4g', 'SERVICIO 4G']]
+                        data : [['fijo', 'TELEFONIA FIJA'], ['celular', 'TELEFONIA MOVIL'], ['4g', 'SERVICIO 4G'], ['todos', 'TODOS']]
                     }),
                     anchor : '35%',
                     valueField : 'codigo',

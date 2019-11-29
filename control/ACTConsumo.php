@@ -130,16 +130,29 @@ class ACTConsumo extends ACTbase{
         $nombreArchivo.='.xls';
         $this->objParam->addParametro('nombre_archivo',$nombreArchivo);
         $this->objParam->addParametro('datos',$this->res->datos);
+		//Instancia la clase de excel
+        $this->objReporteFormato=new RReporteTelecomunicaciones($this->objParam);
+
         if($this->objParam->getParametro('tipo_facturacion') =='fijo'){
             $this->objParam->addParametro('tipoFactura','TELEFONIA FIJA');
+            $this->objReporteFormato->generarDatos('fijo',0);
         }else if($this->objParam->getParametro('tipo_facturacion') =='celular'){
             $this->objParam->addParametro('tipoFactura','TELEFONIA MOVIL');
+            $this->objReporteFormato->generarDatos('celular',0);
         }else if($this->objParam->getParametro('tipo_facturacion') =='4g'){
             $this->objParam->addParametro('tipoFactura','SERVICIO 4G');
+            $this->objReporteFormato->generarDatos('4g',0);
+        }else{
+            $this->objParam->addParametro('tipoFactura','TELEFONIA FIJA');
+            $this->objReporteFormato->generarDatos('fijo',0);
+            $this->objParam->arreglo_parametros[tipoFactura] = 'TELEFONIA MOVIL';
+            $this->objReporteFormato->generarDatos('celular',1);
+            $this->objParam->arreglo_parametros[tipoFactura] = 'SERVICIO 4G';
+            $this->objReporteFormato->generarDatos('4g',2);
         }
-        //Instancia la clase de excel
-        $this->objReporteFormato=new RReporteTelecomunicaciones($this->objParam);
-        $this->objReporteFormato->generarDatos();
+        
+		
+		
         $this->objReporteFormato->generarReporte();
 
         $this->mensajeExito=new Mensaje();

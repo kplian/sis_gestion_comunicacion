@@ -164,7 +164,21 @@ class MODConsumo extends MODbase{
         $this->captura('noviembre','numeric');
         $this->captura('diciembre','numeric');
         $this->captura('tipo','varchar');
-
+		$this->captura('roaming','varchar');
+        $this->captura('nombre_servicio','varchar');
+        $this->captura('ser_ene','numeric');
+        $this->captura('ser_feb','numeric');
+        $this->captura('ser_mar','numeric');
+        $this->captura('ser_abr','numeric');
+        $this->captura('ser_may','numeric');
+        $this->captura('ser_jun','numeric');
+        $this->captura('ser_jul','numeric');
+        $this->captura('ser_ago','numeric');
+        $this->captura('ser_sep','numeric');
+        $this->captura('ser_oct','numeric');
+        $this->captura('ser_nov','numeric');
+        $this->captura('ser_dic','numeric');
+        $this->captura('id_numero_servicio','int4');			
 
         //Ejecuta la instruccion
         $this->armarConsulta();
