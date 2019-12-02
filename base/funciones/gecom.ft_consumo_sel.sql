@@ -233,7 +233,62 @@ BEGIN
                                                 mm.enero , mm.febrero , mm.marzo , mm.abril , mm.mayo , mm.junio , mm.julio , 
                                                 mm.agosto , mm.septiembre , mm.octubre , mm.noviembre , mm.diciembre , 
                                                 mm.tipo, mm.roaming
-                                      ORDER BY  mm.tipo, ger.nombre_unidad, dep.nombre_unidad, oo.nombre, mm.id_numero_celular';
+                                      UNION
+                                                    select null as gerencia,
+                                                         null as departamento,
+                                                         null as oficina,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         pro.rotulo_comercial,
+                                                         op.id_obligacion_pago as id_numero_celular,
+                                                         op.obs as observaciones,
+                                                         null,
+                                                         ''TRAMITE NUM ''||op.num_tramite as numero,
+                                                         COALESCE (SUM(pp.total_pagado) filter (WHERE pp.nro_cuota = 1), 0)  enero ,
+                                                         COALESCE (SUM(pp.total_pagado) filter (WHERE pp.nro_cuota = 2), 0)  febrero ,
+                                                         COALESCE (SUM(pp.total_pagado) filter (WHERE pp.nro_cuota = 3), 0)  marzo ,
+                                                         COALESCE (SUM(pp.total_pagado) filter (WHERE pp.nro_cuota = 4), 0)  abril ,
+                                                         COALESCE (SUM(pp.total_pagado) filter (WHERE pp.nro_cuota = 5), 0)  mayo ,
+                                                         COALESCE (SUM(pp.total_pagado) filter (WHERE pp.nro_cuota = 6), 0)  junio ,
+                                                         COALESCE (SUM(pp.total_pagado) filter (WHERE pp.nro_cuota = 7), 0)  julio ,
+                                                         COALESCE (SUM(pp.total_pagado) filter (WHERE pp.nro_cuota = 8), 0)  agosto ,
+                                                         COALESCE (SUM(pp.total_pagado) filter (WHERE pp.nro_cuota = 9), 0)  septiembre ,
+                                                         COALESCE (SUM(pp.total_pagado) filter (WHERE pp.nro_cuota = 10), 0) octubre ,
+                                                         COALESCE (SUM(pp.total_pagado) filter (WHERE pp.nro_cuota = 11), 0) noviembre ,
+                                                         COALESCE (SUM(pp.total_pagado) filter (WHERE pp.nro_cuota = 12), 0) diciembre,
+                                                         CASE
+                                                              WHEN op.num_tramite = ''PCP-000329-2019'' THEN ''4g''
+                                                              WHEN op.num_tramite = ''PCP-000328-2019'' THEN ''celular''
+                                                              WHEN op.num_tramite in (''PCP-000264-2019'',''PCP-000106-2019'',''PCP-000227-2019'',''PCP-000245-2019'',
+                                                                ''PCP-000009-2019'',''PCP-000060-2019'',''PCP-000223-2019'',''PCP-000225-2019'') THEN ''fijo'' 
+                                                              ELSE null
+                                                         END as tipo,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         null
+                                                  from tes.tobligacion_pago op
+                                                       join tes.tplan_pago pp on op.id_obligacion_pago = pp.id_obligacion_pago
+                                                       JOIN param.vproveedor pro ON op.id_proveedor = pro.id_proveedor
+                                                  where op.num_tramite in (''PCP-000329-2019'',''PCP-000328-2019'',
+                                                  	''PCP-000264-2019'',''PCP-000106-2019'',''PCP-000227-2019'',''PCP-000245-2019'',
+      												''PCP-000009-2019'',''PCP-000060-2019'',''PCP-000223-2019'',''PCP-000225-2019'') and 
+                                                        pp.tipo = ''devengado_pagado'' and
+                                                        pp.estado_reg = ''activo''
+                                                  group by op.num_tramite, pro.rotulo_comercial, op.obs, op.id_obligacion_pago
+                                                  ORDER BY  tipo, gerencia, departamento, oficina, id_numero_celular';
 
 			--Devuelve la respuesta
 			return v_consulta;

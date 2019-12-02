@@ -205,7 +205,7 @@ class RReporteTelecomunicaciones
             $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(0,5,'INVENTARIO '.$this->objParam->getParametro('tipoFactura'));
             $this->docexcel->getActiveSheet()->getStyle('A5:M5')->applyFromArray($styleTitulos2);
             $this->docexcel->getActiveSheet()->mergeCells('A5:M5');
-            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(14,5,'FACTURACION '.$this->objParam->getParametro('tipoFactura'));
+            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(13,5,'FACTURACION '.$this->objParam->getParametro('tipoFactura'));
             $this->docexcel->getActiveSheet()->getStyle('N5:Z5')->applyFromArray($styleTitulos3);
             $this->docexcel->getActiveSheet()->mergeCells('N5:Z5');
         }
