@@ -246,3 +246,7 @@ IS 'Concepto de gasto';
 ALTER TABLE gecom.truta
   OWNER TO postgres;
 /***********************************F-SCP-BVP-GECOM-0-12/12/2020****************************************/
+/***********************************F-SCP-BVP-GECOM-0-12/12/2020****************************************/
+ALTER TABLE gecom.tpago_telefonia_det
+  RENAME COLUMN global TO globa_l;
+/***********************************F-SCP-BVP-GECOM-0-12/12/2020****************************************/
