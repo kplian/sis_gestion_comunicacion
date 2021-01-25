@@ -76,6 +76,11 @@ class MODPagoTelefoniaDet extends MODbase{
 		$this->captura('desc_centro_costo','text');
 		$this->captura('desc_concepto_ingas','varchar');
 
+		$this->captura('salida','varchar');
+		$this->captura('id_numero_celular','int4');
+		$this->captura('numero','varchar');
+		$this->captura('desc_proveedor','varchar');
+
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();

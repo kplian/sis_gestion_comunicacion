@@ -98,13 +98,22 @@ BEGIN
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
                         cc.codigo_cc as desc_centro_costo,
-                        cig.desc_ingas as desc_concepto_ingas
+                        cig.desc_ingas as desc_concepto_ingas,
+                        rut.salida,
+                        rut.id_numero_celular,
+                        numcel.numero,
+                        pro.desc_proveedor::varchar
 
 						from gecom.tpago_telefonia_det detpagte
 						inner join segu.tusuario usu1 on usu1.id_usuario = detpagte.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = detpagte.id_usuario_mod
                         left join param.vcentro_costo cc on cc.id_centro_costo = detpagte.id_centro_costo
                         left join param.tconcepto_ingas cig on cig.id_concepto_ingas = detpagte.id_concepto_ingas
+
+                        left join gecom.truta rut on rut.nro_ruta = detpagte.ruta and rut.cod_compania = detpagte.cod_compania
+                        left join gecom.tnumero_celular numcel on numcel.id_numero_celular = rut.id_numero_celular
+                        left join param.vproveedor pro on pro.id_proveedor = numcel.id_proveedor
+
 				        where  ';
 
 			--Definicion de la respuesta
@@ -127,12 +136,17 @@ BEGIN
 
 		begin
 			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(id_pago_telefonia_det)
+			v_consulta:='select count(detpagte.id_pago_telefonia_det)
 					    from gecom.tpago_telefonia_det detpagte
 					    inner join segu.tusuario usu1 on usu1.id_usuario = detpagte.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = detpagte.id_usuario_mod
                         left join param.vcentro_costo cc on cc.id_centro_costo = detpagte.id_centro_costo
                         left join param.tconcepto_ingas cig on cig.id_concepto_ingas = detpagte.id_concepto_ingas
+
+                        left join gecom.truta rut on rut.nro_ruta = detpagte.ruta and rut.cod_compania = detpagte.cod_compania
+                        left join gecom.tnumero_celular numcel on numcel.id_numero_celular = rut.id_numero_celular
+                        left join param.vproveedor pro on pro.id_proveedor = numcel.id_proveedor
+
 					    where ';
 
 			--Definicion de la respuesta

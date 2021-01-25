@@ -702,6 +702,94 @@ Phx.vista.PagoTelefoniaDet=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:false
 		},
+
+        {
+            config:{
+                name: 'salida',
+                fieldLabel: 'Salida',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth:300
+            },
+            type:'TextField',
+            filters:{pfiltro:'gruta.salida',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:false
+        },
+        {
+            config:{
+                name:'id_numero_celular',
+                fieldLabel:'Número',
+                allowBlank:true,
+                emptyText:'Número...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_gestion_comunicacion/control/NumeroCelular/listarNumeroCelular',
+                    id: 'id_numero_celular',
+                    root: 'datos',
+                    sortInfo:{
+                        field: 'numero',
+                        direction: 'DESC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_numero_celular','numero','tipo','desc_proveedor'],
+                    remoteSort: true,
+                    baseParams:{par_filtro:'numero'}
+                }),
+                valueField: 'id_numero_celular',
+                displayField: 'numero',
+                hiddenName: 'id_numero_celular',
+                forceSelection:true,
+                typeAhead: false,
+                triggerAction: 'all',
+                lazyRender:true,
+                mode:'remote',
+                pageSize:5,
+                queryDelay:1000,
+                listWidth:200,
+                resizable:true,
+                anchor: '60%',
+                gwidth: 100,
+                tpl: '<tpl for="."><div class="x-combo-list-item"><p><b>{numero}</b></p><p>TIPO: {tipo}</p><p>PROV.: {desc_proveedor}</p></div></tpl>',
+                renderer : function(value, p, record) {
+                    return String.format('{0}', record.data['numero']);
+                }
+            },
+            type:'ComboBox',
+            id_grupo:0,
+            filters:{
+                pfiltro:'nucel.numero',
+                type:'string'
+            },
+            grid:true,
+            form:false
+        },
+
+        {
+            config: {
+                name: 'id_proveedor',
+                hiddenName: 'id_proveedor',
+                origen: 'PROVEEDOR',
+                fieldLabel: 'Empresa',
+                allowBlank: false,
+                tinit: false,
+                gwidth:300,
+                valueField: 'id_proveedor',
+                gdisplayField: 'desc_proveedor',
+                renderer: function (value, p, record) {
+                    return String.format('{0}', record.data['desc_proveedor']);
+                },
+                msgTarget: 'side',
+                anchor: '60%'
+            },
+            type: 'ComboRec',
+            filters:{pfiltro:'provee.desc_proveedor',type:'string'},
+            id_grupo: 0,
+            bottom_filter: true,
+            grid: true,
+            form: false
+        },
+
 		{
 			config:{
 				name: 'usr_reg',
@@ -866,7 +954,10 @@ Phx.vista.PagoTelefoniaDet=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
 		{name:'desc_centro_costo', type: 'string'},
-		{name:'desc_concepto_ingas', type: 'string'},
+		{name:'salida', type: 'string'},
+		{name:'id_numero_celular', type: 'numeric'},
+		{name:'numero', type: 'string'},
+		{name:'desc_proveedor', type: 'string'},
 
 
 	],
