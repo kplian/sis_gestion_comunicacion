@@ -41,6 +41,9 @@ class MODRuta extends MODbase{
 		$this->captura('id_proveedor','int4');
 		$this->captura('desc_proveedor','varchar');
 
+		$this->captura('id_numero_celular','int4');
+		$this->captura('numero','varchar');
+
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -65,6 +68,8 @@ class MODRuta extends MODbase{
 		$this->setParametro('id_proveedor','id_proveedor','int4');
 		$this->setParametro('id_gestion','id_gestion','int4');
 
+		$this->setParametro('id_numero_celular','id_numero_celular','int4');
+
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -88,6 +93,8 @@ class MODRuta extends MODbase{
 		$this->setParametro('id_concepto_ingas','id_concepto_ingas','int4');
 		$this->setParametro('id_proveedor','id_proveedor','int4');
 		$this->setParametro('id_gestion','id_gestion','int4');
+
+		$this->setParametro('id_numero_celular','id_numero_celular','int4');
 
 
 		//Ejecuta la instruccion

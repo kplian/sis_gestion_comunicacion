@@ -133,6 +133,55 @@ Phx.vista.Ruta=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:true
 		},
+
+        {
+            config:{
+                name:'id_numero_celular',
+                fieldLabel:'Número',
+                allowBlank:true,
+                emptyText:'Número...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_gestion_comunicacion/control/NumeroCelular/listarNumeroCelular',
+                    id: 'id_numero_celular',
+                    root: 'datos',
+                    sortInfo:{
+                        field: 'numero',
+                        direction: 'DESC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_numero_celular','numero','tipo','desc_proveedor'],
+                    remoteSort: true,
+                    baseParams:{par_filtro:'numero'}
+                }),
+                valueField: 'id_numero_celular',
+                displayField: 'numero',
+                hiddenName: 'id_numero_celular',
+                forceSelection:true,
+                typeAhead: false,
+                triggerAction: 'all',
+                lazyRender:true,
+                mode:'remote',
+                pageSize:5,
+                queryDelay:1000,
+                listWidth:200,
+                resizable:true,
+                anchor: '60%',
+                gwidth: 100,
+                tpl: '<tpl for="."><div class="x-combo-list-item"><p><b>{numero}</b></p><p>TIPO: {tipo}</p><p>PROV.: {desc_proveedor}</p></div></tpl>',
+                renderer : function(value, p, record) {
+                    return String.format('{0}', record.data['numero']);
+                }
+            },
+            type:'ComboBox',
+            id_grupo:0,
+            filters:{
+                pfiltro:'nucel.numero',
+                type:'string'
+            },
+            grid:true,
+            form:true
+        },
+
 		{
 				config: {
 						name: 'id_proveedor',
@@ -151,7 +200,7 @@ Phx.vista.Ruta=Ext.extend(Phx.gridInterfaz,{
 						anchor: '60%'
 				},
 				type: 'ComboRec',
-        filters:{pfiltro:'provee.desc_proveedor',type:'string'},
+                filters:{pfiltro:'provee.desc_proveedor',type:'string'},
 				id_grupo: 0,
 				bottom_filter: true,
 				grid: true,
@@ -188,7 +237,7 @@ Phx.vista.Ruta=Ext.extend(Phx.gridInterfaz,{
 						queryDelay:1000,
 						listWidth:200,
 						resizable:true,
-						anchor:'45%',
+                        anchor: '60%',
 						gwidth: 80,
 						renderer : function(value, p, record) {
 							return String.format('{0}', record.data['desc_gestion']);
@@ -235,7 +284,7 @@ Phx.vista.Ruta=Ext.extend(Phx.gridInterfaz,{
 						mode: 'remote',
 						pageSize: 10,
 						queryDelay: 1000,
-						width: 430,
+                        anchor: '60%',
 						gwidth: 430,
 						minChars: 2,
 						qtip: 'Si el concepto de gasto que necesita no existe por favor  comuniquese con el área de presupuestos para solicitar la creación.',
@@ -255,6 +304,9 @@ Phx.vista.Ruta=Ext.extend(Phx.gridInterfaz,{
 				grid: true,
 				form: true
 		},
+
+
+
 		{
 			config:{
 				name: 'usr_reg',
@@ -390,6 +442,9 @@ Phx.vista.Ruta=Ext.extend(Phx.gridInterfaz,{
 		{name:'gestion', type: 'string'},
 		{name:'id_gestion', type: 'numeric'},
 		{name:'desc_proveedor', type: 'string'},
+
+		{name:'id_numero_celular', type: 'numeric'},
+		{name:'numero', type: 'string'},
 
 
 	],

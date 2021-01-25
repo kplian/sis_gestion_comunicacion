@@ -250,3 +250,11 @@ ALTER TABLE gecom.truta
 ALTER TABLE gecom.tpago_telefonia_det
   RENAME COLUMN global TO globa_l;
 /***********************************F-SCP-BVP-GECOM-0-12/12/2020****************************************/
+
+/***********************************F-SCP-MAY-GECOM-0-25/1/2021****************************************/
+ALTER TABLE gecom.truta
+ADD COLUMN  id_numero_celular INTEGER;
+
+COMMENT ON COLUMN gecom.truta.id_numero_celular
+IS 'identificador de la tabla tnumero_celular';
+/***********************************F-SCP-MAY-GECOM-0-25/1/2021****************************************/

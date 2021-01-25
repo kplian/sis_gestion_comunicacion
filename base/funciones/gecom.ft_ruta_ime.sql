@@ -59,7 +59,10 @@ BEGIN
 			usuario_ai,
 			id_usuario_mod,
 			fecha_mod,
-            id_gestion
+            id_gestion,
+            --25-01-2021 (may)
+            id_numero_celular
+
           	) values(
 			'activo',
 			v_parametros.nro_ruta,
@@ -73,7 +76,9 @@ BEGIN
 			v_parametros._nombre_usuario_ai,
 			null,
 			null,
-			v_parametros.id_gestion
+			v_parametros.id_gestion,
+            --25-01-2021 (may)
+            v_parametros.id_numero_celular
 
 			)RETURNING id_ruta into v_id_ruta;
 
@@ -107,7 +112,10 @@ BEGIN
 			fecha_mod = now(),
 			id_usuario_ai = v_parametros._id_usuario_ai,
 			usuario_ai = v_parametros._nombre_usuario_ai,
-            id_gestion = v_parametros.id_gestion
+            id_gestion = v_parametros.id_gestion,
+            --25-01-2021 (may)
+            id_numero_celular = v_parametros.id_numero_celular
+            
 			where id_ruta=v_parametros.id_ruta;
 
 			--Definicion de la respuesta

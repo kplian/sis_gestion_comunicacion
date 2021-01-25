@@ -63,7 +63,11 @@ BEGIN
                         ges.gestion::varchar as gestion,
                         gruta.id_gestion,
                         gruta.id_proveedor,
-                      	provee.desc_proveedor
+                      	provee.desc_proveedor,
+
+                        gruta.id_numero_celular,
+                        nucel.numero
+
 
 						from gecom.truta gruta
 						inner join segu.tusuario usu1 on usu1.id_usuario = gruta.id_usuario_reg
@@ -73,7 +77,10 @@ BEGIN
                         inner join param.tgestion ges on ges.id_gestion = gruta.id_gestion
                         inner join pre.tpartida par on par.id_partida = cp.id_partida and par.id_gestion = gruta.id_gestion
                         left join param.vproveedor2 provee on provee.id_proveedor =  gruta.id_proveedor
-				        where  ';
+
+                        left join gecom.tnumero_celular nucel on nucel.id_numero_celular = gruta.id_numero_celular
+
+                        where  ';
 
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -95,7 +102,7 @@ BEGIN
 
 		begin
 			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(id_ruta)
+			v_consulta:='select count(gruta.id_ruta)
 					    from gecom.truta gruta
 					    inner join segu.tusuario usu1 on usu1.id_usuario = gruta.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = gruta.id_usuario_mod
@@ -104,6 +111,9 @@ BEGIN
                         inner join param.tgestion ges on ges.id_gestion = gruta.id_gestion
                         inner join pre.tpartida par on par.id_partida = cp.id_partida and par.id_gestion = gruta.id_gestion
                         inner join param.vproveedor2 provee on provee.id_proveedor =  gruta.id_proveedor
+
+                        left join gecom.tnumero_celular nucel on nucel.id_numero_celular = gruta.id_numero_celular
+
 					    where ';
 
 			--Definicion de la respuesta
