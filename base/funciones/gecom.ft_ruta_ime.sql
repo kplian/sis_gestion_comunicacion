@@ -115,7 +115,7 @@ BEGIN
             id_gestion = v_parametros.id_gestion,
             --25-01-2021 (may)
             id_numero_celular = v_parametros.id_numero_celular
-            
+
 			where id_ruta=v_parametros.id_ruta;
 
 			--Definicion de la respuesta

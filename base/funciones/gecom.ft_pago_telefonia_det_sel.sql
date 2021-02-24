@@ -99,10 +99,11 @@ BEGIN
 						usu2.cuenta as usr_mod,
                         cc.codigo_cc as desc_centro_costo,
                         cig.desc_ingas as desc_concepto_ingas,
-                        rut.salida,
-                        rut.id_numero_celular,
-                        numcel.numero,
-                        pro.desc_proveedor::varchar
+
+                        gruta.salida,
+                        nucel.id_numero_celular,
+                        nucel.numero,
+                        pro.desc_proveedor
 
 						from gecom.tpago_telefonia_det detpagte
 						inner join segu.tusuario usu1 on usu1.id_usuario = detpagte.id_usuario_reg
@@ -110,9 +111,9 @@ BEGIN
                         left join param.vcentro_costo cc on cc.id_centro_costo = detpagte.id_centro_costo
                         left join param.tconcepto_ingas cig on cig.id_concepto_ingas = detpagte.id_concepto_ingas
 
-                        left join gecom.truta rut on rut.nro_ruta = detpagte.ruta and rut.cod_compania = detpagte.cod_compania
-                        left join gecom.tnumero_celular numcel on numcel.id_numero_celular = rut.id_numero_celular
-                        left join param.vproveedor pro on pro.id_proveedor = numcel.id_proveedor
+                        left join gecom.truta gruta on gruta.cod_compania = detpagte.cod_compania and gruta.nro_ruta = detpagte.ruta
+                        left join gecom.tnumero_celular nucel on nucel.id_numero_celular = gruta.id_numero_celular
+                        left join param.vproveedor2 pro on pro.id_proveedor =  gruta.id_proveedor
 
 				        where  ';
 
@@ -143,9 +144,9 @@ BEGIN
                         left join param.vcentro_costo cc on cc.id_centro_costo = detpagte.id_centro_costo
                         left join param.tconcepto_ingas cig on cig.id_concepto_ingas = detpagte.id_concepto_ingas
 
-                        left join gecom.truta rut on rut.nro_ruta = detpagte.ruta and rut.cod_compania = detpagte.cod_compania
-                        left join gecom.tnumero_celular numcel on numcel.id_numero_celular = rut.id_numero_celular
-                        left join param.vproveedor pro on pro.id_proveedor = numcel.id_proveedor
+                        left join gecom.truta gruta on gruta.cod_compania = detpagte.cod_compania and gruta.nro_ruta = detpagte.ruta
+                        left join gecom.tnumero_celular nucel on nucel.id_numero_celular = gruta.id_numero_celular
+                        left join param.vproveedor2 pro on pro.id_proveedor =  gruta.id_proveedor
 
 					    where ';
 
