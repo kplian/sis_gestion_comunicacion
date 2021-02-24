@@ -258,3 +258,21 @@ ADD COLUMN  id_numero_celular INTEGER;
 COMMENT ON COLUMN gecom.truta.id_numero_celular
 IS 'identificador de la tabla tnumero_celular';
 /***********************************F-SCP-MAY-GECOM-0-25/1/2021****************************************/
+
+/***********************************F-SCP-MAY-GECOM-0-24/2/2021****************************************/
+CREATE TABLE gecom.tes_temp_prorrateo_ruta (
+  id_temp_prorrateo_ruta INTEGER,
+  id_funcionario INTEGER,
+  id_centro_costo INTEGER,
+  monto NUMERIC(18,2),
+  descripcion TEXT,
+  id_orden_trabajo INTEGER,
+  id_tabla INTEGER,
+  id_periodo INTEGER,
+  ruta VARCHAR
+)
+WITH (oids = false);
+
+ALTER TABLE gecom.tes_temp_prorrateo_ruta
+  OWNER TO postgres;
+/***********************************F-SCP-MAY-GECOM-0-24/2/2021****************************************/
