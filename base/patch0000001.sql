@@ -276,3 +276,8 @@ WITH (oids = false);
 ALTER TABLE gecom.tes_temp_prorrateo_ruta
   OWNER TO postgres;
 /***********************************F-SCP-MAY-GECOM-0-24/2/2021****************************************/
+
+/***********************************F-SCP-MAY-GECOM-0-25/2/2021****************************************/
+  ALTER TABLE gecom.tes_temp_prorrateo_ruta
+ADD COLUMN  id_proveedor INTEGER;
+/***********************************F-SCP-MAY-GECOM-0-25/2/2021****************************************/
