@@ -37,6 +37,8 @@ class MODPagoTelefonia extends MODbase{
 		$this->captura('literal','varchar');
 		$this->captura('estado','varchar');
 
+		$this->captura('nro_tramite','varchar');
+
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();

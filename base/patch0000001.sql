@@ -281,3 +281,8 @@ ALTER TABLE gecom.tes_temp_prorrateo_ruta
   ALTER TABLE gecom.tes_temp_prorrateo_ruta
 ADD COLUMN  id_proveedor INTEGER;
 /***********************************F-SCP-MAY-GECOM-0-25/2/2021****************************************/
+
+/***********************************F-SCP-MAY-GECOM-0-03/3/2021****************************************/
+  ALTER TABLE gecom.tpago_telefonia
+ADD COLUMN  nro_tramite VARCHAR(200);
+/***********************************F-SCP-MAY-GECOM-0-03/3/2021****************************************/

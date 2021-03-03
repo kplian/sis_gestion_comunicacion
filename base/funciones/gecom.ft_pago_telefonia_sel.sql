@@ -59,7 +59,9 @@ BEGIN
 						usu2.cuenta as usr_mod,
                         ges.gestion,
 						param.f_literal_periodo(per.id_periodo)  as literal,
-                        pagtel.estado
+                        pagtel.estado,
+                        pagtel.nro_tramite
+
 						from gecom.tpago_telefonia pagtel
 						inner join segu.tusuario usu1 on usu1.id_usuario = pagtel.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = pagtel.id_usuario_mod

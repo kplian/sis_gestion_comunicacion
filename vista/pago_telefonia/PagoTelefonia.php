@@ -43,7 +43,8 @@ Phx.vista.PagoTelefonia=Ext.extend(Phx.gridInterfaz,{
 				text: 'Calculo porcentual',
 				iconCls: 'bcalculator',
 				disabled: false,
-				hidden: false,
+                //(may) se quita boton porque ya no es necesario se hara internamente en el detalle obligacion de pago
+				hidden: true,
 				handler:this.onCalcPorcentual,
 				tooltip: '<b>Calculo porcentual:</b>'
 		});
@@ -266,6 +267,22 @@ Phx.vista.PagoTelefonia=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:false
 		},
+
+        {
+            config:{
+                name: 'nro_tramite',
+                fieldLabel: 'Nro Trámite',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth:200
+            },
+            type:'TextField',
+            filters:{pfiltro:'pagtel.nro_tramite',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:false
+        },
+
 		{
 			config:{
 				name: 'usr_reg',
@@ -397,9 +414,13 @@ Phx.vista.PagoTelefonia=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_mod', type: 'string'},
 		{name:'gestion', type: 'numeric'},
 		{name:'literal', type: 'string'},
-		{name:'estado', type: 'string'}
+		{name:'estado', type: 'string'},
+        {name:'nro_tramite', type: 'string'},
 
 	],
+
+    arrayDefaultColumHidden: ['nro_tramite'],
+
 	sortInfo:{
 		field: 'id_periodo',
 		direction: 'DESC'
@@ -483,6 +504,31 @@ Phx.vista.PagoTelefonia=Ext.extend(Phx.gridInterfaz,{
 				alert('ocurrio un error durante el proceso')
 		}
 	},
+
+    preparaMenu: function (n) {
+        var data = this.getSelectedData();
+        var tb = this.tbar;
+
+        Phx.vista.PagoTelefonia.superclass.preparaMenu.call(this, n);
+
+        console.log('llegadata', data)
+
+        if (data['estado'] == 'cargado' && data['nro_tramite'] == 'si') {
+            this.getBoton('btnsubir_archivo').disable();
+        }else{
+            this.getBoton('btnsubir_archivo').enable();
+        }
+
+
+    },
+
+    liberaMenu: function () {
+        var tb = Phx.vista.PagoTelefonia.superclass.liberaMenu.call(this);
+        if (tb) {
+            this.getBoton('btnsubir_archivo').disable();
+        }
+        return tb
+    },
 
 	tabsouth:[
 		{
