@@ -34,8 +34,11 @@ BEGIN
     from gecom.tfuncionario_celular tfc
     inner join gecom.tnumero_celular tnc on tnc.id_numero_celular = tfc.id_numero_celular
     where tfc.id_funcionario = p_id_funcionario and  tnc.tipo = p_tipo and tfc.estado_reg = 'activo';
-
-    RETURN coalesce(v_numeros, 'N/E');
+    if p_tipo = 'interno' then
+        RETURN coalesce(v_numeros, 'Interno No Asignado');
+    else
+        RETURN coalesce(v_numeros, 'Celular No Asignado');
+    end if;
 
 EXCEPTION
 
