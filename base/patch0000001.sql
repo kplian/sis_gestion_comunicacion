@@ -286,3 +286,8 @@ ADD COLUMN  id_proveedor INTEGER;
   ALTER TABLE gecom.tpago_telefonia
 ADD COLUMN  nro_tramite VARCHAR(200);
 /***********************************F-SCP-MAY-GECOM-0-03/3/2021****************************************/
+
+/***********************************F-SCP-IRVA-GECOM-0-27/05/2021****************************************/
+ALTER TABLE gecom.tnumero_celular
+  ADD UNIQUE (numero);
+/***********************************F-SCP-IRVA-GECOM-0-27/05/2021****************************************/

@@ -12,13 +12,13 @@ $body$
  DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'gecom.tnumero_celular'
  AUTOR: 		 (jrivera)
  FECHA:	        23-07-2014 22:43:16
- COMENTARIOS:	
+ COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+ DESCRIPCION:
+ AUTOR:
+ FECHA:
 ***************************************************************************/
 
 DECLARE
@@ -31,22 +31,34 @@ DECLARE
 	v_mensaje_error         text;
 	v_id_numero_celular	integer;
     v_registros				record;
-			    
+    v_existe_numero			numeric;
+
 BEGIN
 
     v_nombre_funcion = 'gecom.ft_numero_celular_ime';
     v_parametros = pxp.f_get_record(p_tabla);
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'GC_NUMCEL_INS'
  	#DESCRIPCION:	Insercion de registros
- 	#AUTOR:		jrivera	
+ 	#AUTOR:		jrivera
  	#FECHA:		23-07-2014 22:43:16
 	***********************************/
 
 	if(p_transaccion='GC_NUMCEL_INS')then
-					
+
         begin
+
+        	/*Poniendo control para que los numeros no sean duplicados*/
+            select count (cel.id_numero_celular) into v_existe_numero
+            from gecom.tnumero_celular cel
+            where cel.numero = trim(v_parametros.numero);
+
+            if (v_existe_numero > 0) then
+            	raise exception 'El número <b>%</b> ya se ecuentra registrado Favor verifique.',v_parametros.numero;
+            end if;
+            /**********************************************************/
+
         	--Sentencia de la insercion
         	insert into gecom.tnumero_celular(
 			id_proveedor,
@@ -74,20 +86,20 @@ BEGIN
 			null,
 			null,
 			v_parametros.tipo
-							
-			
-			
+
+
+
 			)RETURNING id_numero_celular into v_id_numero_celular;
-            
-            for v_registros in (select * from gecom.tservicio s 
-            					where s.defecto = 'si' and 
+
+            for v_registros in (select * from gecom.tservicio s
+            					where s.defecto = 'si' and
                                 	id_proveedor = v_parametros.id_proveedor) loop
             	insert into gecom.tnumero_servicio (id_usuario_reg,id_servicio,id_numero_celular,fecha_inicio)
                 values(p_id_usuario,v_registros.id_servicio, v_id_numero_celular, now());
             end loop;
-			
+
 			--Definicion de la respuesta
-			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Numeros de Celular almacenado(a) con exito (id_numero_celular'||v_id_numero_celular||')'); 
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Numeros de Celular almacenado(a) con exito (id_numero_celular'||v_id_numero_celular||')');
             v_resp = pxp.f_agrega_clave(v_resp,'id_numero_celular',v_id_numero_celular::varchar);
 
             --Devuelve la respuesta
@@ -95,16 +107,29 @@ BEGIN
 
 		end;
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'GC_NUMCEL_MOD'
  	#DESCRIPCION:	Modificacion de registros
- 	#AUTOR:		jrivera	
+ 	#AUTOR:		jrivera
  	#FECHA:		23-07-2014 22:43:16
 	***********************************/
 
 	elsif(p_transaccion='GC_NUMCEL_MOD')then
 
 		begin
+
+        	/*Poniendo control para que los numeros no sean duplicados*/
+            select count (cel.id_numero_celular) into v_existe_numero
+            from gecom.tnumero_celular cel
+            where cel.numero = trim(v_parametros.numero) and cel.id_numero_celular not in (v_parametros.id_numero_celular);
+
+
+            if (v_existe_numero > 0) then
+            	raise exception 'El número <b>%</b> ya se ecuentra registrado Favor verifique.',v_parametros.numero;
+            end if;
+
+            /**********************************************************/
+
 			--Sentencia de la modificacion
 			update gecom.tnumero_celular set
 			id_proveedor = v_parametros.id_proveedor,
@@ -117,20 +142,20 @@ BEGIN
 			usuario_ai = v_parametros._nombre_usuario_ai,
 			tipo = v_parametros.tipo
 			where id_numero_celular=v_parametros.id_numero_celular;
-               
+
 			--Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Numeros de Celular modificado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Numeros de Celular modificado(a)');
             v_resp = pxp.f_agrega_clave(v_resp,'id_numero_celular',v_parametros.id_numero_celular::varchar);
-               
+
             --Devuelve la respuesta
             return v_resp;
-            
+
 		end;
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'GC_NUMCEL_ELI'
  	#DESCRIPCION:	Eliminacion de registros
- 	#AUTOR:		jrivera	
+ 	#AUTOR:		jrivera
  	#FECHA:		23-07-2014 22:43:16
 	***********************************/
 
@@ -141,31 +166,31 @@ BEGIN
 			update gecom.tnumero_celular
             set estado_reg = 'inactivo'
             where id_numero_celular=v_parametros.id_numero_celular;
-               
+
             --Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Numeros de Celular eliminado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Numeros de Celular eliminado(a)');
             v_resp = pxp.f_agrega_clave(v_resp,'id_numero_celular',v_parametros.id_numero_celular::varchar);
-              
+
             --Devuelve la respuesta
             return v_resp;
 
 		end;
-         
+
 	else
-     
+
     	raise exception 'Transaccion inexistente: %',p_transaccion;
 
 	end if;
 
 EXCEPTION
-				
+
 	WHEN OTHERS THEN
 		v_resp='';
 		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
 		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
 		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 		raise exception '%',v_resp;
-				        
+
 END;
 $body$
 LANGUAGE 'plpgsql'
@@ -173,3 +198,6 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
+
+ALTER FUNCTION gecom.ft_numero_celular_ime (p_administrador integer, p_id_usuario integer, p_tabla varchar, p_transaccion varchar)
+  OWNER TO postgres;
