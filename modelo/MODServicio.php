@@ -39,6 +39,9 @@ class MODServicio extends MODbase{
 		$this->captura('usr_mod','varchar');
 		$this->captura('desc_proveedor','varchar');
 		$this->captura('defecto','varchar');
+        $this->captura('tipo_servicio','varchar');
+        $this->captura('tipo_servicio_desc','varchar');
+        $this->captura('nombre_combo','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -64,6 +67,7 @@ class MODServicio extends MODbase{
 		$this->setParametro('codigo_servicio','codigo_servicio','varchar');
 		$this->setParametro('trafico_libre','trafico_libre','numeric');
 		$this->setParametro('defecto','defecto','varchar');
+        $this->setParametro('tipo_servicio','tipo_servicio','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -90,6 +94,7 @@ class MODServicio extends MODbase{
 		$this->setParametro('codigo_servicio','codigo_servicio','varchar');
 		$this->setParametro('trafico_libre','trafico_libre','numeric');
 		$this->setParametro('defecto','defecto','varchar');
+        $this->setParametro('tipo_servicio','tipo_servicio','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

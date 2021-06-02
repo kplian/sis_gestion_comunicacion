@@ -35,3 +35,42 @@ select pxp.f_insert_trol ('Registro de Consumo Corporativo', 'Registro de Consum
 
 
 /*****************************F-DAT-JRR-GECOM-0-29/07/2014*************************************/
+
+/*****************************I-DAT-YMR-GECOM-1-30/05/2021*************************************/
+
+--select pxp.f_insert_tgui ('GESTIÓN DE DISPOSITIVOS', '', 'GECOM', 'si', 1, '', 1, '', '', 'GECOM');
+select pxp.f_insert_tgui ('Reporte', 'Reporte', 'REPGE', 'si', 6, 'sis_gestion_comunicacion/vista/reporte/Reporte.php', 2, '', 'Reporte', 'GECOM');
+select pxp.f_insert_tgui ('Dispositivos Móviles', 'Dispositivos Móviles', 'DISP_MOV', 'si', 1, '', 2, '', '', 'GECOM');
+select pxp.f_insert_tgui ('Equipos Informáticos', 'Equipos Informáticos', 'EQU_INF', 'si', 2, '', 2, '', '', 'GECOM');
+select pxp.f_insert_tgui ('Registro de Lineas', 'Registro de Lineas', 'REGNUM', 'si', 1, 'sis_gestion_comunicacion/vista/numero_celular/NumeroCelular.php', 3, '', 'NumeroCelular', 'GECOM');
+select pxp.f_insert_tgui ('Servicios', 'Servicios', 'REGSERR', 'si', 8, 'sis_gestion_comunicacion/vista/servicio/Servicio.php', 3, '', 'Servicio', 'GECOM');
+select pxp.f_insert_tgui ('Asignación Equipos', 'Asignación Equipos', 'ASIGNUMM', 'si', 3, 'sis_gestion_comunicacion/vista/equipo/DatosGenerales.php', 3, '', 'DatosGenerales', 'GECOM');
+select pxp.f_insert_tgui ('Registro de TELCOS', 'Registro de TELCOS', 'CUPP', 'si', 3, 'sis_gestion_comunicacion/vista/cuenta_proveedor/CuentaProveedor.php', 3, '', 'CuentaProveedor', 'GECOM');
+select pxp.f_insert_tgui ('Asignacion Lineas', 'Asignacion Lineas', 'ASGNUMM', 'si', 5, 'sis_gestion_comunicacion/vista/numero_celular/DatosGenerales.php', 3, '', 'DatosGenerales', 'GECOM');
+select pxp.f_insert_tgui ('Registro de Equipos', 'Registro de Equipos', 'EQUU', 'si', 1, 'sis_gestion_comunicacion/vista/equipo/Equipo.php', 3, '', 'Equipo', 'GECOM');
+select pxp.f_insert_tgui ('Registro de Dispositivos Moviles', 'Registro de Dispositivos Moviles', 'DISMOV', 'si', 2, 'sis_gestion_comunicacion/vista/numero_celular/EquipoMovil.php', 3, '', 'EquipoMovil', 'GECOM');
+
+select param.f_import_tcatalogo_tipo ('insert','tipo_equipo','GECOM','tequipo');
+select param.f_import_tcatalogo ('insert','GECOM','Portatil','laptop','tipo_equipo',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Computador Escritorio','pc','tipo_equipo',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Telefono IP','telfip','tipo_equipo',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Workstation','work','tipo_equipo',NULL);
+
+
+select param.f_import_tcatalogo_tipo ('insert','tipo_servicio','GECOM','tservicio');
+select param.f_import_tcatalogo ('insert','GECOM','Servicio Internet','ser_int','tipo_servicio',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Servicio Telefonia','ser_tel','tipo_servicio',NULL);
+
+select param.f_import_tcatalogo_tipo ('insert','tipo_gama','GECOM','tequipo');
+select param.f_import_tcatalogo ('insert','GECOM','Gama Alta','g_alta','tipo_gama',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Gama Media Alta','g_malta','tipo_gama',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Gama Media Baja','g_mbaja','tipo_gama',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Gama Baja','g_baja','tipo_gama',NULL);
+
+select param.f_import_tcatalogo_tipo ('insert','tipo_equipo_movil','GECOM','tequipo');
+select param.f_import_tcatalogo ('insert','GECOM','Celular','movil','tipo_equipo_movil',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Dongle','dongle','tipo_equipo_movil',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Geolocalización','gps','tipo_equipo_movil',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Central Telefónica','centel','tipo_equipo_movil',NULL);
+
+/*****************************F-DAT-YMR-GECOM-1-30/05/2021*************************************/

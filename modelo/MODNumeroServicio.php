@@ -36,7 +36,9 @@ class MODNumeroServicio extends MODbase{
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		$this->captura('nombre_servicio','varchar');
-		
+        $this->captura('tipo_servicio','varchar');
+        $this->captura('tipo_servicio_desc','varchar');
+        $this->captura('tarifa','numeric');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -58,6 +60,8 @@ class MODNumeroServicio extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('fecha_fin','fecha_fin','date');
 		$this->setParametro('fecha_inicio','fecha_inicio','date');
+        $this->setParametro('tipo_servicio','tipo_servicio','varchar');
+        $this->setParametro('tarifa','tarifa','numeric');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -81,6 +85,8 @@ class MODNumeroServicio extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('fecha_fin','fecha_fin','date');
 		$this->setParametro('fecha_inicio','fecha_inicio','date');
+        $this->setParametro('tipo_servicio','tipo_servicio','varchar');
+        $this->setParametro('tarifa','tarifa','numeric');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

@@ -18,10 +18,9 @@ class MODNumeroCelular extends MODbase{
 		$this->procedimiento='gecom.ft_numero_celular_sel';
 		$this->transaccion='GC_NUMCEL_SEL';
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
-				
+
 		//Definicion de la lista del resultado del query
 		$this->captura('id_numero_celular','int4');
-		$this->captura('id_proveedor','int4');
 		$this->captura('numero','varchar');
 		$this->captura('observaciones','text');
 		$this->captura('roaming','varchar');
@@ -36,6 +35,13 @@ class MODNumeroCelular extends MODbase{
 		$this->captura('usr_mod','varchar');
 		$this->captura('desc_proveedor','varchar');
 		$this->captura('tipo','varchar');
+        $this->captura('estado','varchar');
+        $this->captura('id_cuenta','int4');
+        $this->captura('desc_nro_cuenta','varchar');
+        $this->captura('id_equipo','int4');
+        $this->captura('nombre_equipo','varchar');
+        $this->captura('id_tipo_cc','int4');
+        $this->captura('desc_tipo_cc','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -52,12 +58,16 @@ class MODNumeroCelular extends MODbase{
 		$this->tipo_procedimiento='IME';
 				
 		//Define los parametros para la funcion
-		$this->setParametro('id_proveedor','id_proveedor','int4');
+		//$this->setParametro('id_proveedor','id_proveedor','int4');
 		$this->setParametro('numero','numero','varchar');
 		$this->setParametro('observaciones','observaciones','text');
 		$this->setParametro('roaming','roaming','varchar');
 		$this->setParametro('tipo','tipo','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
+        $this->setParametro('estado','estado','varchar');
+        $this->setParametro('id_cuenta','id_cuenta','int4');
+        $this->setParametro('id_equipo','id_equipo','int4');
+        $this->setParametro('id_tipo_cc','id_tipo_cc','int4');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -75,12 +85,16 @@ class MODNumeroCelular extends MODbase{
 				
 		//Define los parametros para la funcion
 		$this->setParametro('id_numero_celular','id_numero_celular','int4');
-		$this->setParametro('id_proveedor','id_proveedor','int4');
+		//$this->setParametro('id_proveedor','id_proveedor','int4');
 		$this->setParametro('numero','numero','varchar');
 		$this->setParametro('observaciones','observaciones','text');
 		$this->setParametro('roaming','roaming','varchar');
 		$this->setParametro('tipo','tipo','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
+        $this->setParametro('estado','estado','varchar');
+        $this->setParametro('id_cuenta','id_cuenta','int4');
+        $this->setParametro('id_equipo','id_equipo','int4');
+        $this->setParametro('id_tipo_cc','id_tipo_cc','int4');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

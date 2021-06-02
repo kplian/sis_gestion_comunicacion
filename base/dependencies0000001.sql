@@ -116,3 +116,19 @@ select pxp.f_insert_testructura_gui ('REGNUM.4.3.1', 'REGNUM.4.3');
 select pxp.f_insert_testructura_gui ('REGNUM.4.3.1.1', 'REGNUM.4.3.1');
 
 /***********************************F-DEP-JRR-GECOM-0-27/07/2014****************************************/
+
+/***********************************I-DEP-YMR-GECOM-1-30/05/2021****************************************/
+
+select pxp.f_insert_testructura_gui ('GECOM', 'SISTEMA');
+select pxp.f_insert_testructura_gui ('REPGE', 'GECOM');
+select pxp.f_insert_testructura_gui ('DISP_MOV', 'GECOM');
+select pxp.f_insert_testructura_gui ('EQU_INF', 'GECOM');
+select pxp.f_insert_testructura_gui ('REGNUM', 'DISP_MOV');
+select pxp.f_insert_testructura_gui ('REGSERR', 'DISP_MOV');
+select pxp.f_insert_testructura_gui ('ASIGNUMM', 'EQU_INF');
+select pxp.f_insert_testructura_gui ('CUPP', 'DISP_MOV');
+select pxp.f_insert_testructura_gui ('ASGNUMM', 'DISP_MOV');
+select pxp.f_insert_testructura_gui ('EQUU', 'EQU_INF');
+select pxp.f_insert_testructura_gui ('DISMOV', 'DISP_MOV');
+
+/***********************************F-DEP-YMR-GECOM-1-30/05/2021****************************************/

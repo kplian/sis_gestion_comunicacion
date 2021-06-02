@@ -23,7 +23,47 @@ class ACTNumeroCelular extends ACTbase{
             									fecha_inicio <= ''".$this->objParam->getParametro('fecha')."'' and 
             									(fecha_fin is null or fecha_fin >= ''".$this->objParam->getParametro('fecha')."''))");    
         }
-		
+
+        if($this->objParam->getParametro('disponibles')!='') {
+            if($this->objParam->getParametro('disponibles')=='SI'){
+                $this->objParam->addFiltro(" numcel.estado = ''activo'' ");
+            }
+        }
+
+        if ($this->objParam->getParametro('tipo_servi') != '') {
+            $this->objParam->addFiltro("s.tipo_servicio = ''". $this->objParam->getParametro('tipo_servi')."'' ");
+        }
+
+        if ($this->objParam->getParametro('funcionario_gerencia') != '') {
+            $this->objParam->addFiltro("  exists
+                                          (WITH RECURSIVE subordinates AS (
+                                                  SELECT
+                                                      eu.id_uo_hijo,
+                                                      eu.id_uo_padre, 
+                                                      u.codigo,
+                                                      u.nombre_unidad
+                                                  FROM
+                                                       orga.testructura_uo eu
+                                                  JOIN orga.tuo u on eu.id_uo_hijo = u.id_uo    
+                                                  WHERE 
+                                                      eu.id_uo_hijo = cp.id_uo
+                                                  UNION
+                                                      SELECT
+                                                          eu2.id_uo_hijo,
+                                                          eu2.id_uo_padre, 
+                                                          u2.codigo,
+                                                          u2.nombre_unidad
+                                                      FROM
+                                                          orga.testructura_uo eu2
+                                                      JOIN orga.tuo u2 on eu2.id_uo_hijo = u2.id_uo
+                                                      INNER JOIN subordinates s ON s.id_uo_hijo = eu2.id_uo_padre
+                                              ) SELECT
+                                                  1
+                                              FROM
+                                                  subordinates
+                                              where subordinates.id_uo_hijo = ". $this->objParam->getParametro('funcionario_gerencia')." ) ");
+        }
+
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODNumeroCelular','listarNumeroCelular');

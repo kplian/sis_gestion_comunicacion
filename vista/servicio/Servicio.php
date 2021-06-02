@@ -40,6 +40,7 @@ Phx.vista.Servicio=Ext.extend(Phx.gridInterfaz,{
                 allowBlank:true,
                 tinit:false,
                 gwidth:200,
+                anchor: '80%',
                 valueField: 'id_proveedor',
                 gdisplayField: 'desc_proveedor',
                 renderer:function(value, p, record){return String.format('{0}', record.data['desc_proveedor']);}
@@ -50,12 +51,57 @@ Phx.vista.Servicio=Ext.extend(Phx.gridInterfaz,{
             grid:true,
             form:true
         },
-        
+        {
+            config : {
+                name:'tipo_servicio',
+                fieldLabel : 'Tipo Servicio',
+                resizable:true,
+                allowBlank:false,
+                emptyText:'Elija una opción...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                    id: 'id_catalogo',
+                    root: 'datos',
+                    sortInfo:{
+                        field: 'orden',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_catalogo','codigo','descripcion'],
+                    // turn on remote sorting
+                    remoteSort: true,
+                    baseParams: {par_filtro:'descripcion',cod_subsistema:'GECOM',catalogo_tipo:'tipo_servicio'}
+                }),
+                enableMultiSelect:true,
+                valueField: 'codigo',
+                displayField: 'descripcion',
+                gdisplayField: 'tipo_servicio_desc',
+                triggerAction: 'all',
+                lazyRender:true,
+                mode:'remote',
+                pageSize:15,
+                queryDelay: 1000,
+                anchor: '80%',
+                gwidth: 100,
+                renderer:function (value,p,record){return value?'<b style="color: green;">'+record.data['tipo_servicio_desc']+'</b>':''},
+                listeners: {
+                    beforequery: function(qe){
+                        delete qe.combo.lastQuery;
+                    }
+                },
+            },
+            type:'ComboBox',
+            filters:{pfiltro:'tipo_servicio',type:'string'},
+            id_grupo:0,
+            grid:true,
+            form:true
+        },
         {
 			config:{
 				name: 'codigo_servicio',
 				fieldLabel: 'Código',
-				allowBlank: false,
+				allowBlank: true,
+                hidden: true,
 				anchor: '80%',
 				gwidth: 120,
 				maxLength:50
@@ -87,7 +133,7 @@ Phx.vista.Servicio=Ext.extend(Phx.gridInterfaz,{
 			config:{
 				name: 'tarifa',
 				fieldLabel: 'Tarifa',
-				allowBlank: false,
+				allowBlank: true,
 				anchor: '80%',
 				gwidth: 120,
 				maxLength:1179650
@@ -103,7 +149,8 @@ Phx.vista.Servicio=Ext.extend(Phx.gridInterfaz,{
 			config:{
 				name: 'defecto',
 				fieldLabel: 'Asignar por defecto',
-				allowBlank:false,
+				allowBlank:true,
+                hidden: true,
 				emptyText:'defecto...',
 	       		typeAhead: false,
 	       		triggerAction: 'all',
@@ -310,6 +357,8 @@ Phx.vista.Servicio=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
+        {name:'tipo_servicio', type: 'string'},
+        {name:'tipo_servicio_desc', type: 'string'},
 		
 	],
 	sortInfo:{
@@ -318,12 +367,19 @@ Phx.vista.Servicio=Ext.extend(Phx.gridInterfaz,{
 	},
 	bdel:true,
 	bsave:true,
+    onReloadPage:function(m){
+        this.maestro=m;
+        console.log(this.maestro);
+        //this.store.baseParams={id_proveedor: this.maestro.id_proveedor};
+        this.load({params:{start:0, limit:this.tam_pag}})
+    },
 	loadValoresIniciales:function()
     {
     	this.Cmp.defecto.setValue('no');
     	this.Cmp.trafico_libre.setValue(0);
-    	this.Cmp.trafico_adicional.setValue(0);       
-        Phx.vista.Servicio.superclass.loadValoresIniciales.call(this);        
+    	this.Cmp.trafico_adicional.setValue(0);
+        Phx.vista.Servicio.superclass.loadValoresIniciales.call(this);
+        //this.getComponente('id_proveedor').setValue(this.maestro.id_proveedor);
     },
 	}
 )

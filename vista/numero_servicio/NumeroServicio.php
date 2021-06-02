@@ -18,8 +18,24 @@ Phx.vista.NumeroServicio=Ext.extend(Phx.gridInterfaz,{
 		Phx.vista.NumeroServicio.superclass.constructor.call(this,config);
 		this.init();
 		//this.load({params:{start:0, limit:this.tam_pag}})
+        this.iniciarEventos();
 	},
-			
+    iniciarEventos: function (){
+        var me = this;
+        var cmbCatTipo=this.getComponente('id_servicio');
+        var cmbTarifa=this.getComponente('tarifa');
+
+        this.Cmp.tipo_servicio.on('select', function( combo, record, index){
+            cmbCatTipo.setValue(null);
+            cmbCatTipo.store.baseParams.tipo_servi = record.data.codigo;
+        },this);
+
+        this.Cmp.id_servicio.on('select', function( combo, record, index){
+            cmbTarifa.setValue(null);
+            cmbTarifa.setValue(record.data.tarifa);
+        },this);
+
+    },
 	Atributos:[
 		{
 			//configuracion del componente
@@ -42,6 +58,51 @@ Phx.vista.NumeroServicio=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:true 
 		},
+        {
+            config : {
+                name:'tipo_servicio',
+                fieldLabel : 'Tipo Servicio',
+                resizable:true,
+                allowBlank:false,
+                emptyText:'Elija una opción...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                    id: 'id_catalogo',
+                    root: 'datos',
+                    sortInfo:{
+                        field: 'orden',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_catalogo','codigo','descripcion'],
+                    // turn on remote sorting
+                    remoteSort: true,
+                    baseParams: {par_filtro:'descripcion',cod_subsistema:'GECOM',catalogo_tipo:'tipo_servicio'}
+                }),
+                enableMultiSelect:true,
+                valueField: 'codigo',
+                displayField: 'descripcion',
+                gdisplayField: 'tipo_servicio_desc',
+                triggerAction: 'all',
+                lazyRender:true,
+                mode:'remote',
+                pageSize:15,
+                queryDelay: 1000,
+                anchor: '80%',
+                gwidth: 100,
+                renderer:function (value,p,record){return value?'<b style="color: green;">'+record.data['tipo_servicio_desc']+'</b>':''},
+                listeners: {
+                    beforequery: function(qe){
+                        delete qe.combo.lastQuery;
+                    }
+                },
+            },
+            type:'ComboBox',
+            filters:{pfiltro:'tipo_servicio',type:'string'},
+            id_grupo:0,
+            grid:true,
+            form:true
+        },
 		{
 			config: {
 				name: 'id_servicio',
@@ -53,16 +114,16 @@ Phx.vista.NumeroServicio=Ext.extend(Phx.gridInterfaz,{
 					id: 'id_servicio',
 					root: 'datos',
 					sortInfo: {
-						field: 'nombre_servicio',
+						field: 'nombre_combo',
 						direction: 'ASC'
 					},
 					totalProperty: 'total',
-					fields: ['id_servicio', 'nombre_servicio', 'codigo_servicio'],
+					fields: ['id_servicio', 'nombre_combo', 'codigo_servicio','tarifa'],
 					remoteSort: true,
-					baseParams: {par_filtro: 'SER.nombre_servicio#SER.codigo_servicio'}
+					baseParams: {par_filtro: 'SER.nombre_combo#SER.codigo_servicio'}
 				}),
 				valueField: 'id_servicio',
-				displayField: 'nombre_servicio',
+				displayField: 'nombre_combo',
 				gdisplayField: 'nombre_servicio',
 				hiddenName: 'id_servicio',
 				forceSelection: true,
@@ -77,20 +138,40 @@ Phx.vista.NumeroServicio=Ext.extend(Phx.gridInterfaz,{
 				minChars: 2,
 				renderer : function(value, p, record) {
 					return String.format('{0}', record.data['nombre_servicio']);
-				}
+				},
+                listeners: {
+                    beforequery: function(qe){
+                        delete qe.combo.lastQuery;
+                    }
+                },
 			},
 			type: 'ComboBox',
 			id_grupo: 0,
-			filters: {pfiltro: 'SER.nombre_servicio',type: 'string'},
+			filters: {pfiltro: 'SER.nombre_combo',type: 'string'},
 			grid: true,
 			form: true
 		},
-		
+        {
+            config:{
+                name: 'tarifa',
+                fieldLabel: 'Tarifa',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 120,
+                maxLength:1179650
+            },
+            type:'NumberField',
+            filters:{pfiltro:'ser.tarifa',type:'numeric'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
 		{
 			config:{
 				name: 'fecha_inicio',
 				fieldLabel: 'Fecha inicio',
-				allowBlank: false,
+				allowBlank: true,
+                hidden: true,
 				anchor: '80%',
 				gwidth: 120,
 							format: 'd/m/Y', 
@@ -108,6 +189,7 @@ Phx.vista.NumeroServicio=Ext.extend(Phx.gridInterfaz,{
 				name: 'fecha_fin',
 				fieldLabel: 'Fecha Fin',
 				allowBlank: true,
+                hidden: true,
 				anchor: '80%',
 				gwidth: 120,
 							format: 'd/m/Y', 
@@ -267,6 +349,9 @@ Phx.vista.NumeroServicio=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
+        {name:'tipo_servicio', type: 'string'},
+        {name:'tipo_servicio_desc', type: 'string'},
+        {name:'tarifa', type: 'numeric'},
 		
 	],
 	sortInfo:{

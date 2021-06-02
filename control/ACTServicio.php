@@ -16,6 +16,15 @@ class ACTServicio extends ACTbase{
 		if ($this->objParam->getParametro('id_proveedor') != '') {
 			$this->objParam->addFiltro("ser.id_proveedor = ". $this->objParam->getParametro('id_proveedor'));
 		}
+
+        if ($this->objParam->getParametro('tipo_servi') != '') {
+            $this->objParam->addFiltro("ser.tipo_servicio = ''". $this->objParam->getParametro('tipo_servi')."'' ");
+        }
+
+        if ($this->objParam->getParametro('id_proveedor') != '') {
+            $this->objParam->addFiltro("ser.id_proveedor = ". $this->objParam->getParametro('id_proveedor')." ");
+        }
+
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODServicio','listarServicio');

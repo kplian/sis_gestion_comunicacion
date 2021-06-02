@@ -63,10 +63,16 @@ BEGIN
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
                         pro.desc_proveedor,
-                        ser.defecto	
+                        ser.defecto,
+                        ser.tipo_servicio,
+                        (select c.descripcion
+                                  from param.tcatalogo c
+                                  LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                  WHERE c.codigo = ser.tipo_servicio and ct.tabla = ''tservicio'' and ct.nombre = ''tipo_servicio'') AS tipo_servicio_desc,
+                        (ser.nombre_servicio || '' - '' || ser.tarifa)::varchar as nombre_combo
 						from gecom.tservicio ser
 						inner join segu.tusuario usu1 on usu1.id_usuario = ser.id_usuario_reg
-                        inner join param.vproveedor pro on pro.id_proveedor = ser.id_proveedor
+                        left join param.vproveedor pro on pro.id_proveedor = ser.id_proveedor
 						left join segu.tusuario usu2 on usu2.id_usuario = ser.id_usuario_mod
 				        where  ';
 			
@@ -91,10 +97,12 @@ BEGIN
 		begin
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(id_servicio)
+            			from (select ser.*,
+                               (ser.nombre_servicio || '' - '' || ser.tarifa)::varchar as nombre_combo
 					    from gecom.tservicio ser
 					    inner join segu.tusuario usu1 on usu1.id_usuario = ser.id_usuario_reg
                         inner join param.vproveedor pro on pro.id_proveedor = ser.id_proveedor
-						left join segu.tusuario usu2 on usu2.id_usuario = ser.id_usuario_mod
+						left join segu.tusuario usu2 on usu2.id_usuario = ser.id_usuario_mod) as ser
 					    where ';
 			
 			--Definicion de la respuesta		    
@@ -125,4 +133,5 @@ LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
+PARALLEL UNSAFE
 COST 100;

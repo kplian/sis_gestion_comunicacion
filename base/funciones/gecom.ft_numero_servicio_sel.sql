@@ -1,7 +1,11 @@
-CREATE OR REPLACE FUNCTION "gecom"."ft_numero_servicio_sel"(	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+CREATE OR REPLACE FUNCTION gecom.ft_numero_servicio_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Gestión de Comunicación
  FUNCION: 		gecom.ft_numero_servicio_sel
@@ -56,7 +60,13 @@ BEGIN
 						numser.fecha_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-						ser.nombre_servicio
+						(ser.nombre_servicio || '' - '' || ser.tarifa)::varchar as nombre_servicio,
+                        ser.tipo_servicio,
+                        (select c.descripcion
+                                  from param.tcatalogo c
+                                  LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                  WHERE c.codigo = ser.tipo_servicio and ct.tabla = ''tservicio'' and ct.nombre = ''tipo_servicio'') AS tipo_servicio_desc,
+ 						numser.tarifa              
 						from gecom.tnumero_servicio numser
 						inner join segu.tusuario usu1 on usu1.id_usuario = numser.id_usuario_reg
 						inner join gecom.tservicio ser on ser.id_servicio = numser.id_servicio
@@ -113,7 +123,10 @@ EXCEPTION
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+PARALLEL UNSAFE
 COST 100;
-ALTER FUNCTION "gecom"."ft_numero_servicio_sel"(integer, integer, character varying, character varying) OWNER TO postgres;

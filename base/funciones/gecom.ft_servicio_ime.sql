@@ -62,7 +62,8 @@ BEGIN
 			id_usuario_ai,
 			id_usuario_mod,
 			fecha_mod,
-            defecto
+            defecto,
+            tipo_servicio
           	) values(
 			v_parametros.id_proveedor,
 			v_parametros.trafico_adicional,
@@ -78,10 +79,8 @@ BEGIN
 			v_parametros._id_usuario_ai,
 			null,
 			null,
-			v_parametros.defecto
-							
-			
-			
+			v_parametros.defecto,
+			v_parametros.tipo_servicio
 			)RETURNING id_servicio into v_id_servicio;
 			
 			--Definicion de la respuesta
@@ -116,7 +115,8 @@ BEGIN
 			fecha_mod = now(),
 			id_usuario_ai = v_parametros._id_usuario_ai,
 			usuario_ai = v_parametros._nombre_usuario_ai,
-            defecto = v_parametros.defecto
+            defecto = v_parametros.defecto,
+            tipo_servicio = v_parametros.tipo_servicio
 			where id_servicio=v_parametros.id_servicio;
                
 			--Definicion de la respuesta
@@ -172,4 +172,5 @@ LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
+PARALLEL UNSAFE
 COST 100;

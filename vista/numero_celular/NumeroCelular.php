@@ -50,22 +50,136 @@ Phx.vista.NumeroCelular=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:true 
 		},
-		{
+        {
             config:{
-                name:'id_proveedor',
-                hiddenName: 'id_proveedor',
-                origen:'PROVEEDOR',
-                fieldLabel:'Proveedor',
-                allowBlank:true,
-                tinit:false,
-                gwidth:200,
-                valueField: 'id_proveedor',
-                gdisplayField: 'desc_proveedor',
-                renderer:function(value, p, record){return String.format('{0}', record.data['desc_proveedor']);}
-             },
-            type:'ComboRec',//ComboRec
-            id_grupo:0,
+                name: 'desc_proveedor',
+                fieldLabel: 'Proveedor',
+                allowBlank: false,
+                anchor: '80%',
+                gwidth: 150,
+                maxLength:20
+            },
+            type:'TextField',
             filters:{pfiltro:'pro.desc_proveedor',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:false
+        },
+        {
+            config: {
+                name: 'id_cuenta',
+                fieldLabel: 'Cuenta Proveedor',
+                allowBlank: false,
+                emptyText: 'Elija una opción...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_gestion_comunicacion/control/CuentaProveedor/listarCuentaProveedor',
+                    id: 'id_cuenta',
+                    root: 'datos',
+                    sortInfo: {
+                        field: 'desc_cuenta_prov',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_cuenta', 'nro_cuenta', 'desc_cuenta_prov'],
+                    remoteSort: true,
+                    baseParams: {par_filtro: 'cup.nro_cuenta'}
+                }),
+                valueField: 'id_cuenta',
+                displayField: 'desc_cuenta_prov',
+                gdisplayField: 'desc_nro_cuenta',
+                hiddenName: 'id_cuenta',
+                forceSelection: true,
+                typeAhead: false,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'remote',
+                pageSize: 15,
+                queryDelay: 1000,
+                anchor: '80%',
+                gwidth: 100,
+                minChars: 2,
+                renderer : function(value, p, record) {
+                    return String.format('{0}', record.data['desc_nro_cuenta']);
+                },
+                listeners: {
+                    beforequery: function(qe){
+                        delete qe.combo.lastQuery;
+                    }
+                },
+            },
+            type: 'ComboBox',
+            id_grupo: 0,
+            grid: true,
+            form: true
+        },
+        {
+            config: {
+                name: 'id_equipo',
+                fieldLabel: 'Equipo',
+                allowBlank: true,
+                hidden: true,
+                emptyText: 'Elija una opción...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_gestion_comunicacion/control/Equipo/listarEquipoCombo',
+                    id: 'id_equipo',
+                    root: 'datos',
+                    sortInfo: {
+                        field: 'nombre',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_equipo', 'nombre'],
+                    remoteSort: true,
+                    baseParams: {par_filtro: 'nombre', tipo_movil: 'SI'}
+                }),
+                valueField: 'id_equipo',
+                displayField: 'nombre',
+                gdisplayField: 'nombre_equipo',
+                hiddenName: 'id_equipo',
+                forceSelection: true,
+                typeAhead: false,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'remote',
+                pageSize: 15,
+                queryDelay: 1000,
+                anchor: '80%',
+                gwidth: 150,
+                minChars: 2,
+                renderer : function(value, p, record) {
+                    return String.format('{0}', record.data['nombre_equipo']);
+                },
+                listeners: {
+                    beforequery: function(qe){
+                        delete qe.combo.lastQuery;
+                    }
+                },
+            },
+            type: 'ComboBox',
+            id_grupo: 0,
+            filters: {pfiltro: 'nombre',type: 'string'},
+            grid: true,
+            form: true
+        },
+        {
+            config:{
+                name:'id_tipo_cc',
+                qtip: 'Tipo de centro de costos, cada tipo solo puede tener un centro por gestión',
+                origen:'TIPOCC',
+                fieldLabel:'Centro de Costo',
+                gdisplayField: 'desc_tipo_cc',
+                url:'../../sis_parametros/control/TipoCc/listarTipoCcAll',
+                baseParams: {movimiento:'si'} ,
+                allowBlank:true,
+                anchor: '80%',
+                gwidth: 100,
+                renderer : function(value, p, record) {
+                    return String.format('{0}', record.data['desc_tipo_cc']);
+                }
+            },
+            type:'ComboRec',
+            id_grupo:0,
+            filters:{pfiltro:'tccp.codigo#tccp.descripcion',type:'string'},
             grid:true,
             form:true
         },
@@ -96,25 +210,48 @@ Phx.vista.NumeroCelular=Ext.extend(Phx.gridInterfaz,{
 	       		lazyRender:true,
 	       		mode: 'local',
 				gwidth: 90,
-				store:['celular','4g','fijo'],
+				store:['celular','geolocalizacion','central telefonica', 'dongle'],
 				value:'no'
 			},
 				type:'ComboBox',
 				filters:{pfiltro:'numcel.tipo',	
 	       		         type: 'list',
-	       				 options: ['celular','4g','fijo'],	
+	       				 options: ['celular','geolocalizacion','central telefonica', 'dongle'],
 	       		 	},
 				id_grupo:1,
 				grid:true,
 				form:true
-		},	
-		
+		},
+        {
+            config:{
+                name: 'estado',
+                fieldLabel: 'Estado',
+                allowBlank:false,
+                emptyText:'Estado...',
+                typeAhead: false,
+                triggerAction: 'all',
+                lazyRender:true,
+                mode: 'local',
+                gwidth: 90,
+                store:['activo','baja temporal','baja definitiva'],
+                value:'activo'
+            },
+            type:'ComboBox',
+            filters:{pfiltro:'numcel.estado',
+                type: 'list',
+                options: ['activo','baja temporal','baja definitiva'],
+            },
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
 		
 		{
 			config:{
 				name: 'roaming',
 				fieldLabel: 'Roaming',
 				allowBlank:false,
+                hidden: true,
 				emptyText:'Roaming...',
 	       		typeAhead: false,
 	       		triggerAction: 'all',
@@ -130,7 +267,7 @@ Phx.vista.NumeroCelular=Ext.extend(Phx.gridInterfaz,{
 	       				 options: ['si','no'],	
 	       		 	},
 				id_grupo:1,
-				grid:true,
+				grid:false,
 				form:true
 		},	
 		{
@@ -279,7 +416,13 @@ Phx.vista.NumeroCelular=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-		
+        {name:'estado', type: 'string'},
+        {name:'id_cuenta', type: 'numeric'},
+        {name:'desc_nro_cuenta', type: 'string'},
+        {name:'id_equipo', type: 'numeric'},
+        {name:'nombre_equipo', type: 'string'},
+        {name:'id_tipo_cc', type: 'numeric'},
+        {name:'desc_tipo_cc', type: 'string'},
 	],
 	sortInfo:{
 		field: 'id_numero_celular',
@@ -287,18 +430,27 @@ Phx.vista.NumeroCelular=Ext.extend(Phx.gridInterfaz,{
 	},
 	loadValoresIniciales:function()
     {
-    	this.Cmp.roaming.setValue('no');  
+    	this.Cmp.roaming.setValue('no');
     	this.Cmp.tipo.setValue('celular');     
         Phx.vista.NumeroCelular.superclass.loadValoresIniciales.call(this);        
     },
 	bdel:true,
 	bsave:true,
-	south:{
-		  url:'../../../sis_gestion_comunicacion/vista/numero_servicio/NumeroServicio.php',
-		  title:'Servicios por Número', 
-		  height:'40%',
-		  cls:'NumeroServicio'
-	},
+    tabsouth: [
+        {
+            url: '../../../sis_gestion_comunicacion/vista/numero_servicio/NumeroServicio.php',
+            title: 'Servicios por Número',
+            height: '40%',
+            cls: 'NumeroServicio'
+        },
+        {
+            url: '../../../sis_gestion_comunicacion/vista/numero_celular_historico/NumeroCelularHistorico.php',
+            title: 'Historico Numero',
+            height: '40%',
+            cls: 'NumeroCelularHistorico',
+            params: { nombre_tabla: 'afi.tnumero_celular', tabla_id: 'id_numero_celular'}
+        }
+    ],
 	onBtnDetalleConsumo : function() {
 		var rec = {maestro: this.sm.getSelected().data};
 						      

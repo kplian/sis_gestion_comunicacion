@@ -1,8 +1,11 @@
-CREATE OR REPLACE FUNCTION "gecom"."ft_numero_servicio_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
-
+CREATE OR REPLACE FUNCTION gecom.ft_numero_servicio_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Gestión de Comunicación
  FUNCION: 		gecom.ft_numero_servicio_ime
@@ -56,7 +59,8 @@ BEGIN
 			usuario_ai,
 			id_usuario_ai,
 			id_usuario_mod,
-			fecha_mod
+			fecha_mod,
+            tarifa
           	) values(
 			v_parametros.id_numero_celular,
 			v_parametros.id_servicio,
@@ -69,8 +73,8 @@ BEGIN
 			v_parametros._nombre_usuario_ai,
 			v_parametros._id_usuario_ai,
 			null,
-			null
-							
+			null,
+			v_parametros.tarifa
 			
 			
 			)RETURNING id_numero_servicio into v_id_numero_servicio;
@@ -104,7 +108,8 @@ BEGIN
 			id_usuario_mod = p_id_usuario,
 			fecha_mod = now(),
 			id_usuario_ai = v_parametros._id_usuario_ai,
-			usuario_ai = v_parametros._nombre_usuario_ai
+			usuario_ai = v_parametros._nombre_usuario_ai,
+            tarifa = v_parametros.tarifa
 			where id_numero_servicio=v_parametros.id_numero_servicio;
                
 			--Definicion de la respuesta
@@ -155,7 +160,10 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+PARALLEL UNSAFE
 COST 100;
-ALTER FUNCTION "gecom"."ft_numero_servicio_ime"(integer, integer, character varying, character varying) OWNER TO postgres;
