@@ -19,6 +19,7 @@ class RFormEquipo extends  ReportePDF {
     var $datos_competencia;
     var $datos_residencia;
     var $datos_estructura;
+    var $num_form;
     var $imagenes;
     var $host;
     function datosHeader ( $detalle) {
@@ -58,9 +59,11 @@ class RFormEquipo extends  ReportePDF {
         $this->SetFont('','B',15);
 
         if ($this->datos_estructura == 'asignacion'){
-            $this->Cell(0,15,"ASIGNACIÓN DE EQUIPO",0,1,'C');
+            $this->datos_estructura = "ASIGNACION DE COMPUTADOR PORTATIL";
+            $this->num_form = "5-R-502/0";
         }else if($this->datos_estructura == 'devolucion'){
-            $this->Cell(0,15,"DEVOLUCIÓN DE EQUIPO",0,1,'C');
+            $this->datos_estructura = "DEVOLUCION DE COMPUTADOR PORTATIL";
+            $this->num_form = "5-R-503/0";
         }
 
     }

@@ -17,7 +17,7 @@ class RFormAsignacion extends  ReportePDF {
     var $datos_allegado ;
     var $datos_experiencia;
     var $datos_competencia;
-    var $datos_residencia;
+    var $num_form;
     var $datos_estructura;
     var $imagenes;
     var $host;
@@ -30,7 +30,6 @@ class RFormAsignacion extends  ReportePDF {
         $this->datos_allegado = $detalle->getParametro('datos_allegado');
         $this->datos_experiencia = $detalle->getParametro('datos_experiencia');
         $this->datos_competencia = $detalle->getParametro('datos_competencia');
-        $this->datos_residencia = $detalle->getParametro('datos_residencia');
         $this->datos_estructura = $detalle->getParametro('tipo');
 
         //$this->imagenes = 'http://172.18.79.207/ymedinaetr/sis_seguridad/control/foto_persona/ActionObtenerFoto.php?file='.$this->datos_persona[0]['nombre_archivo_foto'];
@@ -58,9 +57,13 @@ class RFormAsignacion extends  ReportePDF {
         $this->SetFont('','B',15);
 
         if ($this->datos_estructura == 'asignacion'){
-            $this->Cell(0,15,"ASIGNACIÓN DE TELÉFONO CELULAR Y LÍNEA CORPORATIVA",0,1,'C');
+            $this->datos_estructura = "ASIGNACIÓN DE TELÉFONO CELULAR Y LÍNEA CORPORATIVA";
+            $this->num_form = "5-R-500/0";
+            //$this->Cell(0,15,"ASIGNACIÓN DE TELÉFONO CELULAR Y LÍNEA CORPORATIVA",0,1,'C');
         }else if($this->datos_estructura == 'devolucion'){
-            $this->Cell(0,15,"DEVOLUCIÓN DE TELÉFONO CELULAR Y LÍNEA CORPORATIVA",0,1,'C');
+            $this->datos_estructura = "DEVOLUCIÓN DE TELÉFONO CELULAR Y LÍNEA CORPORATIVA";
+            $this->num_form = "5-R-501/0";
+            //$this->Cell(0,15,"DEVOLUCIÓN DE TELÉFONO CELULAR Y LÍNEA CORPORATIVA",0,1,'C');
         }
 
 	}

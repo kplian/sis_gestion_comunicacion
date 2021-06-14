@@ -276,6 +276,48 @@ class MODEquipo extends MODbase{
         return $this->respuesta;
     }
 
+    function recuperarDatosFuncionario(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='gecom.ft_equipo_sel';
+        $this->transaccion='GC_TIPRFUN_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setCount(false);
+
+        //captura parametros adicionales para el count
+        $this->setParametro('id_funcionario','id_funcionario','varchar');
+
+
+        //Definicion de la lista del resultado del query
+        $this->captura('id_equipo','int4');
+        $this->captura('tipo','varchar');
+        $this->captura('marca','varchar');
+        $this->captura('modelo','varchar');
+        $this->captura('estado_fisico','varchar');
+        $this->captura('estado','varchar');
+        $this->captura('observaciones','varchar');
+        $this->captura('color','varchar');
+        $this->captura('imei','varchar');
+        $this->captura('tamano_pantalla','varchar');
+        $this->captura('tarjeta_video','varchar');
+        $this->captura('teclado','varchar');
+        $this->captura('procesador','varchar');
+        $this->captura('memoria_ram','varchar');
+        $this->captura('almacenamiento','varchar');
+        $this->captura('sistema_operativo','varchar');
+        $this->captura('accesorios','varchar');
+        $this->captura('fnombre','varchar');
+        $this->captura('fci','varchar');
+        $this->captura('fcodigo','varchar');
+        $this->captura('email_empresa','varchar');
+        $this->captura('estado_reg','varchar');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+
     function recuperarDatosAsignacion(){
         //Definicion de variables para ejecucion del procedimientp
         $this->procedimiento='gecom.ft_equipo_sel';
@@ -302,6 +344,7 @@ class MODEquipo extends MODbase{
         $this->captura('cuenta_gasto','varchar');
         $this->captura('asignador','varchar');
         $this->captura('fecha_entrega','date');
+        $this->captura('accesorios2','varchar');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -334,6 +377,13 @@ class MODEquipo extends MODbase{
         $this->captura('observaciones','varchar');
         $this->captura('tarjeta_video','varchar');
         $this->captura('accesorios','varchar');
+        $this->captura('solicitante','varchar');
+        $this->captura('nombre_unidad','varchar');
+        $this->captura('teclado','varchar');
+        $this->captura('sistema_operativo','varchar');
+        $this->captura('asignador','varchar');
+        $this->captura('fecha_entrega','date');
+        $this->captura('accesorios2','varchar');
 
         //Ejecuta la instruccion
         $this->armarConsulta();

@@ -124,7 +124,8 @@ CREATE TABLE gecom.tcuenta_proveedor_historico (
 ) INHERITS (pxp.tbase)
 WITH (oids = false);
 
-DROP TABLE gecom.tnumero_celular;
+DROP TABLE gecom.tnumero_celular cascade;
+DROP TABLE gecom.tfuncionario_celular cascade;
 
 CREATE TABLE gecom.tnumero_celular (
                                        id_numero_celular SERIAL,
@@ -174,7 +175,6 @@ CREATE TABLE gecom.tequipo (
 ) INHERITS (pxp.tbase)
 WITH (oids = false);
 
-DROP TABLE gecom.tfuncionario_celular;
 
 CREATE TABLE gecom.tfuncionario_celular (
                                             id_funcionario_celular SERIAL,
@@ -320,5 +320,8 @@ alter table gecom.tservicio alter column tarifa drop not null;
 alter table gecom.tnumero_servicio alter column fecha_inicio drop not null;
 alter table gecom.tnumero_servicio add column tarifa numeric;
 alter table gecom.tservicio add column tipo_servicio varchar(50);
+
+alter table gecom.tservicio alter column codigo_servicio drop not null;
+alter table gecom.tservicio alter column defecto drop not null;
 
 /***********************************F-SCP-YMR-GECOM-1-30/05/2021****************************************/

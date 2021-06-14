@@ -145,6 +145,8 @@ class ACTEquipo extends ACTbase{
 
         if($this->objParam->getParametro('tipo_reporte')=='Formulario'){
             $dataSource = $this->recuperarDatos();
+        }elseif ($this->objParam->getParametro('tipo_reporte')=='Formulario'){
+            $dataSource = $this->recuperarDatosFuncionario();
         }
 
         //parametros basicos
@@ -176,6 +178,18 @@ class ACTEquipo extends ACTbase{
     {
         $this->objFunc = $this->create('MODEquipo');
         $cbteHeader = $this->objFunc->recuperarDatos($this->objParam);
+        if ($cbteHeader->getTipo() == 'EXITO') {
+            return $cbteHeader;
+        } else {
+            $cbteHeader->imprimirRespuesta($cbteHeader->generarJson());
+            exit;
+        }
+    }
+
+    function recuperarDatosFuncionario()
+    {
+        $this->objFunc = $this->create('MODEquipo');
+        $cbteHeader = $this->objFunc->recuperarDatosFuncionario($this->objParam);
         if ($cbteHeader->getTipo() == 'EXITO') {
             return $cbteHeader;
         } else {

@@ -287,6 +287,54 @@ BEGIN
 			return v_consulta;
 
 		end;
+        
+    /*********************************
+ 	#TRANSACCION:  'GC_TIPRFUN_SEL'
+ 	#DESCRIPCION:	Consulta de datos para reporte
+ 	#AUTOR:		Yamil Medina
+ 	#FECHA:		07-05-2021 10:10:19
+	***********************************/
+
+	elsif(p_transaccion='GC_TIPRFUN_SEL')then
+
+    	begin
+    		--Sentencia de la consulta
+			v_consulta:= 'select e.id_equipo,
+                                 e.tipo,
+                                 e.marca,
+                                 e.modelo,
+                                 e.estado_fisico,
+                                 e.estado,
+                                 e.observaciones,
+                                 em.color,
+                                 em.imei,
+                                 ep.tamano_pantalla,
+                                 ep.tarjeta_video,
+                                 ep.teclado,
+                                 ep.procesador,
+                                 ep.memoria_ram,
+                                 ep.almacenamiento,
+                                 ep.sistema_operativo,
+                                 ep.accesorios,
+                                 vp.desc_funcionario1::varchar as fnombre,
+                                 vp.ci::varchar                as fci,
+                                 vp.codigo::varchar            as fcodigo,
+                                 vp.email_empresa::varchar     as femail_empresa,
+                                 fc.estado_reg
+                            from gecom.tequipo e
+                            left join gecom.tequipo_movil em on e.id_equipo = em.id_equipo
+                            left join gecom.tequipo_pc ep on e.id_equipo = ep.id_equipo
+                            left join gecom.tfuncionario_celular fc on e.id_equipo = fc.id_equipo
+                            left join orga.vfuncionario_persona vp on fc.id_funcionario = vp.id_funcionario
+                           where fc.id_funcionario = '||v_parametros.id_funcionario||' ';
+
+            --v_consulta:=v_consulta||' order by d.id_institucion, d.id_deuda, d.monto_solicitado, p.fecha ';
+			v_consulta:=v_consulta||' order by e.tipo, e.estado ';
+            
+			--Devuelve la respuesta
+			return v_consulta;
+
+		end;    
     
     /*********************************
  	#TRANSACCION:  'GC_TIPASI_SEL'
@@ -328,7 +376,8 @@ BEGIN
                            cp.nro_cuenta as cuenta_telco,
                            (tcc.descripcion || '' - '' || tcc.codigo)::varchar as cuenta_gasto,
                            (p.nombre || '' '' || p.apellido_paterno || '' '' || p.apellido_materno)::varchar as asignador,
-                           fc.fecha_inicio as fecha_entrega
+                           fc.fecha_inicio as fecha_entrega,
+                           string_agg((ac.nombre || '' '' || ac.marca), '', '')::varchar as accesorios2
                       from gecom.tfuncionario_celular fc
                       join orga.vfuncionario f on fc.id_funcionario = f.id_funcionario
                       join gecom.tequipo e on fc.id_equipo = e.id_equipo
@@ -339,10 +388,13 @@ BEGIN
                       LEFT JOIN param.vtipo_cc tcc ON nc.id_tipo_cc = tcc.id_tipo_cc
                       join segu.tusuario u on fc.id_usuario_reg = u.id_usuario
                       join segu.tpersona p on u.id_persona = p.id_persona
+                      join gecom.taccesorio ac on e.id_equipo = ac.id_equipo
                      where fc.id_funcionario_celular = '||v_id_funcionario_celular;
 
             --v_consulta:=v_consulta||' order by d.id_institucion, d.id_deuda, d.monto_solicitado, p.fecha ';
-			v_consulta:=v_consulta||' order by fc.id_funcionario_celular ';
+			v_consulta:=v_consulta||' group by e.id_equipo, fc.id_funcionario_celular, em.id_equipo_movil, f.desc_funcionario1, nc.numero, pro.desc_proveedor, 
+											   cp.nro_cuenta, tcc.descripcion, tcc.codigo, p.nombre, p.apellido_paterno, p.apellido_materno
+                                 	  order by fc.id_funcionario_celular ';
             
 			--Devuelve la respuesta
 			return v_consulta;
@@ -372,14 +424,33 @@ BEGIN
                             ep.tamano_pantalla,
                             e.observaciones,
                             ep.tarjeta_video,
-                            ep.accesorios
+                            ep.accesorios,
+                            f.desc_funcionario1::varchar as solicitante,
+                            uo.nombre_unidad,
+        					ep.teclado,
+                            ep.sistema_operativo,
+                            (p.nombre || '' '' || p.apellido_paterno || '' '' || p.apellido_materno)::varchar as asignador,
+                      		fc.fecha_inicio as fecha_entrega,
+                            string_agg((ac.nombre || '' '' || ac.marca), '', '')::varchar as accesorios2
                       from gecom.tequipo e
                       join gecom.tfuncionario_celular fc on e.id_equipo = fc.id_equipo
+                      join orga.vfuncionario f on fc.id_funcionario = f.id_funcionario
                       left join gecom.tequipo_pc ep on e.id_equipo = ep.id_equipo
+                      join orga.tuo_funcionario tuofun on f.id_funcionario = tuofun.id_funcionario
+                       join orga.tuo uo on orga.f_get_uo_gerencia(tuofun.id_uo, NULL, NULL) = uo.id_uo
+                        and tuofun.id_uo_funcionario =
+                            (select max(tu.id_uo_funcionario)
+                               from orga.tuo_funcionario tu
+                              where tu.id_funcionario = f.id_funcionario
+                                and now()::date between tu.fecha_asignacion and COALESCE(tu.fecha_finalizacion, (now() ::date + interval ''1 year'') ::date))
+                      join segu.tusuario u on fc.id_usuario_reg = u.id_usuario
+                      join segu.tpersona p on u.id_persona = p.id_persona
+                      join gecom.taccesorio ac on e.id_equipo = ac.id_equipo
                       where fc.id_funcionario_celular = '||v_parametros.id_funcionario_celular;
 
             --v_consulta:=v_consulta||' order by d.id_institucion, d.id_deuda, d.monto_solicitado, p.fecha ';
-			v_consulta:=v_consulta||' order by fc.id_funcionario_celular ';
+			v_consulta:=v_consulta||' group by e.id_equipo, fc.id_funcionario_celular, ep.id_equipo_pc, f.desc_funcionario1, uo.nombre_unidad, p.nombre, p.apellido_paterno, p.apellido_materno
+            						  order by fc.id_funcionario_celular ';
             
 			--Devuelve la respuesta
 			return v_consulta;
@@ -408,3 +479,6 @@ CALLED ON NULL INPUT
 SECURITY INVOKER
 PARALLEL UNSAFE
 COST 100;
+
+ALTER FUNCTION gecom.ft_equipo_sel (p_administrador integer, p_id_usuario integer, p_tabla varchar, p_transaccion varchar)
+  OWNER TO postgres;
