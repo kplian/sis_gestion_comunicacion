@@ -388,7 +388,7 @@ BEGIN
                       LEFT JOIN param.vtipo_cc tcc ON nc.id_tipo_cc = tcc.id_tipo_cc
                       join segu.tusuario u on fc.id_usuario_reg = u.id_usuario
                       join segu.tpersona p on u.id_persona = p.id_persona
-                      join gecom.taccesorio ac on e.id_equipo = ac.id_equipo
+                      left join gecom.taccesorio ac on e.id_equipo = ac.id_equipo
                      where fc.id_funcionario_celular = '||v_id_funcionario_celular;
 
             --v_consulta:=v_consulta||' order by d.id_institucion, d.id_deuda, d.monto_solicitado, p.fecha ';
@@ -445,7 +445,7 @@ BEGIN
                                 and now()::date between tu.fecha_asignacion and COALESCE(tu.fecha_finalizacion, (now() ::date + interval ''1 year'') ::date))
                       join segu.tusuario u on fc.id_usuario_reg = u.id_usuario
                       join segu.tpersona p on u.id_persona = p.id_persona
-                      join gecom.taccesorio ac on e.id_equipo = ac.id_equipo
+                      left join gecom.taccesorio ac on e.id_equipo = ac.id_equipo
                       where fc.id_funcionario_celular = '||v_parametros.id_funcionario_celular;
 
             --v_consulta:=v_consulta||' order by d.id_institucion, d.id_deuda, d.monto_solicitado, p.fecha ';
