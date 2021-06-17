@@ -365,6 +365,56 @@ header("content-type: text/javascript; charset=UTF-8");
                     grid:true,
                     form:true
                 },
+				{
+                    config: {
+                        name: 'id_accesorios',
+                        fieldLabel: 'Accesorios',
+                        allowBlank: true,
+                        emptyText: 'Elija una opción...',
+                        store: new Ext.data.JsonStore({
+                            url: '../../sis_gestion_comunicacion/control/Accesorio/listarAccesorio',
+                            id: 'id_accesorio',
+                            root: 'datos',
+                            sortInfo: {
+                                field: 'resumen',
+                                direction: 'ASC'
+                            },
+                            totalProperty: 'total',
+                            fields: ['id_accesorio', 'resumen', 'marca'],
+                            remoteSort: true,
+                            baseParams: {par_filtro: 'acc.id_accesorio#acc.resumen', disponibles: 'SI'}
+                        }),
+                        tpl:'<tpl for="."><div class="x-combo-list-item" ><div class="awesomecombo-item {checked}"><p><b></b>{resumen}</p></div>\</div></tpl>',
+                        valueField: 'id_accesorio',
+                        displayField: 'resumen',
+                        gdisplayField: 'resumen',
+                        hiddenName: 'id_accesorios',
+                        forceSelection: true,
+                        typeAhead: false,
+                        triggerAction: 'all',
+                        lazyRender: true,
+                        mode: 'remote',
+                        pageSize: 15,
+                        queryDelay: 1000,
+                        anchor: '80%',
+                        gwidth: 150,
+                        minChars: 2,
+                        enableMultiSelect:true,
+                        renderer : function(value, p, record) {
+                            return String.format('{0}', record.data['desc_accesorios']);
+                        },
+						listeners: {
+                            beforequery: function(qe){
+                                delete qe.combo.lastQuery;
+                            }
+                        },
+                    },
+                    type: 'AwesomeCombo',
+                    id_grupo: 0,
+                    filters: {pfiltro: 'desc_accesorios',type: 'string'},
+                    grid: true,
+                    form: true
+                },
                 {
                     config:{
                         name: 'observaciones',
@@ -470,6 +520,8 @@ header("content-type: text/javascript; charset=UTF-8");
                 {name:'tipo_servicio', type: 'string'},
                 {name:'tipo_servicio_desc', type: 'string'},
                 {name:'nombre', type: 'string'},
+				{name:'id_accesorios', type: 'string'},
+				{name:'desc_accesorios', type: 'string'},
             ],
             sortInfo:{
                 field: 'id_funcionario_celular',
@@ -524,6 +576,18 @@ header("content-type: text/javascript; charset=UTF-8");
 
                 return tb
             },
+			onButtonNew:function(){
+				Phx.vista.NumeroAsignado.superclass.onButtonNew.call(this);
+				this.Cmp.id_accesorios.store.baseParams.id_equip =  0;
+				
+			},
+			onButtonEdit:function(){
+					  
+			   Phx.vista.NumeroAsignado.superclass.onButtonEdit.call(this);
+			   var sel = this.sm.getSelected().data;
+			   this.Cmp.id_accesorios.store.baseParams.id_equip =  sel.id_equipo;
+			   
+			},
             liberaMenu:function(){
                 var tb = Phx.vista.NumeroAsignado.superclass.liberaMenu.call(this);
                 if(tb){

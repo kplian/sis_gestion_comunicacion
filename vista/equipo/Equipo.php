@@ -36,10 +36,12 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
                 this.Cmp.tamano_pantalla.hide();
                 this.Cmp.tarjeta_video.hide();
                 this.Cmp.teclado.hide();
+                this.Cmp.teclado_idioma.hide();
                 this.Cmp.procesador.hide();
                 this.Cmp.memoria_ram.hide();
                 this.Cmp.almacenamiento.hide();
                 this.Cmp.sistema_operativo.hide();
+				this.Cmp.mac.hide();
             }else if (["laptop", "pc"].includes(r.data.codigo)){
                 this.Cmp.id_numero_celular.hide();
                 this.Cmp.color.hide();
@@ -52,11 +54,15 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
                 }
                 this.Cmp.tarjeta_video.show();
                 this.Cmp.teclado.show();
+                this.Cmp.teclado_idioma.show();
                 this.Cmp.procesador.show();
                 this.Cmp.memoria_ram.show();
                 this.Cmp.almacenamiento.show();
                 this.Cmp.sistema_operativo.show();
-            }else{
+				this.Cmp.mac.hide();
+            }else if (["telfip"].includes(r.data.codigo)){
+				this.Cmp.mac.show();
+			}else{
                 this.Cmp.id_numero_celular.hide();
                 this.Cmp.color.hide();
                 this.Cmp.imei.hide();
@@ -64,10 +70,12 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
                 this.Cmp.tamano_pantalla.hide();
                 this.Cmp.tarjeta_video.hide();
                 this.Cmp.teclado.hide();
+                this.Cmp.teclado_idioma.hide();
                 this.Cmp.procesador.hide();
                 this.Cmp.memoria_ram.hide();
                 this.Cmp.almacenamiento.hide();
                 this.Cmp.sistema_operativo.hide();
+				this.Cmp.mac.hide();
             }
         },this);
     },
@@ -198,22 +206,6 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
         },
         {
             config:{
-                name: 'estado_fisico',
-                fieldLabel: 'estado_fisico',
-                allowBlank: true,
-                anchor: '80%',
-                gwidth: 100,
-            	maxLength:30
-            },
-                type:'TextField',
-                filters:{pfiltro:'equ.estado_fisico',type:'string'},
-                id_grupo:1,
-                grid:true,
-                form:true
-		},
-
-        {
-            config:{
                 name: 'marca',
                 fieldLabel: 'marca',
                 allowBlank: true,
@@ -242,6 +234,21 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
                 grid:true,
                 form:true
 		},
+		{
+            config:{
+                name: 'mac',
+                fieldLabel: 'Mac',
+                allowBlank: true,
+                hidden: true,
+                anchor: '80%',
+                gwidth: 300
+            },
+            type:'TextField',
+            filters:{pfiltro:'equ.mac',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
         {
             config:{
                 name: 'estado',
@@ -297,21 +304,6 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
                 grid:true,
                 form:true
 		},
-        {
-            config:{
-                name: 'observaciones',
-                fieldLabel: 'observaciones',
-                allowBlank: true,
-                anchor: '80%',
-                gwidth: 100,
-                maxLength:500
-            },
-            type:'TextField',
-            filters:{pfiltro:'equ.observaciones',type:'string'},
-            id_grupo:1,
-            grid:true,
-            form:true
-        },
         {
             config:{
                 name: 'color',
@@ -387,6 +379,21 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
             grid:true,
             form:true
         },
+		{
+            config:{
+                name: 'procesador',
+                fieldLabel: 'Procesador',
+                allowBlank: true,
+                hidden: true,
+                anchor: '80%',
+                gwidth: 100
+            },
+            type:'TextField',
+            filters:{pfiltro:'equ.procesador',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
         {
             config:{
                 name: 'teclado',
@@ -404,15 +411,15 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
         },
         {
             config:{
-                name: 'procesador',
-                fieldLabel: 'Procesador',
+                name: 'teclado_idioma',
+                fieldLabel: 'Idioma del Teclado',
                 allowBlank: true,
                 hidden: true,
                 anchor: '80%',
                 gwidth: 100
             },
             type:'TextField',
-            filters:{pfiltro:'equ.procesador',type:'string'},
+            filters:{pfiltro:'equ.teclado_idioma',type:'string'},
             id_grupo:1,
             grid:true,
             form:true
@@ -458,6 +465,36 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
             },
             type:'TextField',
             filters:{pfiltro:'equ.sistema_operativo',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
+		{
+            config:{
+                name: 'estado_fisico',
+                fieldLabel: 'Estado Fisico',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+            	maxLength:30
+            },
+                type:'TextField',
+                filters:{pfiltro:'equ.estado_fisico',type:'string'},
+                id_grupo:1,
+                grid:true,
+                form:true
+		},
+        {
+            config:{
+                name: 'observaciones',
+                fieldLabel: 'Observaciones',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 200,
+                maxLength:500
+            },
+            type:'TextArea',
+            filters:{pfiltro:'equ.observaciones',type:'string'},
             id_grupo:1,
             grid:true,
             form:true
@@ -604,6 +641,7 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
         {name:'tamano_pantalla', type: 'string'},
         {name:'tarjeta_video', type: 'string'},
         {name:'teclado', type: 'string'},
+        {name:'teclado_idioma', type: 'string'},
         {name:'procesador', type: 'string'},
         {name:'memoria_ram', type: 'string'},
         {name:'almacenamiento', type: 'string'},
@@ -611,7 +649,7 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
         {name:'accesorios', type: 'string'},
         {name:'id_numero_celular', type: 'numeric'},
         {name:'numero', type: 'string'},
-
+		{name:'mac', type: 'string'},
     ],
     sortInfo:{
         field: 'id_equipo',
@@ -628,6 +666,7 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
         this.Cmp.tamano_pantalla.hide();
         this.Cmp.tarjeta_video.hide();
         this.Cmp.teclado.hide();
+		this.Cmp.teclado_idioma.hide();							   
         this.Cmp.procesador.hide();
         this.Cmp.memoria_ram.hide();
         this.Cmp.almacenamiento.hide();
@@ -646,6 +685,7 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
             this.Cmp.tamano_pantalla.hide();
             this.Cmp.tarjeta_video.hide();
             this.Cmp.teclado.hide();
+			this.Cmp.teclado_idioma.hide();							   
             this.Cmp.procesador.hide();
             this.Cmp.memoria_ram.hide();
             this.Cmp.almacenamiento.hide();
@@ -663,11 +703,12 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
             }
             this.Cmp.tarjeta_video.show();
             this.Cmp.teclado.show();
+			this.Cmp.teclado_idioma.show();							   
             this.Cmp.procesador.show();
             this.Cmp.memoria_ram.show();
             this.Cmp.almacenamiento.show();
             this.Cmp.sistema_operativo.show();
-            this.Cmp.accesorios.show();
+            this.Cmp.accesorios.hide();
         }else{
             this.Cmp.id_numero_celular.hide();
             this.Cmp.color.hide();
@@ -676,6 +717,7 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
             this.Cmp.tamano_pantalla.hide();
             this.Cmp.tarjeta_video.hide();
             this.Cmp.teclado.hide();
+			this.Cmp.teclado_idioma.hide();							   
             this.Cmp.procesador.hide();
             this.Cmp.memoria_ram.hide();
             this.Cmp.almacenamiento.hide();
@@ -683,12 +725,6 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
             this.Cmp.accesorios.hide();
         }
     },
-    tabsouth: [{
-        url: '../../../sis_gestion_comunicacion/vista/accesorio/Accesorio.php',
-        title: 'Detalle Accesorios',
-        height: '40%',
-        cls: 'Accesorio'
-    }],
     }
 )
 </script>

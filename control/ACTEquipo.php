@@ -298,7 +298,8 @@ class ACTEquipo extends ACTbase{
     function reporteFuncionarioTres() {
 
         $datosPersona = $this->recuperarDatosAsignacionEquipo();
-
+		
+		
 
         $nombreArchivo = uniqid(md5(session_id()).'-REPCC') . '.pdf';
         $tamano = 'LETTER';
@@ -308,8 +309,10 @@ class ACTEquipo extends ACTbase{
         $this->objParam->addParametro('titulo_archivo','Formulario');
         $this->objParam->addParametro('nombre_archivo',$nombreArchivo);
         $this->objParam->addParametro('datos_persona',$datosPersona->getDatos());
-
-        $reporte = new RFormEquipo($this->objParam);
+		
+		$reporte = null;
+		
+		$reporte = new RFormEquipo($this->objParam);
         $reporte->datosHeader($this->objParam);
         $reporte->generarReporte1($this->objParam);
         $reporte->output($reporte->url_archivo,'F');

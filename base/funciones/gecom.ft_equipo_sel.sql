@@ -103,7 +103,9 @@ BEGIN
                         (select c.descripcion
                                   from param.tcatalogo c
                                   LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
-                                  WHERE c.codigo = em.tipo_servicio and ct.tabla = ''tservicio'' and ct.nombre = ''tipo_servicio'') AS tipo_servicio_desc
+                                  WHERE c.codigo = em.tipo_servicio and ct.tabla = ''tservicio'' and ct.nombre = ''tipo_servicio'') AS tipo_servicio_desc,
+                        ep.teclado_idioma,
+                        ep.mac    
                         FROM gecom.tequipo equ
                         JOIN segu.tusuario usu1 ON usu1.id_usuario = equ.id_usuario_reg
                         LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = equ.id_usuario_mod
@@ -377,7 +379,13 @@ BEGIN
                            (tcc.descripcion || '' - '' || tcc.codigo)::varchar as cuenta_gasto,
                            (p.nombre || '' '' || p.apellido_paterno || '' '' || p.apellido_materno)::varchar as asignador,
                            fc.fecha_inicio as fecha_entrega,
-                           string_agg((ac.nombre || '' '' || ac.marca), '', '')::varchar as accesorios2
+                           ( select array_to_string(array_agg(ac.resumen), ''<br>'' ::text) ::character varying
+                                from (select ac.*,
+                                             (ac.nombre || '' '' || ac.marca || '' '' || ac.modelo ||'' - '' || ac.num_serie) ::varchar as resumen
+                                        from gecom.taccesorio ac) as ac
+                               where ac.id_accesorio in
+                                     (SELECT element ::integer
+                                        FROM UNNEST(string_to_array(fc.id_accesorios, '','')) as element)) as accesorios2
                       from gecom.tfuncionario_celular fc
                       join orga.vfuncionario f on fc.id_funcionario = f.id_funcionario
                       join gecom.tequipo e on fc.id_equipo = e.id_equipo
@@ -388,13 +396,10 @@ BEGIN
                       LEFT JOIN param.vtipo_cc tcc ON nc.id_tipo_cc = tcc.id_tipo_cc
                       join segu.tusuario u on fc.id_usuario_reg = u.id_usuario
                       join segu.tpersona p on u.id_persona = p.id_persona
-                      left join gecom.taccesorio ac on e.id_equipo = ac.id_equipo
                      where fc.id_funcionario_celular = '||v_id_funcionario_celular;
 
             --v_consulta:=v_consulta||' order by d.id_institucion, d.id_deuda, d.monto_solicitado, p.fecha ';
-			v_consulta:=v_consulta||' group by e.id_equipo, fc.id_funcionario_celular, em.id_equipo_movil, f.desc_funcionario1, nc.numero, pro.desc_proveedor, 
-											   cp.nro_cuenta, tcc.descripcion, tcc.codigo, p.nombre, p.apellido_paterno, p.apellido_materno
-                                 	  order by fc.id_funcionario_celular ';
+			v_consulta:=v_consulta||' order by fc.id_funcionario_celular ';
             
 			--Devuelve la respuesta
 			return v_consulta;
@@ -413,7 +418,7 @@ BEGIN
     	begin
         
     		--Sentencia de la consulta
-			v_consulta:= '  select e.marca,
+			v_consulta:= ' select e.marca,
                             fc.codigo_inmovilizado,
                             e.modelo,
                             e.num_serie,
@@ -431,7 +436,57 @@ BEGIN
                             ep.sistema_operativo,
                             (p.nombre || '' '' || p.apellido_paterno || '' '' || p.apellido_materno)::varchar as asignador,
                       		fc.fecha_inicio as fecha_entrega,
-                            string_agg((ac.nombre || '' '' || ac.marca), '', '')::varchar as accesorios2
+                            ( select array_to_string(array_agg(ac.resumen), ''<br>'' ::text) ::character varying
+                                from (select ac.*,
+                                             (ac.nombre || '' '' || ac.marca || '' '' || ac.modelo ||'' - '' || ac.num_serie) ::varchar as resumen
+                                        from gecom.taccesorio ac) as ac
+                               where ac.id_accesorio in
+                                     (SELECT element ::integer
+                                        FROM UNNEST(string_to_array(fc.id_accesorios, '','')) as element)) as accesorios2,
+                            ep.teclado_idioma,
+                            ( select a.marca
+                                from gecom.taccesorio a
+                               where a.tipo = ''monitor''
+                                 and a.id_accesorio in
+                                     (SELECT element ::integer
+                                        FROM UNNEST(string_to_array(fc.id_accesorios, '','')) as element) LIMIT 1) as monitor_marca,
+                            ( select a.modelo
+                                from gecom.taccesorio a
+                               where a.tipo = ''monitor''
+                                 and a.id_accesorio in
+                                     (SELECT element ::integer
+                                        FROM UNNEST(string_to_array(fc.id_accesorios, '','')) as element) LIMIT 1) as monitor_modelo,
+                            ( select a.num_serie
+                                from gecom.taccesorio a
+                               where a.tipo = ''monitor''
+                                 and a.id_accesorio in
+                                     (SELECT element ::integer
+                                        FROM UNNEST(string_to_array(fc.id_accesorios, '','')) as element) LIMIT 1) as monitor_num_serie,
+                            ( select a.observaciones
+                                from gecom.taccesorio a
+                               where a.tipo = ''monitor''
+                                 and a.id_accesorio in
+                                     (SELECT element ::integer
+                                        FROM UNNEST(string_to_array(fc.id_accesorios, '','')) as element) LIMIT 1) as monitor_observaciones,
+                            ( select a.estado_fisico
+                                from gecom.taccesorio a
+                               where a.tipo = ''monitor''
+                                 and a.id_accesorio in
+                                     (SELECT element ::integer
+                                        FROM UNNEST(string_to_array(fc.id_accesorios, '','')) as element) LIMIT 1) as monitor_estado_fisico,
+                           case
+                        	when e.tipo in (''movil'',''dongle'',''gps'',''centel'') then
+                            	(select c.descripcion
+                                  from param.tcatalogo c
+                                  LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                  WHERE c.codigo = e.tipo and ct.tabla = ''tequipo'' and ct.nombre = ''tipo_equipo_movil'')
+                            else
+                            	(select c.descripcion
+                                  from param.tcatalogo c
+                                  LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                  WHERE c.codigo = e.tipo and ct.tabla = ''tequipo'' and ct.nombre = ''tipo_equipo'')
+                           end::varchar AS tipo_desc,
+                           ep.mac
                       from gecom.tequipo e
                       join gecom.tfuncionario_celular fc on e.id_equipo = fc.id_equipo
                       join orga.vfuncionario f on fc.id_funcionario = f.id_funcionario
@@ -445,12 +500,10 @@ BEGIN
                                 and now()::date between tu.fecha_asignacion and COALESCE(tu.fecha_finalizacion, (now() ::date + interval ''1 year'') ::date))
                       join segu.tusuario u on fc.id_usuario_reg = u.id_usuario
                       join segu.tpersona p on u.id_persona = p.id_persona
-                      left join gecom.taccesorio ac on e.id_equipo = ac.id_equipo
                       where fc.id_funcionario_celular = '||v_parametros.id_funcionario_celular;
 
             --v_consulta:=v_consulta||' order by d.id_institucion, d.id_deuda, d.monto_solicitado, p.fecha ';
-			v_consulta:=v_consulta||' group by e.id_equipo, fc.id_funcionario_celular, ep.id_equipo_pc, f.desc_funcionario1, uo.nombre_unidad, p.nombre, p.apellido_paterno, p.apellido_materno
-            						  order by fc.id_funcionario_celular ';
+			v_consulta:=v_consulta||' order by fc.id_funcionario_celular ';
             
 			--Devuelve la respuesta
 			return v_consulta;
@@ -479,6 +532,3 @@ CALLED ON NULL INPUT
 SECURITY INVOKER
 PARALLEL UNSAFE
 COST 100;
-
-ALTER FUNCTION gecom.ft_equipo_sel (p_administrador integer, p_id_usuario integer, p_tabla varchar, p_transaccion varchar)
-  OWNER TO postgres;

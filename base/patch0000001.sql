@@ -189,6 +189,7 @@ CREATE TABLE gecom.tfuncionario_celular (
                                             codigo_inmovilizado VARCHAR(300),
                                             tipo_asignacion_equipo VARCHAR(50),
                                             tipo_servicio VARCHAR(50),
+											id_accesorios varchar,
                                             CONSTRAINT tfuncionario_celular_pkey PRIMARY KEY(id_funcionario_celular),
                                             CONSTRAINT fk_tfuncionario_celular__id_cargo FOREIGN KEY (id_cargo)
                                                 REFERENCES orga.tcargo(id_cargo)
@@ -269,11 +270,13 @@ CREATE TABLE gecom.tequipo_pc (
                                   tamano_pantalla VARCHAR(300),
                                   tarjeta_video VARCHAR(300),
                                   teclado VARCHAR(300),
+								  teclado_idioma varchar(200),
                                   procesador VARCHAR(300),
                                   memoria_ram VARCHAR(300),
                                   almacenamiento VARCHAR(300),
                                   sistema_operativo VARCHAR(300),
                                   accesorios VARCHAR(300),
+								  mac varchar(500),
                                   CONSTRAINT tequipo_pc_pkey PRIMARY KEY(id_equipo_pc)
 ) INHERITS (pxp.tbase)
 WITH (oids = false);
@@ -306,6 +309,8 @@ CREATE TABLE gecom.taccesorio (
                                   estado_fisico VARCHAR(200),
                                   observaciones VARCHAR,
                                   id_equipo INTEGER,
+								  tipo varchar(300),
+								  modelo varchar(300),
                                   CONSTRAINT taccesorio_id_accesorio_pkey PRIMARY KEY(id_accesorio),
                                   CONSTRAINT fk_taccesorio__id_equipo FOREIGN KEY (id_equipo)
                                       REFERENCES gecom.tequipo(id_equipo)

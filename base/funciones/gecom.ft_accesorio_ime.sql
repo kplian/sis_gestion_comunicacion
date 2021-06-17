@@ -59,7 +59,9 @@ BEGIN
             usuario_ai,
             id_usuario_mod,
             fecha_mod,
-            id_equipo
+            id_equipo,
+            tipo,
+            modelo
               ) VALUES (
             'activo',
             v_parametros.nombre,
@@ -73,7 +75,9 @@ BEGIN
             v_parametros._nombre_usuario_ai,
             null,
             null,
-            v_parametros.id_equipo         
+            v_parametros.id_equipo,
+            v_parametros.tipo,
+            v_parametros.modelo
             ) RETURNING id_accesorio into v_id_accesorio;
             
             --Definicion de la respuesta
@@ -106,7 +110,9 @@ BEGIN
             fecha_mod = now(),
             id_usuario_ai = v_parametros._id_usuario_ai,
             usuario_ai = v_parametros._nombre_usuario_ai,
-            id_equipo = v_parametros.id_equipo
+            id_equipo = v_parametros.id_equipo,
+            tipo = v_parametros.tipo,
+            modelo = v_parametros.modelo
             WHERE id_accesorio=v_parametros.id_accesorio;
                
             --Definicion de la respuesta
@@ -164,3 +170,4 @@ CALLED ON NULL INPUT
 SECURITY INVOKER
 PARALLEL UNSAFE
 COST 100;
+

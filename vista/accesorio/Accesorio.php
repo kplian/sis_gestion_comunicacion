@@ -23,7 +23,7 @@ Phx.vista.Accesorio=Ext.extend(Phx.gridInterfaz,{
         //llama al constructor de la clase padre
         Phx.vista.Accesorio.superclass.constructor.call(this,config);
         this.init();
-        //this.load({params:{start:0, limit:this.tam_pag}})
+        this.load({params:{start:0, limit:this.tam_pag}})
     },
             
     Atributos:[
@@ -77,6 +77,21 @@ Phx.vista.Accesorio=Ext.extend(Phx.gridInterfaz,{
                 grid:true,
                 form:true
 		},
+		{
+            config:{
+                name: 'tipo',
+                fieldLabel: 'Tipo',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+            	maxLength:300
+            },
+                type:'TextField',
+                filters:{pfiltro:'acc.tipo',type:'string'},
+                id_grupo:1,
+                grid:true,
+                form:true
+		},
         {
             config:{
                 name: 'marca',
@@ -92,10 +107,25 @@ Phx.vista.Accesorio=Ext.extend(Phx.gridInterfaz,{
                 grid:true,
                 form:true
 		},
+		{
+            config:{
+                name: 'modelo',
+                fieldLabel: 'Modelo',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+            	maxLength:300
+            },
+                type:'TextField',
+                filters:{pfiltro:'acc.modelo',type:'string'},
+                id_grupo:1,
+                grid:true,
+                form:true
+		},
         {
             config:{
                 name: 'num_serie',
-                fieldLabel: 'num_serie',
+                fieldLabel: 'Numero de Serie',
                 allowBlank: true,
                 anchor: '80%',
                 gwidth: 100,
@@ -110,7 +140,7 @@ Phx.vista.Accesorio=Ext.extend(Phx.gridInterfaz,{
         {
             config:{
                 name: 'estado_fisico',
-                fieldLabel: 'estado_fisico',
+                fieldLabel: 'Estado Fisico',
                 allowBlank: true,
                 anchor: '80%',
                 gwidth: 100,
@@ -125,11 +155,11 @@ Phx.vista.Accesorio=Ext.extend(Phx.gridInterfaz,{
         {
             config:{
                 name: 'observaciones',
-                fieldLabel: 'observaciones',
+                fieldLabel: 'Observaciones',
                 allowBlank: true,
                 anchor: '80%',
                 gwidth: 100,
-            	maxLength:-5
+            	maxLength:400
             },
                 type:'TextField',
                 filters:{pfiltro:'acc.observaciones',type:'string'},
@@ -253,7 +283,8 @@ Phx.vista.Accesorio=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-        
+        {name:'tipo', type: 'string'},
+		{name:'modelo', type: 'string'},
     ],
     sortInfo:{
         field: 'id_accesorio',
@@ -262,9 +293,9 @@ Phx.vista.Accesorio=Ext.extend(Phx.gridInterfaz,{
     bdel:true,
     bsave:true,
     onReloadPage:function(m){
-        this.maestro=m;
+        /*this.maestro=m;
         console.log(this.maestro);
-        this.store.baseParams={id_equipo: this.maestro.id_equipo};
+        this.store.baseParams={id_equipo: this.maestro.id_equipo};*/
 
         //this.Cmp.idioma.store.baseParams.id_funcionario = this.maestro.id_funcionario;
         this.load({params:{start:0, limit:this.tam_pag}});
@@ -272,7 +303,7 @@ Phx.vista.Accesorio=Ext.extend(Phx.gridInterfaz,{
     loadValoresIniciales:function()
     {
         Phx.vista.Accesorio.superclass.loadValoresIniciales.call(this);
-        this.getComponente('id_equipo').setValue(this.maestro.id_equipo);
+        /*this.getComponente('id_equipo').setValue(this.maestro.id_equipo);*/
     },
     }
 )

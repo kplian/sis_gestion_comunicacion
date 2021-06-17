@@ -77,6 +77,7 @@ class MODFuncionarioCelular extends MODbase{
         $this->setParametro('codigo_inmovilizado','codigo_inmovilizado','varchar');
         $this->setParametro('tipo_asignacion_equipo','tipo_asignacion_equipo','varchar');
         $this->setParametro('tipo_servicio','tipo_servicio','varchar');
+		$this->setParametro('id_accesorios','id_accesorios','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -104,6 +105,7 @@ class MODFuncionarioCelular extends MODbase{
         $this->setParametro('codigo_inmovilizado','codigo_inmovilizado','varchar');
         $this->setParametro('tipo_asignacion_equipo','tipo_asignacion_equipo','varchar');
         $this->setParametro('tipo_servicio','tipo_servicio','varchar');
+		$this->setParametro('id_accesorios','id_accesorios','varchar');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -133,6 +135,7 @@ class MODFuncionarioCelular extends MODbase{
         $this->setParametro('codigo_inmovilizado','codigo_inmovilizado','varchar');
         $this->setParametro('tipo_asignacion_equipo','tipo_asignacion_equipo','varchar');
         $this->setParametro('tipo_servicio','tipo_servicio','varchar');
+		$this->setParametro('id_accesorios','id_accesorios','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -188,7 +191,9 @@ class MODFuncionarioCelular extends MODbase{
         $this->captura('usr_mod','varchar');
         $this->captura('tipo_servicio','varchar');
         $this->captura('tipo_servicio_desc','varchar');
-
+		$this->captura('tipo_equipo','varchar');
+		$this->captura('id_accesorios','varchar');
+		$this->captura('desc_accesorios','varchar');
 
         //Ejecuta la instruccion
         $this->armarConsulta();

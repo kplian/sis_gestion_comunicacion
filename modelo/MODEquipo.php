@@ -64,6 +64,8 @@ class MODEquipo extends MODbase{
         $this->captura('imei2','varchar');
         $this->captura('tipo_servicio','varchar');
         $this->captura('tipo_servicio_desc','varchar');
+		$this->captura('teclado_idioma','varchar');
+		$this->captura('mac','varchar');
         
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -127,6 +129,9 @@ class MODEquipo extends MODbase{
         $this->setParametro('gama','gama','varchar');
         $this->setParametro('imei2','imei2','varchar');
         $this->setParametro('tipo_servicio','tipo_servicio','varchar');
+		$this->setParametro('teclado_idioma','teclado_idioma','varchar');
+		$this->setParametro('mac','mac','varchar');
+		
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -169,6 +174,8 @@ class MODEquipo extends MODbase{
         $this->setParametro('gama','gama','varchar');
         $this->setParametro('imei2','imei2','varchar');
         $this->setParametro('tipo_servicio','tipo_servicio','varchar');
+		$this->setParametro('teclado_idioma','teclado_idioma','varchar');
+		$this->setParametro('mac','mac','varchar');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -225,6 +232,7 @@ class MODEquipo extends MODbase{
         $this->setParametro('id_funcionario_celular','id_funcionario_celular','int4');
         $this->setParametro('id_funcionario','id_funcionario','int4');
         $this->setParametro('id_equipo','id_equipo','int4');
+		$this->setParametro('id_accesorios','id_accesorios','varchar');
         $this->setParametro('fecha_fin','fecha_fin','date');
         $this->setParametro('observaciones','observaciones','varchar');
 
@@ -384,6 +392,14 @@ class MODEquipo extends MODbase{
         $this->captura('asignador','varchar');
         $this->captura('fecha_entrega','date');
         $this->captura('accesorios2','varchar');
+		$this->captura('teclado_idioma','varchar');
+		$this->captura('monitor_marca','varchar');
+		$this->captura('monitor_modelo','varchar');
+		$this->captura('monitor_num_serie','varchar');
+		$this->captura('monitor_observaciones','varchar');
+		$this->captura('monitor_estado_fisico','varchar');
+		$this->captura('tipo_desc','varchar');
+		$this->captura('mac','varchar');
 
         //Ejecuta la instruccion
         $this->armarConsulta();

@@ -533,7 +533,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 id: 'id_uo',
                 root: 'datos',
                 sortInfo:{
-                    field: 'deppto.nombre',
+                    field: 'uo.nombre_unidad',
                     direction: 'ASC'
                 },
                 totalProperty: 'total',

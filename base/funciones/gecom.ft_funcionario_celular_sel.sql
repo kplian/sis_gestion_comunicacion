@@ -163,7 +163,18 @@ BEGIN
                           (select c.descripcion
                                   from param.tcatalogo c
                                   LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
-                                  WHERE c.codigo = funcel.tipo_servicio and ct.tabla = ''tservicio'' and ct.nombre = ''tipo_servicio'') AS tipo_servicio_desc
+                                  WHERE c.codigo = funcel.tipo_servicio and ct.tabla = ''tservicio'' and ct.nombre = ''tipo_servicio'') AS tipo_servicio_desc,
+                           e.tipo as tipo_equipo,
+                           funcel.id_accesorios,
+                           (SELECT  array_to_string(array_agg(ac.resumen), ''<br>''::text)::character varying
+                             from 
+                             (select ac.*,
+                                     (ac.nombre||'' ''||ac.marca||'' ''||ac.modelo||'' - ''||ac.num_serie)::varchar as resumen
+                              from gecom.taccesorio ac) as ac
+                             where ac.id_accesorio  in ( SELECT element::integer
+                                                            FROM UNNEST( string_to_array(funcel.id_accesorios,'',''))
+                                                            as element)
+                             ) as desc_accesorios
                       from gecom.tfuncionario_celular funcel
                       JOIN segu.tusuario usu1 ON usu1.id_usuario = funcel.id_usuario_reg
                       LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = funcel.id_usuario_mod
@@ -223,7 +234,13 @@ BEGIN
                                 uo.codigo
                          from orga.tuo uo
                          where uo.estado_reg = ''activo'' and
-                               uo.id_nivel_organizacional <= 4 ';
+                               uo.id_nivel_organizacional <= 4
+                               order by (nombre_unidad = ''GERENCIA GENERAL'') DESC, 
+                               (nombre_unidad = ''GERENCIA DE ADMINISTRACIÓN Y FINANZAS'') DESC,
+                               (nombre_unidad = ''GERENCIA TÉCNICA'') DESC,
+                               (nombre_unidad = ''GERENCIA DE OPERACIONES Y MANTENIMIENTO'') DESC,
+                               (nombre_unidad = ''GERENCIA DE PLANIFICACIÓN'') DESC, 
+                               nombre_unidad  ';
 
 
             --Devuelve la respuesta

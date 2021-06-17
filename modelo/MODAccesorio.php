@@ -41,6 +41,9 @@ class MODAccesorio extends MODbase{
 		$this->captura('fecha_mod','timestamp');
 		$this->captura('usr_reg','varchar');
         $this->captura('usr_mod','varchar');
+		$this->captura('tipo','varchar');
+		$this->captura('modelo','varchar');
+		$this->captura('resumen','varchar');
         
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -64,6 +67,8 @@ class MODAccesorio extends MODbase{
 		$this->setParametro('estado_fisico','estado_fisico','varchar');
 		$this->setParametro('observaciones','observaciones','varchar');
         $this->setParametro('id_equipo','id_equipo','int4');
+		$this->setParametro('tipo','tipo','varchar');
+		$this->setParametro('modelo','modelo','varchar');
 
 
         //Ejecuta la instruccion
@@ -89,6 +94,8 @@ class MODAccesorio extends MODbase{
 		$this->setParametro('estado_fisico','estado_fisico','varchar');
 		$this->setParametro('observaciones','observaciones','varchar');
         $this->setParametro('id_equipo','id_equipo','int4');
+		$this->setParametro('tipo','tipo','varchar');
+		$this->setParametro('modelo','modelo','varchar');
 
         //Ejecuta la instruccion
         $this->armarConsulta();

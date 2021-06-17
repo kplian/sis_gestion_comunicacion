@@ -59,8 +59,14 @@ BEGIN
                         acc.id_usuario_mod,
                         acc.fecha_mod,
                         usu1.cuenta as usr_reg,
-                        usu2.cuenta as usr_mod    
-                        FROM gecom.taccesorio acc
+                        usu2.cuenta as usr_mod,
+                        acc.tipo,
+                        acc.modelo,
+                        acc.resumen
+                        FROM 
+                        (select acc.*,
+                        		(acc.nombre||'' ''||acc.marca||'' ''||acc.modelo||'' - ''||acc.num_serie)::varchar as resumen
+                         from gecom.taccesorio acc) as acc
                         JOIN segu.tusuario usu1 ON usu1.id_usuario = acc.id_usuario_reg
                         LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = acc.id_usuario_mod
                         WHERE  ';
@@ -85,8 +91,10 @@ BEGIN
 
         BEGIN
             --Sentencia de la consulta de conteo de registros
-            v_consulta:='SELECT COUNT(id_accesorio)
-                         FROM gecom.taccesorio acc
+            v_consulta:='SELECT COUNT(acc.id_accesorio) FROM 
+            			 (SELECT acc.*,
+                         		 (acc.nombre||'' ''||acc.marca||'' ''||acc.modelo||'' - ''||acc.num_serie)::varchar as resumen
+                         FROM gecom.taccesorio acc) as acc
                          JOIN segu.tusuario usu1 ON usu1.id_usuario = acc.id_usuario_reg
                          LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = acc.id_usuario_mod
                          WHERE ';

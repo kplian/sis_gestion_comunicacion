@@ -34,7 +34,9 @@ DECLARE
     v_funcionario_celular		record;
     v_funcionario_numero		record;
     v_equipo 					record;
-    v_funcionario_celular_old	record;       
+    v_funcionario_celular_old	record;
+    v_id_accesorio				integer;
+    v_arr_accesorios     		integer[];
 BEGIN
 
     v_nombre_funcion = 'gecom.ft_equipo_ime';
@@ -109,7 +111,7 @@ BEGIN
                   
             end if;
             
-            if v_parametros.tipo in ('laptop','pc') then
+            if v_parametros.tipo in ('laptop','pc','telfip') then
             	INSERT INTO gecom.tequipo_pc (
                   id_usuario_reg,
                   fecha_reg,
@@ -122,7 +124,9 @@ BEGIN
                   memoria_ram,
                   almacenamiento,
                   sistema_operativo,
-                  accesorios
+                  accesorios,
+                  teclado_idioma,
+                  mac
                 )
                 VALUES (
                   p_id_usuario,
@@ -136,7 +140,9 @@ BEGIN
                   v_parametros.memoria_ram,
                   v_parametros.almacenamiento,
                   v_parametros.sistema_operativo,
-                  v_parametros.accesorios
+                  v_parametros.accesorios,
+                  v_parametros.teclado_idioma,
+                  v_parametros.mac
                 );
             end if;
             
@@ -193,7 +199,7 @@ BEGIN
                   WHERE  id_equipo_movil = v_parametros.id_equipo_movil;
             end if;
             
-            if v_parametros.tipo in ('laptop','pc') then
+            if v_parametros.tipo in ('laptop','pc','telfip') then
                 UPDATE gecom.tequipo_pc 
                 SET id_usuario_mod = p_id_usuario,
                     fecha_mod = now(),
@@ -205,7 +211,9 @@ BEGIN
                     memoria_ram = v_parametros.memoria_ram,
                     almacenamiento = v_parametros.almacenamiento,
                     sistema_operativo = v_parametros.sistema_operativo,
-                    accesorios = v_parametros.accesorios
+                    accesorios = v_parametros.accesorios,
+                    teclado_idioma = v_parametros.teclado_idioma,
+                    mac = v_parametros.mac
                 WHERE id_equipo_pc = v_parametros.id_equipo_pc;
             end if;
             
@@ -304,7 +312,8 @@ BEGIN
                    e.marca,
                    e.modelo,
                    e.num_serie,
-                   e.estado_fisico
+                   e.estado_fisico,
+                   fc.id_accesorios
             into v_funcionario_celular
             from gecom.tfuncionario_celular fc 
             left join gecom.tequipo e on fc.id_equipo = e.id_equipo 
@@ -314,6 +323,15 @@ BEGIN
             set estado_reg = 'inactivo',
             	fecha_fin = v_parametros.fecha_fin
             where fc.id_funcionario_celular = v_parametros.id_funcionario_celular;
+            
+            if v_funcionario_celular.id_accesorios != '' then
+              select COALESCE(regexp_split_to_array(v_funcionario_celular.id_accesorios,','),'{0}') into v_arr_accesorios;
+              FOREACH v_id_accesorio IN ARRAY v_arr_accesorios LOOP
+                  UPDATE gecom.taccesorio 
+                  SET id_equipo = null
+                  WHERE id_accesorio = v_id_accesorio;
+              END LOOP;
+            end if;
             
             if v_funcionario_celular.tipo_asignacion_equipo = 'equipo' then
             	update gecom.tequipo e
@@ -375,7 +393,7 @@ BEGIN
                 set estado = 'activo'
                 where n.id_numero_celular = v_funcionario_celular.id_numero_celular;
                 
-                select fc.id_funcionario_celular, em.id_equipo, e.* into v_funcionario_numero
+                select fc.id_funcionario_celular, fc.id_accesorios, em.id_equipo, e.* into v_funcionario_numero
                 from gecom.tequipo_movil em
                 join gecom.tfuncionario_celular fc on em.id_equipo = fc.id_equipo and fc.estado_reg = 'activo'
                 join gecom.tequipo e on em.id_equipo = e.id_equipo 
@@ -391,6 +409,19 @@ BEGIN
                     update gecom.tequipo e
                     set estado = 'disponible'
                     where e.id_equipo = v_funcionario_numero.id_equipo;
+                    
+                    update gecom.tequipo_movil em 
+                    set id_numero_celular = null
+                    where em.id_equipo = v_funcionario_numero.id_equipo and em.estado_reg = 'activo';
+                    
+                    if v_funcionario_numero.id_accesorios != '' then
+                      select COALESCE(regexp_split_to_array(v_funcionario_numero.id_accesorios,','),'{0}') into v_arr_accesorios;
+                      FOREACH v_id_accesorio IN ARRAY v_arr_accesorios LOOP
+                          UPDATE gecom.taccesorio 
+                          SET id_equipo = null
+                          WHERE id_accesorio = v_id_accesorio;
+                      END LOOP;
+                    end if;
                     
                     INSERT INTO gecom.tequipo_historico
                       (
@@ -443,7 +474,7 @@ BEGIN
     ELSIF (p_transaccion='GC_EQU_CAM') THEN
 
         BEGIN
-        	select  fi.id_funcionario_celular, e.* into v_funcionario_celular_old
+        	select  fi.id_funcionario_celular, fi.id_accesorios, e.* into v_funcionario_celular_old
              from gecom.tfuncionario_celular fcc
              join gecom.tequipo_movil em on fcc.id_numero_celular = em.id_numero_celular and em.estado_reg = 'activo'
              join gecom.tfuncionario_celular fi on em.id_equipo = fi.id_equipo and fi.estado_reg = 'activo'
@@ -466,8 +497,17 @@ BEGIN
             where fc.id_funcionario_celular = v_funcionario_celular_old.id_funcionario_celular;
             
             update gecom.tequipo e
-                set estado = 'disponible'
-                where e.id_equipo = v_funcionario_celular_old.id_equipo;
+            set estado = 'disponible'
+            where e.id_equipo = v_funcionario_celular_old.id_equipo;
+            
+            if v_funcionario_celular_old.id_accesorios != '' then    
+              select COALESCE(regexp_split_to_array(v_funcionario_celular_old.id_accesorios,','),'{0}') into v_arr_accesorios;
+              FOREACH v_id_accesorio IN ARRAY v_arr_accesorios LOOP
+                  UPDATE gecom.taccesorio 
+                  SET id_equipo = null
+                  WHERE id_accesorio = v_id_accesorio;
+              END LOOP;
+            end if;
             
             	INSERT INTO gecom.tequipo_historico
                 (
@@ -531,7 +571,8 @@ BEGIN
                   id_equipo,
                   codigo_inmovilizado,
                   tipo_asignacion_equipo,
-                  tipo_servicio
+                  tipo_servicio,
+                  id_accesorios
                 ) VALUES (
                   p_id_usuario,
                   now(),
@@ -543,12 +584,23 @@ BEGIN
                   v_equipo.id_equipo,
                   v_funcionario_celular.codigo_inmovilizado,
                   'equipo',
-                  'ser_tel'
+                  'ser_tel',
+                  v_parametros.id_accesorios
                 )RETURNING id_funcionario_celular into v_id_funcionario_celular;
                 
                 UPDATE gecom.tequipo e 
                 set estado = 'asignado'
                 where e.id_equipo = v_equipo.id_equipo;
+                
+               if v_parametros.id_accesorios != '' then
+                  select regexp_split_to_array(v_parametros.id_accesorios,',') into v_arr_accesorios;
+                  FOREACH v_id_accesorio IN ARRAY v_arr_accesorios LOOP
+                      UPDATE gecom.taccesorio 
+                      SET id_equipo = v_equipo.id_equipo
+                      WHERE id_accesorio = v_id_accesorio;
+                  END LOOP;
+               end if;  
+                 
                 
               INSERT INTO gecom.tequipo_historico
                 (

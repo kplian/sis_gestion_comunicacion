@@ -686,12 +686,6 @@ header("content-type: text/javascript; charset=UTF-8");
                 this.Cmp.sistema_operativo.hide();
                 this.Cmp.accesorios.hide();
             },
-            tabsouth: [{
-                url: '../../../sis_gestion_comunicacion/vista/accesorio/Accesorio.php',
-                title: 'Detalle Accesorio',
-                height: '40%',
-                cls: 'Accesorio'
-            }],
         }
     )
 </script>

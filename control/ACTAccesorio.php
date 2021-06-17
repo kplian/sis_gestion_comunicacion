@@ -20,6 +20,16 @@ class ACTAccesorio extends ACTbase{
         if($this->objParam->getParametro('id_equipo')!=''){
             $this->objParam->addFiltro(" acc.id_equipo = ".$this->objParam->getParametro('id_equipo'));
         }
+		
+		if($this->objParam->getParametro('disponibles')!='' && $this->objParam->getParametro('disponibles') == 'SI'){
+			//var_dump('yamil',$this->objParam); exit();
+			if($this->objParam->getParametro('id_equip')!=''){
+				$this->objParam->addFiltro(" (acc.id_equipo = ".$this->objParam->getParametro('id_equip')." OR acc.id_equipo IS NULL) ");
+			}else{
+				$this->objParam->addFiltro(" acc.id_equipo is null");
+			}
+            
+        }
 
         $this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
