@@ -135,10 +135,13 @@ BEGIN
 
         BEGIN
             --Sentencia de la consulta de conteo de registros
-            v_consulta:='SELECT COUNT(id_equipo)
+            v_consulta:='SELECT COUNT(equ.id_equipo)
                          FROM gecom.tequipo equ
                          JOIN segu.tusuario usu1 ON usu1.id_usuario = equ.id_usuario_reg
                          LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = equ.id_usuario_mod
+                         LEFT JOIN gecom.tequipo_movil em ON equ.id_equipo = em.id_equipo
+                         LEFT JOIN gecom.tequipo_pc ep ON equ.id_equipo = ep.id_equipo
+                         LEFT JOIN gecom.tnumero_celular numcel ON em.id_numero_celular = numcel.id_numero_celular
                          WHERE ';
             
             --Definicion de la respuesta            

@@ -150,6 +150,7 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
                 },
             },
             type:'ComboBox',
+			bottom_filter : true,
             filters:{pfiltro:'equ.tipo',type:'string'},
             id_grupo:0,
             grid:true,
@@ -214,6 +215,7 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
             	maxLength:200
             },
                 type:'TextField',
+				bottom_filter : true,
                 filters:{pfiltro:'equ.marca',type:'string'},
                 id_grupo:1,
                 grid:true,
@@ -229,6 +231,7 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
             	maxLength:200
             },
                 type:'TextField',
+				bottom_filter : true,
                 filters:{pfiltro:'equ.modelo',type:'string'},
                 id_grupo:1,
                 grid:true,
@@ -265,6 +268,7 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
                 value:'no'
             },
             type:'ComboBox',
+			bottom_filter : true,
             filters:{pfiltro:'equ.estado',
                 type: 'list',
                 options: ['disponible','almacen']
@@ -299,6 +303,7 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
             	maxLength:300
             },
                 type:'TextField',
+				bottom_filter : true,
                 filters:{pfiltro:'equ.num_serie',type:'string'},
                 id_grupo:1,
                 grid:true,

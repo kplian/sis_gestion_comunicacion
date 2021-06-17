@@ -108,6 +108,8 @@ Phx.vista.NumeroCelular=Ext.extend(Phx.gridInterfaz,{
                 },
             },
             type: 'ComboBox',
+			bottom_filter : true,
+			filters:{pfiltro:'cp.nro_cuenta',type:'string'},
             id_grupo: 0,
             grid: true,
             form: true
@@ -192,11 +194,12 @@ Phx.vista.NumeroCelular=Ext.extend(Phx.gridInterfaz,{
 				gwidth: 150,
 				maxLength:20
 			},
-				type:'TextField',
-				filters:{pfiltro:'numcel.numero',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:true
+			type:'TextField',
+			bottom_filter : true,
+			filters:{pfiltro:'numcel.numero',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
 		},
 		
 		{

@@ -49,6 +49,7 @@ select pxp.f_insert_tgui ('Registro de TELCOS', 'Registro de TELCOS', 'CUPP', 's
 select pxp.f_insert_tgui ('Asignacion Lineas', 'Asignacion Lineas', 'ASGNUMM', 'si', 5, 'sis_gestion_comunicacion/vista/numero_celular/DatosGenerales.php', 3, '', 'DatosGenerales', 'GECOM');
 select pxp.f_insert_tgui ('Registro de Equipos', 'Registro de Equipos', 'EQUU', 'si', 1, 'sis_gestion_comunicacion/vista/equipo/Equipo.php', 3, '', 'Equipo', 'GECOM');
 select pxp.f_insert_tgui ('Registro de Dispositivos Moviles', 'Registro de Dispositivos Moviles', 'DISMOV', 'si', 2, 'sis_gestion_comunicacion/vista/numero_celular/EquipoMovil.php', 3, '', 'EquipoMovil', 'GECOM');
+select pxp.f_insert_tgui ('Accesorios', 'Accesorios', 'ACCSE', 'si', 5, 'sis_gestion_comunicacion/vista/accesorio/Accesorio.php', 2, '', 'Accesorio', 'GECOM');
 
 select param.f_import_tcatalogo_tipo ('insert','tipo_equipo','GECOM','tequipo');
 select param.f_import_tcatalogo ('insert','GECOM','Portatil','laptop','tipo_equipo',NULL);

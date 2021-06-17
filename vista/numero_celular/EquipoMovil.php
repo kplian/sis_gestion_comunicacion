@@ -208,7 +208,8 @@ header("content-type: text/javascript; charset=UTF-8");
                         },
                     },
                     type:'ComboBox',
-                    filters:{pfiltro:'equ.gama',type:'string'},
+					bottom_filter : true,
+                    filters:{pfiltro:'em.gama',type:'string'},
                     id_grupo:0,
                     grid:true,
                     form:true
@@ -239,6 +240,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         maxLength:200
                     },
                     type:'TextField',
+					bottom_filter : true,
                     filters:{pfiltro:'equ.marca',type:'string'},
                     id_grupo:1,
                     grid:true,
@@ -254,6 +256,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         maxLength:200
                     },
                     type:'TextField',
+					bottom_filter : true,
                     filters:{pfiltro:'equ.modelo',type:'string'},
                     id_grupo:1,
                     grid:true,
@@ -275,6 +278,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         value:'no'
                     },
                     type:'ComboBox',
+					bottom_filter : true,
                     filters:{pfiltro:'equ.estado',
                         type: 'list',
                         options: ['disponible','almacen']

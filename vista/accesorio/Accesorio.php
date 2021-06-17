@@ -71,32 +71,34 @@ Phx.vista.Accesorio=Ext.extend(Phx.gridInterfaz,{
                 gwidth: 100,
             	maxLength:200
             },
-                type:'TextField',
-                filters:{pfiltro:'acc.nombre',type:'string'},
-                id_grupo:1,
-                grid:true,
-                form:true
+			type:'TextField',
+			bottom_filter : true,
+			filters:{pfiltro:'acc.nombre',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
 		},
 		{
             config:{
                 name: 'tipo',
                 fieldLabel: 'Tipo',
-                allowBlank: true,
+                allowBlank: false,
                 anchor: '80%',
                 gwidth: 100,
             	maxLength:300
             },
-                type:'TextField',
-                filters:{pfiltro:'acc.tipo',type:'string'},
-                id_grupo:1,
-                grid:true,
-                form:true
+			type:'TextField',
+			bottom_filter : true,
+			filters:{pfiltro:'acc.tipo',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
 		},
         {
             config:{
                 name: 'marca',
                 fieldLabel: 'marca',
-                allowBlank: true,
+                allowBlank: false,
                 anchor: '80%',
                 gwidth: 100,
             	maxLength:200
@@ -111,7 +113,7 @@ Phx.vista.Accesorio=Ext.extend(Phx.gridInterfaz,{
             config:{
                 name: 'modelo',
                 fieldLabel: 'Modelo',
-                allowBlank: true,
+                allowBlank: false,
                 anchor: '80%',
                 gwidth: 100,
             	maxLength:300
@@ -126,16 +128,17 @@ Phx.vista.Accesorio=Ext.extend(Phx.gridInterfaz,{
             config:{
                 name: 'num_serie',
                 fieldLabel: 'Numero de Serie',
-                allowBlank: true,
+                allowBlank: false,
                 anchor: '80%',
                 gwidth: 100,
             	maxLength:300
             },
-                type:'TextField',
-                filters:{pfiltro:'acc.num_serie',type:'string'},
-                id_grupo:1,
-                grid:true,
-                form:true
+			type:'TextField',
+			bottom_filter : true,
+			filters:{pfiltro:'acc.num_serie',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
 		},
         {
             config:{

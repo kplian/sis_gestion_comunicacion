@@ -130,5 +130,6 @@ select pxp.f_insert_testructura_gui ('CUPP', 'DISP_MOV');
 select pxp.f_insert_testructura_gui ('ASGNUMM', 'DISP_MOV');
 select pxp.f_insert_testructura_gui ('EQUU', 'EQU_INF');
 select pxp.f_insert_testructura_gui ('DISMOV', 'DISP_MOV');
+select pxp.f_insert_testructura_gui ('ACCSE', 'GECOM');
 
 /***********************************F-DEP-YMR-GECOM-1-30/05/2021****************************************/
