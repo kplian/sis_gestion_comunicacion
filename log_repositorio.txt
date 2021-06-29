@@ -1,0 +1,108 @@
+commit b748cbc7afecba1a04d2f9fe5356bcca07cf844a
+Author: Administrator <Administrator@endetransmision.bo>
+Date:   Sun Sep 27 18:59:32 2020 -0400
+
+    MSA-34 Se modifica inicio y final del archivo para actualizacion de datos en BD
+
+commit 3a828d43cd443092672ac96c3a92f4b9d4c65b63
+Author: Yamil Medina <yamil.medina@endetransmision.bo>
+Date:   Sun Sep 27 18:34:36 2020 -0400
+
+    MSA-34 Se agrega el archivo para actualizacion de datos en BD
+
+commit 0ca584592b807d89c8fcc9db1406e01776e1f06d
+Author: Rodrigo Chumacero <rodrychm@gmail.com>
+Date:   Mon Dec 17 09:11:25 2018 -0400
+
+    actualizando repositorios
+
+commit dad1b9324f3e6b1328589dc3b2c49c0572dd4135
+Merge: f17a3a4 587f1c9
+Author: Jaime Rivera <rensi4rn@gmail.com>
+Date:   Mon Dec 12 11:23:42 2016 -0400
+
+    Merge branch 'master' of github.com:kplian/sis_gestion_comunicacion
+
+commit f17a3a4fccd5f20dfb5e0166a7786825cdd4ef10
+Author: Jaime Rivera <rensi4rn@gmail.com>
+Date:   Mon Dec 12 11:23:14 2016 -0400
+
+    campo de tipo asignacion para ver la signacion efectiva del telefono
+
+commit 587f1c939d12d2d7743c891d1b0103aa77f607e0
+Author: dora <dcastro@boa.bo>
+Date:   Mon Oct 12 10:31:33 2015 -0400
+
+    cambios en  funcion numero_celular_im
+
+commit a7231c9df9a50d32afb2bf6e581c00f4df4867d2
+Author: dora <dcastro@boa.bo>
+Date:   Fri Oct 3 18:07:40 2014 -0400
+
+    anadiendo el tipo en la asignacion
+
+commit b20af7907442fb43d4e30d3d4a14289a950b7e92
+Author: dora <dcastro@boa.bo>
+Date:   Tue Sep 30 21:15:13 2014 -0400
+
+    eliminacion de numero
+
+commit e229be7ccd0167cd41cf629157eeb8203ba8d426
+Author: dora <dcastro@boa.bo>
+Date:   Thu Sep 25 12:00:02 2014 -0400
+
+    filtro de tipo y cambio en funcion de funcionario asignado por un error q habia
+
+commit 8b32da0e0efaa4a9e7f4e73dc1decc2b9b1c05b2
+Author: dora <dcastro@boa.bo>
+Date:   Thu Sep 25 11:58:47 2014 -0400
+
+    filtro de tipo y cambio en funcion de funcionario asignado por un error q habia
+
+commit f8b7966ed288c1b9666f32c52830c603ad10d2e7
+Author: dora <dcastro@boa.bo>
+Date:   Wed Sep 24 14:55:33 2014 -0400
+
+    tipo de numero anadido
+
+commit b873d9341fba11e4922d2060f473c8394a77eab8
+Author: dora <dcastro@boa.bo>
+Date:   Thu Aug 7 09:01:34 2014 -0400
+
+    funcion de ultimo funcionario asignado
+
+commit 2aa3f5acd20dfdd32d60d6193e59f84822f2fa6c
+Author: dora <dcastro@boa.bo>
+Date:   Mon Aug 4 11:00:27 2014 -0400
+
+    conviertiendo el campo a textarea
+
+commit e4d568e260610968c950abc8adcbaecbfa344283
+Author: dora <dcastro@boa.bo>
+Date:   Mon Aug 4 10:58:43 2014 -0400
+
+    corriginedo el tamano de las observaciones
+
+commit 7fee8ef4e604b8d8f9a618e6f00d2daea6f113a7
+Author: dora <dcastro@boa.bo>
+Date:   Thu Jul 31 19:42:34 2014 -0400
+
+    anadiendo funcion que devuelve el ultimo funcionario asignado para un periodo
+
+commit d75faca8d47e762dd0593382f4c9c95f72cb191f
+Author: dora <dcastro@boa.bo>
+Date:   Tue Jul 29 11:38:15 2014 -0400
+
+    craecion de roles
+
+commit 7e9913ef3c12eb1c24f2efaa763c95567c0018d6
+Author: dora <dcastro@boa.bo>
+Date:   Tue Jul 29 11:12:51 2014 -0400
+
+    anadiendo esquema
+
+commit 4c4aad015034fff325805e4b41a8be93dcbcf19a
+Author: dora <dcastro@boa.bo>
+Date:   Mon Jul 28 16:21:22 2014 -0400
+
+    primer commit del sistema de gestiond e comunicacion

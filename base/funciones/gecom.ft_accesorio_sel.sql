@@ -62,7 +62,26 @@ BEGIN
                         usu2.cuenta as usr_mod,
                         acc.tipo,
                         acc.modelo,
-                        acc.resumen
+                        acc.resumen,
+                        case when acc.tipo in (''cargador_movil'',''cable_datos'',''manos_libres'') then
+                        	(select c.descripcion
+                                  from param.tcatalogo c
+                                  LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                  WHERE c.codigo = acc.tipo and ct.tabla = ''taccesorio'' and ct.nombre = ''accesorio_telefono'')
+                        else
+                        	(select c.descripcion
+                                  from param.tcatalogo c
+                                  LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                  WHERE c.codigo = acc.tipo and ct.tabla = ''taccesorio'' and ct.nombre = ''accesorio_equipo'')
+                        end ::varchar AS tipo_desc,
+                        (select c.descripcion
+                                  from param.tcatalogo c
+                                  LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                  WHERE c.codigo = acc.marca and ct.tabla = ''tequipo'' and ct.nombre = ''marca'')::varchar AS marca_desc,
+                        (select c.descripcion
+                                  from param.tcatalogo c
+                                  LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                  WHERE c.codigo = acc.estado_fisico and ct.tabla = ''tequipo'' and ct.nombre = ''estado_fisico'')::varchar AS estado_fisico_desc
                         FROM 
                         (select acc.*,
                         		(acc.nombre||'' ''||acc.marca||'' ''||acc.modelo||'' - ''||acc.num_serie)::varchar as resumen

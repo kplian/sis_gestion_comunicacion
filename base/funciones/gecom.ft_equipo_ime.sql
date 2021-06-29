@@ -126,7 +126,9 @@ BEGIN
                   sistema_operativo,
                   accesorios,
                   teclado_idioma,
-                  mac
+                  mac,
+                  tipo_almacenamiento,
+                  tipo_memoria_ram
                 )
                 VALUES (
                   p_id_usuario,
@@ -142,7 +144,9 @@ BEGIN
                   v_parametros.sistema_operativo,
                   v_parametros.accesorios,
                   v_parametros.teclado_idioma,
-                  v_parametros.mac
+                  v_parametros.mac,
+                  v_parametros.tipo_almacenamiento,
+                  v_parametros.tipo_memoria_ram
                 );
             end if;
             
@@ -213,7 +217,9 @@ BEGIN
                     sistema_operativo = v_parametros.sistema_operativo,
                     accesorios = v_parametros.accesorios,
                     teclado_idioma = v_parametros.teclado_idioma,
-                    mac = v_parametros.mac
+                    mac = v_parametros.mac,
+                    tipo_memoria_ram = v_parametros.tipo_memoria_ram,
+                    tipo_almacenamiento = v_parametros.tipo_almacenamiento
                 WHERE id_equipo_pc = v_parametros.id_equipo_pc;
             end if;
             
@@ -633,6 +639,21 @@ BEGIN
                   v_id_funcionario_celular
                 );
             --EQUIPO NUEVO
+            
+            INSERT INTO gecom.tnumero_equipo
+              (
+                id_usuario_reg,
+                fecha_reg,
+                estado_reg,
+                id_funcionario_celular_numero,
+                id_funcionario_celular_equipo
+              ) VALUES (
+                p_id_usuario,
+                now(),
+                'activo',
+                v_parametros.id_funcionario_celular,
+                v_id_funcionario_celular
+              );
                
             --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Equipos devuelto'); 

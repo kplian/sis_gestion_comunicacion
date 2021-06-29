@@ -44,6 +44,9 @@ class MODAccesorio extends MODbase{
 		$this->captura('tipo','varchar');
 		$this->captura('modelo','varchar');
 		$this->captura('resumen','varchar');
+        $this->captura('tipo_desc','varchar');
+        $this->captura('marca_desc','varchar');
+        $this->captura('estado_fisico_desc','varchar');
         
         //Ejecuta la instruccion
         $this->armarConsulta();

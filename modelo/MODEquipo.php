@@ -66,6 +66,16 @@ class MODEquipo extends MODbase{
         $this->captura('tipo_servicio_desc','varchar');
 		$this->captura('teclado_idioma','varchar');
 		$this->captura('mac','varchar');
+        $this->captura('marca_desc','varchar');
+        $this->captura('estado_fisico_desc','varchar');
+        $this->captura('tamano_pantalla_desc','varchar');
+        $this->captura('teclado_desc','varchar');
+        $this->captura('teclado_idioma_desc','varchar');
+        $this->captura('tipo_memoria_ram','varchar');
+        $this->captura('tipo_memoria_ram_desc','varchar');
+        $this->captura('tipo_almacenamiento','varchar');
+        $this->captura('tipo_almacenamiento_desc','varchar');
+        $this->captura('sistema_operativo_desc','varchar');
         
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -131,6 +141,8 @@ class MODEquipo extends MODbase{
         $this->setParametro('tipo_servicio','tipo_servicio','varchar');
 		$this->setParametro('teclado_idioma','teclado_idioma','varchar');
 		$this->setParametro('mac','mac','varchar');
+        $this->setParametro('tipo_memoria_ram','tipo_memoria_ram','varchar');
+        $this->setParametro('tipo_almacenamiento','tipo_almacenamiento','varchar');
 		
 
         //Ejecuta la instruccion
@@ -176,6 +188,8 @@ class MODEquipo extends MODbase{
         $this->setParametro('tipo_servicio','tipo_servicio','varchar');
 		$this->setParametro('teclado_idioma','teclado_idioma','varchar');
 		$this->setParametro('mac','mac','varchar');
+        $this->setParametro('tipo_memoria_ram','tipo_memoria_ram','varchar');
+        $this->setParametro('tipo_almacenamiento','tipo_almacenamiento','varchar');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -275,7 +289,8 @@ class MODEquipo extends MODbase{
         $this->captura('fnombre','varchar');
         $this->captura('fci','varchar');
         $this->captura('fcodigo','varchar');
-        $this->captura('email_empresa','varchar');
+        $this->captura('femail_empresa','varchar');
+
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -316,8 +331,10 @@ class MODEquipo extends MODbase{
         $this->captura('fnombre','varchar');
         $this->captura('fci','varchar');
         $this->captura('fcodigo','varchar');
-        $this->captura('email_empresa','varchar');
+        $this->captura('femail_empresa','varchar');
         $this->captura('estado_reg','varchar');
+        $this->captura('tipo_desc','varchar');
+        $this->captura('teclado_idioma','varchar');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -353,6 +370,8 @@ class MODEquipo extends MODbase{
         $this->captura('asignador','varchar');
         $this->captura('fecha_entrega','date');
         $this->captura('accesorios2','varchar');
+        $this->captura('estado_equipo','varchar');
+        $this->captura('estado_numero','varchar');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -400,6 +419,48 @@ class MODEquipo extends MODbase{
 		$this->captura('monitor_estado_fisico','varchar');
 		$this->captura('tipo_desc','varchar');
 		$this->captura('mac','varchar');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+
+    function recuperarDatosDispositivosMoviles(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='gecom.ft_equipo_sel';
+        $this->transaccion='GC_DISMOV_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setCount(false);
+
+        $this->setParametro('id_funcionario','id_funcionario','int4');
+        $this->setParametro('id_funcionario_celular','id_funcionario_celular','int4');
+
+        //Definicion de la lista del resultado del query
+        $this->captura('id_equipo','int4');
+        $this->captura('desc_funcionario1','varchar');
+        $this->captura('nombre_unidad','varchar');
+        $this->captura('nombre_departamento','varchar');
+        $this->captura('tipo_contrato','varchar');
+        $this->captura('tipo','varchar');
+        $this->captura('tipo_desc','varchar');
+        $this->captura('marca','varchar');
+        $this->captura('modelo','varchar');
+        $this->captura('num_serie','varchar');
+        $this->captura('color','varchar');
+        $this->captura('rom','varchar');
+        $this->captura('ram','varchar');
+        $this->captura('imei','varchar');
+        $this->captura('imei2','varchar');
+        $this->captura('desc_accesorios','varchar');
+        $this->captura('estado_fisico','varchar');
+        $this->captura('fecha_asignacion','timestamp');
+        $this->captura('fecha_devolucion','timestamp');
+        $this->captura('estado','varchar');
+        $this->captura('asignador','varchar');
+        $this->captura('observaciones','varchar');
+
 
         //Ejecuta la instruccion
         $this->armarConsulta();

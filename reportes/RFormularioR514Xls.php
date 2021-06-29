@@ -113,7 +113,7 @@ class RFormularioFuncionarioXls
 
         $styleArrayGroupCg22 = array(
             'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                                 'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER),
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER),
             'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
         );
 
@@ -136,22 +136,27 @@ class RFormularioFuncionarioXls
         $this->docexcel->getActiveSheet()->getStyle("A$fila:P$fila")->applyFromArray($styleArrayGroup);
         $fila++;
 
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(0,$fila,'Tipo');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(1,$fila,'Estado');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(2,$fila,'Marca');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(3,$fila,'Modelo');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(4,$fila,'Estado Fisico');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(5,$fila,'Observaciones');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(6,$fila,'Color');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(7,$fila,'Imei');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(8,$fila,'Tamano Pantalla');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(9,$fila,'Tarjeta Video');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(10,$fila,'Teclado');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(11,$fila,'Procesador');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(12,$fila,'Memoria RAM');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(13,$fila,'Almacenamiento');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(14,$fila,'Sistema Operativo');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(15,$fila,'Accesorios');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(0,$fila,'NRO');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(1,$fila,'NOMBRE');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(2,$fila,'GERENCIA');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(3,$fila,'DEPARTAMENTO');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(4,$fila,'CONTRATO TRABAJADOR');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(5,$fila,'TIPO');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(6,$fila,'MARCA');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(7,$fila,'MODELO');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(8,$fila,'NUMERO DE SERIE');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(9,$fila,'COLOR');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(10,$fila,'ROM');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(11,$fila,'RAM');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(12,$fila,'IMEI 1');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(13,$fila,'IMEI 2');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(14,$fila,'ACCESORIOS');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(15,$fila,'CONDICION DEL EQUIPO');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(16,$fila,'FECHA DE ASIGNACION');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(17,$fila,'FECHA DE DEVOLUCION');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(18,$fila,'ESTADO (DEPOSITO U OPERATIVO)');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(19,$fila,'RESPONSABLE DE ASIGNACION');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(20,$fila,'OBSERVACIONES');
         $this->docexcel->getActiveSheet()->getStyle("A$fila:P$fila")->applyFromArray($styleArrayGroupCg);
 
         /*$this->docexcel->getActiveSheet()->getColumnDimension($this->equivalencias[0])->setWidth(20);
@@ -215,13 +220,13 @@ class RFormularioFuncionarioXls
             $this->docexcel->getActiveSheet()->getColumnDimension($columnID)->setWidth(20);
         }
         $this->docexcel->getActiveSheet()->getColumnDimension('F')->setWidth(30);
-        $this->docexcel->getActiveSheet()->getStyle("A12:P$fila".$this->docexcel->getActiveSheet()->getHighestRow())
+        $this->docexcel->getActiveSheet()->getStyle("A5:P$fila".$this->docexcel->getActiveSheet()->getHighestRow())
             ->getAlignment()->setWrapText(true);
 
     }
 
     function imprimeTitulo($sheet){
-        $titulo = "REPORTE DE EQUIPOS";
+        $titulo = "GERENCIA DE ADMINISTRACIÓN Y FINANZAS";
 
         $sheet->getStyle('B3')->getFont()->applyFromArray(array('bold'=>true,
             'size'=>12,

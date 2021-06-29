@@ -19,7 +19,7 @@
         <td style="background-color: #BDD7EE; font-size: 10px;">NOMBRE DEL SOLICITANTE</td>
         <td><?= $this->datos_persona[0]['solicitante'];?></td>
         <td style="background-color: #BDD7EE; font-size: 10px;">LINEA</td>
-        <td><?= $this->datos_persona[0]['numero'];?></td>
+        <td><?= $this->numero_linea;?></td>
     </tr>
     <tr>
         <td colspan="4" style="text-align: center ; background-color: #34495E; color: white; font-size: 10px;">DETALLE DEL EQUIPO</td>

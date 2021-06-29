@@ -41,6 +41,9 @@ DECLARE
     
     v_id_accesorio			integer;
     v_arr_accesorios     	integer[];
+    
+    v_id_funcionario_celular_movil integer;
+    v_id_funcionario_celular_equipo integer;
 BEGIN
 
     v_nombre_funcion = 'gecom.ft_funcionario_celular_ime';
@@ -277,7 +280,7 @@ BEGIN
                   v_parametros.codigo_inmovilizado,
                   'numero',
                   v_parametros.tipo_servicio
-                )RETURNING id_funcionario_celular into v_id_funcionario_celular;
+                )RETURNING id_funcionario_celular into v_id_funcionario_celular_movil;
                     
             UPDATE gecom.tnumero_celular n 
             set estado = 'asignado'
@@ -312,7 +315,7 @@ BEGIN
                   'equipo',
                   v_parametros.tipo_servicio,
                   v_parametros.id_accesorios
-              )RETURNING id_funcionario_celular into v_id_funcionario_celular;
+              )RETURNING id_funcionario_celular into v_id_funcionario_celular_equipo;
                 
               UPDATE gecom.tequipo e 
               set estado = 'asignado'
@@ -331,6 +334,21 @@ BEGIN
               set id_numero_celular = v_parametros.id_numero_celular
               where em.id_equipo = v_parametros.id_equipo 
               and em.estado_reg = 'activo' ;
+              
+              INSERT INTO gecom.tnumero_equipo
+              (
+                id_usuario_reg,
+                fecha_reg,
+                estado_reg,
+                id_funcionario_celular_numero,
+                id_funcionario_celular_equipo
+              ) VALUES (
+                p_id_usuario,
+                now(),
+                'activo',
+                v_id_funcionario_celular_movil,
+                v_id_funcionario_celular_equipo
+              );
                 
               INSERT INTO gecom.tequipo_historico
                 (
@@ -360,7 +378,7 @@ BEGIN
                   v_equipo.estado,
                   v_parametros.observaciones,
                   'asignacion',
-                  v_id_funcionario_celular
+                  v_id_funcionario_celular_equipo
                 );
 			
 			--Definicion de la respuesta

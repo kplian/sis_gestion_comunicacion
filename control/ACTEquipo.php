@@ -16,6 +16,8 @@ require_once(dirname(__FILE__).'/../reportes/RFormularioAsignacionXls.php');
 require_once(dirname(__FILE__).'/../reportes/RFormularioMovilXls.php');
 require_once(dirname(__FILE__).'/../reportes/RFormAsignacion.php');
 require_once(dirname(__FILE__).'/../reportes/RFormEquipo.php');
+require_once(dirname(__FILE__).'/../reportes/RFormularioFuncionarioXls.php');
+require_once(dirname(__FILE__).'/../reportes/RFormularioRegistroDispositivosXls.php');
 
 class ACTEquipo extends ACTbase{    
             
@@ -145,8 +147,10 @@ class ACTEquipo extends ACTbase{
 
         if($this->objParam->getParametro('tipo_reporte')=='Formulario'){
             $dataSource = $this->recuperarDatos();
-        }elseif ($this->objParam->getParametro('tipo_reporte')=='Formulario'){
+        }elseif ($this->objParam->getParametro('tipo_reporte')=='Equipos Persona'){
             $dataSource = $this->recuperarDatosFuncionario();
+        }elseif ($this->objParam->getParametro('tipo_reporte')=='Registro de Dispositivos moviles'){
+            $dataSource = $this->recuperarDatosDispositivosMoviles();
         }
 
         //parametros basicos
@@ -161,6 +165,12 @@ class ACTEquipo extends ACTbase{
 
         if($this->objParam->getParametro('tipo_reporte')=='Formulario'){
             $reporte = new RFormularioAsignacionXls($this->objParam);
+            $reporte->setFechas($this->objParam->getParametro('desde'),$this->objParam->getParametro('hasta'));
+        }elseif ($this->objParam->getParametro('tipo_reporte')=='Equipos Persona'){
+            $reporte = new RFormularioFuncionarioXls($this->objParam);
+            $reporte->setFechas($this->objParam->getParametro('desde'),$this->objParam->getParametro('hasta'));
+        }elseif ($this->objParam->getParametro('tipo_reporte')=='Registro de Dispositivos moviles'){
+            $reporte = new RFormularioRegistroDispositivosXls($this->objParam);
             $reporte->setFechas($this->objParam->getParametro('desde'),$this->objParam->getParametro('hasta'));
         }
 
@@ -347,7 +357,19 @@ class ACTEquipo extends ACTbase{
             exit;
         }
     }
-            
+
+    function recuperarDatosDispositivosMoviles()
+    {
+        $this->objFunc = $this->create('MODEquipo');
+        $cbteHeader = $this->objFunc->recuperarDatosDispositivosMoviles($this->objParam);
+        if ($cbteHeader->getTipo() == 'EXITO') {
+            return $cbteHeader;
+        } else {
+            $cbteHeader->imprimirRespuesta($cbteHeader->generarJson());
+            exit;
+        }
+    }
+
 }
 
 ?>

@@ -106,13 +106,16 @@ BEGIN
 			v_consulta:='select count(numcel.id_numero_celular)
             			from ( select numcel.*
 					    from gecom.tnumero_celular numcel
-					    inner join segu.tusuario usu1 on usu1.id_usuario = numcel.id_usuario_reg
-                        inner join param.vproveedor pro on pro.id_proveedor = numcel.id_proveedor
+						inner join segu.tusuario usu1 on usu1.id_usuario = numcel.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = numcel.id_usuario_mod
                         left join gecom.tcuenta_proveedor cp on numcel.id_cuenta = cp.id_cuenta
+                        left join param.vproveedor pro on pro.id_proveedor = cp.id_proveedor
+                        left join gecom.tequipo_movil em on numcel.id_numero_celular = em.id_numero_celular and em.estado_reg = ''activo''
+                        left join gecom.tequipo equ on em.id_equipo = equ.id_equipo
+                        LEFT JOIN param.vtipo_cc  tcc ON numcel.id_tipo_cc = tcc.id_tipo_cc
                         left join gecom.tnumero_servicio ns on numcel.id_numero_celular = ns.id_numero_celular
 						left join gecom.tservicio s on ns.id_servicio = s.id_servicio
-					    where numcel.estado_reg = ''activo'' and '||v_parametros.filtro;
+				        where numcel.estado_reg = ''activo'' and '||v_parametros.filtro;
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||' 

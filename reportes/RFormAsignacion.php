@@ -21,6 +21,7 @@ class RFormAsignacion extends  ReportePDF {
     var $datos_estructura;
     var $imagenes;
     var $host;
+    var $numero_linea;
 	function datosHeader ( $detalle) {
         $this->SetMargins(16, 30, 16);
         $this->datos_proyecto = $detalle->getParametro('datos_proyecto');
@@ -44,7 +45,13 @@ class RFormAsignacion extends  ReportePDF {
         //var_dump('YAMILLLLLL ',  $this->host);
 
         $this->SetHeaderMargin(15); //margen top header
-		 
+        if(($this->datos_estructura == 'asignacion' && $this->datos_persona[0]['estado_numero'] == 'activo' ) ||
+           ($this->datos_estructura == 'devolucion' && $this->datos_persona[0]['estado_numero'] == 'inactivo' )){
+            $this->numero_linea = $this->datos_persona[0]['numero'];
+        }else{
+            $this->numero_linea = '';
+        }
+
 	}
 	
 	function Header() {

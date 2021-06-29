@@ -42,6 +42,8 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
                 this.Cmp.almacenamiento.hide();
                 this.Cmp.sistema_operativo.hide();
 				this.Cmp.mac.hide();
+                this.Cmp.tipo_memoria_ram.hide();
+                this.Cmp.tipo_almacenamiento.hide();
             }else if (["laptop", "pc"].includes(r.data.codigo)){
                 this.Cmp.id_numero_celular.hide();
                 this.Cmp.color.hide();
@@ -60,8 +62,24 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
                 this.Cmp.almacenamiento.show();
                 this.Cmp.sistema_operativo.show();
 				this.Cmp.mac.hide();
+                this.Cmp.tipo_memoria_ram.show();
+                this.Cmp.tipo_almacenamiento.show();
             }else if (["telfip"].includes(r.data.codigo)){
 				this.Cmp.mac.show();
+                this.Cmp.id_numero_celular.hide();
+                this.Cmp.color.hide();
+                this.Cmp.imei.hide();
+                this.Cmp.sn.hide();
+                this.Cmp.tamano_pantalla.hide();
+                this.Cmp.tarjeta_video.hide();
+                this.Cmp.teclado.hide();
+                this.Cmp.teclado_idioma.hide();
+                this.Cmp.procesador.hide();
+                this.Cmp.memoria_ram.hide();
+                this.Cmp.almacenamiento.hide();
+                this.Cmp.sistema_operativo.hide();
+                this.Cmp.tipo_memoria_ram.hide();
+                this.Cmp.tipo_almacenamiento.hide();
 			}else{
                 this.Cmp.id_numero_celular.hide();
                 this.Cmp.color.hide();
@@ -76,6 +94,8 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
                 this.Cmp.almacenamiento.hide();
                 this.Cmp.sistema_operativo.hide();
 				this.Cmp.mac.hide();
+                this.Cmp.tipo_memoria_ram.hide();
+                this.Cmp.tipo_almacenamiento.hide();
             }
         },this);
     },
@@ -113,7 +133,7 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
                 name:'tipo',
                 fieldLabel : 'Tipo',
                 resizable:true,
-                allowBlank:true,
+                allowBlank:false,
                 emptyText:'Elija una opción...',
                 store: new Ext.data.JsonStore({
                     url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
@@ -132,7 +152,7 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
                 enableMultiSelect:true,
                 valueField: 'codigo',
                 displayField: 'descripcion',
-                gdisplayField: 'escribe_desc',
+                gdisplayField: 'tipo_desc',
                 triggerAction: 'all',
                 lazyRender:true,
                 mode:'remote',
@@ -206,14 +226,44 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
             form: true
         },
         {
-            config:{
-                name: 'marca',
-                fieldLabel: 'marca',
-                allowBlank: true,
+            config : {
+                name:'marca',
+                fieldLabel : 'Marca',
+                resizable:true,
+                allowBlank:false,
+                emptyText:'Elija una opción...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                    id: 'id_catalogo',
+                    root: 'datos',
+                    sortInfo:{
+                        field: 'descripcion',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_catalogo','codigo','descripcion'],
+                    // turn on remote sorting
+                    remoteSort: true,
+                    baseParams: {par_filtro:'descripcion',cod_subsistema:'GECOM',catalogo_tipo:'marca'}
+                }),
+                enableMultiSelect:true,
+                valueField: 'codigo',
+                displayField: 'descripcion',
+                gdisplayField: 'marca_desc',
+                triggerAction: 'all',
+                lazyRender:true,
+                mode:'remote',
+                pageSize:15,
+                queryDelay: 1000,
                 anchor: '80%',
                 gwidth: 100,
-            	maxLength:200
+                listeners: {
+                    beforequery: function(qe){
+                        delete qe.combo.lastQuery;
+                    }
+                },
             },
+<<<<<<< HEAD
                 type:'TextField',
 				bottom_filter : true,
                 filters:{pfiltro:'equ.marca',type:'string'},
@@ -221,6 +271,14 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
                 grid:true,
                 form:true
 		},
+=======
+            type:'ComboBox',
+            filters:{pfiltro:'marca_desc',type:'string'},
+            id_grupo:0,
+            grid:true,
+            form:true
+        },
+>>>>>>> remotes/origin/test
         {
             config:{
                 name: 'modelo',
@@ -244,7 +302,7 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
                 allowBlank: true,
                 hidden: true,
                 anchor: '80%',
-                gwidth: 300
+                gwidth: 150
             },
             type:'TextField',
             filters:{pfiltro:'equ.mac',type:'string'},
@@ -296,7 +354,7 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
         {
             config:{
                 name: 'num_serie',
-                fieldLabel: 'num_serie',
+                fieldLabel: 'Número de serie',
                 allowBlank: false,
                 anchor: '80%',
                 gwidth: 100,
@@ -355,17 +413,46 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
             form:true
         },
         {
-            config:{
-                name: 'tamano_pantalla',
-                fieldLabel: 'Tamaño Pantalla',
-                allowBlank: true,
-                hidden: true,
-                anchor: '80%',
-                gwidth: 100
+            config : {
+                name:'tamano_pantalla',
+                fieldLabel : 'Tamaño Pantalla (plg)',
+                resizable:true,
+                allowBlank:true,
+                emptyText:'Elija una opción...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                    id: 'id_catalogo',
+                    root: 'datos',
+                    sortInfo:{
+                        field: 'descripcion',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_catalogo','codigo','descripcion'],
+                    // turn on remote sorting
+                    remoteSort: true,
+                    baseParams: {par_filtro:'descripcion',cod_subsistema:'GECOM',catalogo_tipo:'pantalla'}
+                }),
+                enableMultiSelect:true,
+                valueField: 'codigo',
+                displayField: 'descripcion',
+                gdisplayField: 'tamano_pantalla_desc',
+                triggerAction: 'all',
+                lazyRender:true,
+                mode:'remote',
+                pageSize:15,
+                queryDelay: 1000,
+                anchor: '50%',
+                gwidth: 100,
+                listeners: {
+                    beforequery: function(qe){
+                        delete qe.combo.lastQuery;
+                    }
+                },
             },
-            type:'TextField',
-            filters:{pfiltro:'equ.tamano_pantalla',type:'string'},
-            id_grupo:1,
+            type:'ComboBox',
+            filters:{pfiltro:'tamano_pantalla_desc',type:'string'},
+            id_grupo:0,
             grid:true,
             form:true
         },
@@ -400,95 +487,299 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
             form:true
         },
         {
-            config:{
-                name: 'teclado',
-                fieldLabel: 'Teclado',
-                allowBlank: true,
-                hidden: true,
-                anchor: '80%',
-                gwidth: 100
+            config : {
+                name:'teclado',
+                fieldLabel : 'Teclado',
+                resizable:true,
+                allowBlank:true,
+                emptyText:'Elija una opción...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                    id: 'id_catalogo',
+                    root: 'datos',
+                    sortInfo:{
+                        field: 'descripcion',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_catalogo','codigo','descripcion'],
+                    // turn on remote sorting
+                    remoteSort: true,
+                    baseParams: {par_filtro:'descripcion',cod_subsistema:'GECOM',catalogo_tipo:'teclado'}
+                }),
+                enableMultiSelect:true,
+                valueField: 'codigo',
+                displayField: 'descripcion',
+                gdisplayField: 'teclado_desc',
+                triggerAction: 'all',
+                lazyRender:true,
+                mode:'remote',
+                pageSize:15,
+                queryDelay: 1000,
+                anchor: '50%',
+                gwidth: 100,
+                listeners: {
+                    beforequery: function(qe){
+                        delete qe.combo.lastQuery;
+                    }
+                },
             },
-            type:'TextField',
-            filters:{pfiltro:'equ.teclado',type:'string'},
-            id_grupo:1,
+            type:'ComboBox',
+            filters:{pfiltro:'teclado_desc',type:'string'},
+            id_grupo:0,
             grid:true,
             form:true
         },
         {
-            config:{
-                name: 'teclado_idioma',
-                fieldLabel: 'Idioma del Teclado',
-                allowBlank: true,
-                hidden: true,
-                anchor: '80%',
-                gwidth: 100
+            config : {
+                name:'teclado_idioma',
+                fieldLabel : 'Idioma del Teclado',
+                resizable:true,
+                allowBlank:true,
+                emptyText:'Elija una opción...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                    id: 'id_catalogo',
+                    root: 'datos',
+                    sortInfo:{
+                        field: 'descripcion',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_catalogo','codigo','descripcion'],
+                    // turn on remote sorting
+                    remoteSort: true,
+                    baseParams: {par_filtro:'descripcion',cod_subsistema:'GECOM',catalogo_tipo:'teclado_idioma'}
+                }),
+                enableMultiSelect:true,
+                valueField: 'codigo',
+                displayField: 'descripcion',
+                gdisplayField: 'teclado_idioma_desc',
+                triggerAction: 'all',
+                lazyRender:true,
+                mode:'remote',
+                pageSize:15,
+                queryDelay: 1000,
+                anchor: '50%',
+                gwidth: 100,
+                listeners: {
+                    beforequery: function(qe){
+                        delete qe.combo.lastQuery;
+                    }
+                },
             },
-            type:'TextField',
-            filters:{pfiltro:'equ.teclado_idioma',type:'string'},
-            id_grupo:1,
+            type:'ComboBox',
+            filters:{pfiltro:'teclado_idioma_desc',type:'string'},
+            id_grupo:0,
+            grid:true,
+            form:true
+        },
+        {
+            config : {
+                name:'tipo_memoria_ram',
+                fieldLabel : 'Tipo Memoria RAM',
+                resizable:true,
+                allowBlank:true,
+                emptyText:'Elija una opción...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                    id: 'id_catalogo',
+                    root: 'datos',
+                    sortInfo:{
+                        field: 'descripcion',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_catalogo','codigo','descripcion'],
+                    // turn on remote sorting
+                    remoteSort: true,
+                    baseParams: {par_filtro:'descripcion',cod_subsistema:'GECOM',catalogo_tipo:'ram'}
+                }),
+                enableMultiSelect:true,
+                valueField: 'codigo',
+                displayField: 'descripcion',
+                gdisplayField: 'tipo_memoria_ram_desc',
+                triggerAction: 'all',
+                lazyRender:true,
+                mode:'remote',
+                pageSize:15,
+                queryDelay: 1000,
+                anchor: '50%',
+                gwidth: 100,
+                listeners: {
+                    beforequery: function(qe){
+                        delete qe.combo.lastQuery;
+                    }
+                },
+            },
+            type:'ComboBox',
+            filters:{pfiltro:'tipo_memoria_ram_desc',type:'string'},
+            id_grupo:0,
             grid:true,
             form:true
         },
         {
             config:{
                 name: 'memoria_ram',
-                fieldLabel: 'Memoria RAM',
+                fieldLabel: 'Memoria RAM (GB)',
                 allowBlank: true,
                 hidden: true,
                 anchor: '80%',
                 gwidth: 100
             },
-            type:'TextField',
+            type:'NumberField',
             filters:{pfiltro:'equ.sn',type:'string'},
             id_grupo:1,
             grid:true,
             form:true
         },
         {
+            config : {
+                name:'tipo_almacenamiento',
+                fieldLabel : 'Tipo de Almacenamiento',
+                resizable:true,
+                allowBlank:true,
+                emptyText:'Elija una opción...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                    id: 'id_catalogo',
+                    root: 'datos',
+                    sortInfo:{
+                        field: 'descripcion',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_catalogo','codigo','descripcion'],
+                    // turn on remote sorting
+                    remoteSort: true,
+                    baseParams: {par_filtro:'descripcion',cod_subsistema:'GECOM',catalogo_tipo:'almacenamiento'}
+                }),
+                enableMultiSelect:true,
+                valueField: 'codigo',
+                displayField: 'descripcion',
+                gdisplayField: 'tipo_almacenamiento_desc',
+                triggerAction: 'all',
+                lazyRender:true,
+                mode:'remote',
+                pageSize:15,
+                queryDelay: 1000,
+                anchor: '50%',
+                gwidth: 100,
+                listeners: {
+                    beforequery: function(qe){
+                        delete qe.combo.lastQuery;
+                    }
+                },
+            },
+            type:'ComboBox',
+            filters:{pfiltro:'tipo_almacenamiento_desc',type:'string'},
+            id_grupo:0,
+            grid:true,
+            form:true
+        },
+        {
             config:{
                 name: 'almacenamiento',
-                fieldLabel: 'Almacenamiento',
+                fieldLabel: 'Almacenamiento (GB)',
                 allowBlank: true,
                 hidden: true,
                 anchor: '80%',
                 gwidth: 100
             },
-            type:'TextField',
+            type:'NumberField',
             filters:{pfiltro:'equ.almacenamiento',type:'string'},
             id_grupo:1,
             grid:true,
             form:true
         },
         {
-            config:{
-                name: 'sistema_operativo',
-                fieldLabel: 'Sistema Operativo',
-                allowBlank: true,
-                hidden: true,
-                anchor: '80%',
-                gwidth: 100
+            config : {
+                name:'sistema_operativo',
+                fieldLabel : 'Sistema Operativo',
+                resizable:true,
+                allowBlank:true,
+                emptyText:'Elija una opción...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                    id: 'id_catalogo',
+                    root: 'datos',
+                    sortInfo:{
+                        field: 'descripcion',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_catalogo','codigo','descripcion'],
+                    // turn on remote sorting
+                    remoteSort: true,
+                    baseParams: {par_filtro:'descripcion',cod_subsistema:'GECOM',catalogo_tipo:'so'}
+                }),
+                enableMultiSelect:true,
+                valueField: 'codigo',
+                displayField: 'descripcion',
+                gdisplayField: 'sistema_operativo_desc',
+                triggerAction: 'all',
+                lazyRender:true,
+                mode:'remote',
+                pageSize:15,
+                queryDelay: 1000,
+                anchor: '50%',
+                gwidth: 100,
+                listeners: {
+                    beforequery: function(qe){
+                        delete qe.combo.lastQuery;
+                    }
+                },
             },
-            type:'TextField',
-            filters:{pfiltro:'equ.sistema_operativo',type:'string'},
-            id_grupo:1,
+            type:'ComboBox',
+            filters:{pfiltro:'sistema_operativo_desc',type:'string'},
+            id_grupo:0,
             grid:true,
             form:true
         },
-		{
-            config:{
-                name: 'estado_fisico',
-                fieldLabel: 'Estado Fisico',
-                allowBlank: true,
-                anchor: '80%',
+        {
+            config : {
+                name:'estado_fisico',
+                fieldLabel : 'Estado Fisico',
+                resizable:true,
+                allowBlank:true,
+                emptyText:'Elija una opción...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                    id: 'id_catalogo',
+                    root: 'datos',
+                    sortInfo:{
+                        field: 'descripcion',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_catalogo','codigo','descripcion'],
+                    // turn on remote sorting
+                    remoteSort: true,
+                    baseParams: {par_filtro:'descripcion',cod_subsistema:'GECOM',catalogo_tipo:'estado_fisico'}
+                }),
+                enableMultiSelect:true,
+                valueField: 'codigo',
+                displayField: 'descripcion',
+                gdisplayField: 'estado_fisico_desc',
+                triggerAction: 'all',
+                lazyRender:true,
+                mode:'remote',
+                pageSize:15,
+                queryDelay: 1000,
+                anchor: '50%',
                 gwidth: 100,
-            	maxLength:30
+                listeners: {
+                    beforequery: function(qe){
+                        delete qe.combo.lastQuery;
+                    }
+                },
             },
-                type:'TextField',
-                filters:{pfiltro:'equ.estado_fisico',type:'string'},
-                id_grupo:1,
-                grid:true,
-                form:true
-		},
+            type:'ComboBox',
+            filters:{pfiltro:'estado_fisico_desc',type:'string'},
+            id_grupo:0,
+            grid:true,
+            form:true
+        },
         {
             config:{
                 name: 'observaciones',
@@ -655,6 +946,17 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
         {name:'id_numero_celular', type: 'numeric'},
         {name:'numero', type: 'string'},
 		{name:'mac', type: 'string'},
+        {name:'marca_desc', type: 'string'},
+        {name:'estado_fisico_desc', type: 'string'},
+        {name:'tamano_pantalla_desc', type: 'string'},
+        {name:'teclado_idioma_desc', type: 'string'},
+        {name:'tipo_memoria_ram', type: 'string'},
+        {name:'tipo_memoria_ram_desc', type: 'string'},
+        {name:'tipo_almacenamiento', type: 'string'},
+        {name:'tipo_almacenamiento_desc', type: 'string'},
+        {name:'sistema_operativo_desc', type: 'string'},
+        {name:'teclado_desc', type: 'string'},
+
     ],
     sortInfo:{
         field: 'id_equipo',
@@ -677,6 +979,8 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
         this.Cmp.almacenamiento.hide();
         this.Cmp.sistema_operativo.hide();
         this.Cmp.accesorios.hide();
+        this.Cmp.tipo_memoria_ram.hide();
+        this.Cmp.tipo_almacenamiento.hide();
     },
     onButtonEdit: function() {
         Phx.vista.Equipo.superclass.onButtonEdit.call(this);
@@ -696,6 +1000,8 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
             this.Cmp.almacenamiento.hide();
             this.Cmp.sistema_operativo.hide();
             this.Cmp.accesorios.hide();
+            this.Cmp.tipo_memoria_ram.hide();
+            this.Cmp.tipo_almacenamiento.hide();
         }else if (["laptop", "pc"].includes(sel.tipo)){
             this.Cmp.id_numero_celular.hide();
             this.Cmp.color.hide();
@@ -714,6 +1020,8 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
             this.Cmp.almacenamiento.show();
             this.Cmp.sistema_operativo.show();
             this.Cmp.accesorios.hide();
+            this.Cmp.tipo_memoria_ram.show();
+            this.Cmp.tipo_almacenamiento.show();
         }else{
             this.Cmp.id_numero_celular.hide();
             this.Cmp.color.hide();
@@ -728,6 +1036,8 @@ Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
             this.Cmp.almacenamiento.hide();
             this.Cmp.sistema_operativo.hide();
             this.Cmp.accesorios.hide();
+            this.Cmp.tipo_memoria_ram.hide();
+            this.Cmp.tipo_almacenamiento.hide();
         }
     },
     }
