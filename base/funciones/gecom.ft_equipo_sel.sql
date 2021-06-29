@@ -105,7 +105,41 @@ BEGIN
                                   LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
                                   WHERE c.codigo = em.tipo_servicio and ct.tabla = ''tservicio'' and ct.nombre = ''tipo_servicio'') AS tipo_servicio_desc,
                         ep.teclado_idioma,
-                        ep.mac    
+                        ep.mac,
+                        (select c.descripcion
+                                  from param.tcatalogo c
+                                  LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                  WHERE c.codigo = equ.marca and ct.tabla = ''tequipo'' and ct.nombre = ''marca'')::varchar AS marca_desc,
+                        (select c.descripcion
+                                  from param.tcatalogo c
+                                  LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                  WHERE c.codigo = equ.estado_fisico and ct.tabla = ''tequipo'' and ct.nombre = ''estado_fisico'')::varchar AS estado_fisico_desc,
+                        (select c.descripcion
+                                  from param.tcatalogo c
+                                  LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                  WHERE c.codigo = ep.tamano_pantalla and ct.tabla = ''tequipo'' and ct.nombre = ''pantalla'')::varchar AS tamano_pantalla_desc,
+                        (select c.descripcion
+                                  from param.tcatalogo c
+                                  LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                  WHERE c.codigo = ep.teclado and ct.tabla = ''tequipo'' and ct.nombre = ''teclado'')::varchar AS teclado_desc,
+                        (select c.descripcion
+                                  from param.tcatalogo c
+                                  LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                  WHERE c.codigo = ep.teclado_idioma and ct.tabla = ''tequipo'' and ct.nombre = ''teclado_idioma'')::varchar AS teclado_idioma_desc,          
+                        ep.tipo_memoria_ram,
+                        (select c.descripcion
+                                  from param.tcatalogo c
+                                  LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                  WHERE c.codigo = ep.tipo_memoria_ram and ct.tabla = ''tequipo'' and ct.nombre = ''ram'')::varchar AS tipo_memoria_ram_desc,
+                        ep.tipo_almacenamiento,
+                        (select c.descripcion
+                                  from param.tcatalogo c
+                                  LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                  WHERE c.codigo = ep.tipo_almacenamiento and ct.tabla = ''tequipo'' and ct.nombre = ''almacenamiento'')::varchar AS tipo_almacenamiento_desc,
+                        (select c.descripcion
+                                  from param.tcatalogo c
+                                  LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                  WHERE c.codigo = ep.sistema_operativo and ct.tabla = ''tequipo'' and ct.nombre = ''so'')::varchar AS sistema_operativo_desc
                         FROM gecom.tequipo equ
                         JOIN segu.tusuario usu1 ON usu1.id_usuario = equ.id_usuario_reg
                         LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = equ.id_usuario_mod
@@ -134,11 +168,15 @@ BEGIN
     ELSIF (p_transaccion='GC_EQU_CONT') THEN
 
         BEGIN
+        
             --Sentencia de la consulta de conteo de registros
-            v_consulta:='SELECT COUNT(id_equipo)
+            v_consulta:='SELECT COUNT(equ.id_equipo)
                          FROM gecom.tequipo equ
                          JOIN segu.tusuario usu1 ON usu1.id_usuario = equ.id_usuario_reg
                          LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = equ.id_usuario_mod
+                         LEFT JOIN gecom.tequipo_movil em ON equ.id_equipo = em.id_equipo
+                         LEFT JOIN gecom.tequipo_pc ep ON equ.id_equipo = ep.id_equipo
+                         LEFT JOIN gecom.tnumero_celular numcel ON em.id_numero_celular = numcel.id_numero_celular
                          WHERE ';
             
             --Definicion de la respuesta            
@@ -303,7 +341,10 @@ BEGIN
     		--Sentencia de la consulta
 			v_consulta:= 'select e.id_equipo,
                                  e.tipo,
-                                 e.marca,
+                                 (select c.descripcion
+                                    from param.tcatalogo c
+                                    LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                    WHERE c.codigo = e.marca and ct.tabla = ''tequipo'' and ct.nombre = ''marca'')::varchar as marca,
                                  e.modelo,
                                  e.estado_fisico,
                                  e.estado,
@@ -314,15 +355,45 @@ BEGIN
                                  ep.tarjeta_video,
                                  ep.teclado,
                                  ep.procesador,
-                                 ep.memoria_ram,
-                                 ep.almacenamiento,
-                                 ep.sistema_operativo,
-                                 ep.accesorios,
+                                 (ep.memoria_ram ||'' GB ''|| (select c.descripcion
+                                                            from param.tcatalogo c
+                                                            LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                                            WHERE c.codigo = ep.tipo_memoria_ram and ct.tabla = ''tequipo'' and ct.nombre = ''ram''))::varchar as memoria_ram,
+                                 (ep.almacenamiento ||'' GB ''|| (select c.descripcion
+                                                            from param.tcatalogo c
+                                                            LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                                            WHERE c.codigo = ep.tipo_almacenamiento and ct.tabla = ''tequipo'' and ct.nombre = ''almacenamiento''))::varchar as almacenamiento,
+                                 (select c.descripcion
+                                    from param.tcatalogo c
+                                    LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                    WHERE c.codigo = ep.sistema_operativo and ct.tabla = ''tequipo'' and ct.nombre = ''so'')::varchar as sistema_operativo,
+                                 (SELECT  array_to_string(array_agg(ac.resumen), '' | ''::text)::character varying
+                                   from 
+                                   (select ac.*,
+                                           (ac.nombre||'' ''||ac.marca||'' ''||ac.modelo||'' - ''||ac.num_serie)::varchar as resumen
+                                    from gecom.taccesorio ac) as ac
+                                   where ac.id_accesorio  in ( SELECT element::integer
+                                                                  FROM UNNEST( string_to_array(fc.id_accesorios,'',''))
+                                                                  as element)
+                                   ) as accesorios,
                                  vp.desc_funcionario1::varchar as fnombre,
                                  vp.ci::varchar                as fci,
                                  vp.codigo::varchar            as fcodigo,
                                  vp.email_empresa::varchar     as femail_empresa,
-                                 fc.estado_reg
+                                 fc.estado_reg,
+                                 case
+                                  when e.tipo in (''movil'',''dongle'',''gps'',''centel'') then
+                                      (select c.descripcion
+                                        from param.tcatalogo c
+                                        LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                        WHERE c.codigo = e.tipo and ct.tabla = ''tequipo'' and ct.nombre = ''tipo_equipo_movil'')
+                                  else
+                                      (select c.descripcion
+                                        from param.tcatalogo c
+                                        LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                        WHERE c.codigo = e.tipo and ct.tabla = ''tequipo'' and ct.nombre = ''tipo_equipo'')
+                              	end::varchar AS tipo_desc,
+                                ep.teclado_idioma
                             from gecom.tequipo e
                             left join gecom.tequipo_movil em on e.id_equipo = em.id_equipo
                             left join gecom.tequipo_pc ep on e.id_equipo = ep.id_equipo
@@ -331,7 +402,7 @@ BEGIN
                            where fc.id_funcionario = '||v_parametros.id_funcionario||' ';
 
             --v_consulta:=v_consulta||' order by d.id_institucion, d.id_deuda, d.monto_solicitado, p.fecha ';
-			v_consulta:=v_consulta||' order by e.tipo, e.estado ';
+			v_consulta:=v_consulta||' order by fc.estado_reg, e.tipo, e.estado ';
             
 			--Devuelve la respuesta
 			return v_consulta;
@@ -353,12 +424,10 @@ BEGIN
                          where fc.id_funcionario_celular = v_parametros.id_funcionario_celular
                          and fc.tipo_asignacion_equipo = 'numero') then
                          
-               select  fi.id_funcionario_celular into v_id_funcionario_celular
-                 from gecom.tfuncionario_celular fcc
-                 join gecom.tequipo_movil em on fcc.id_numero_celular = em.id_numero_celular and em.estado_reg = 'activo'
-                 join gecom.tfuncionario_celular fi on em.id_equipo = fi.id_equipo and fi.estado_reg = 'activo'
-                 where fcc.id_funcionario_celular = v_parametros.id_funcionario_celular
-                   and fcc.estado_reg = 'activo';     
+               select ne.id_funcionario_celular_equipo into v_id_funcionario_celular
+               from gecom.tnumero_equipo ne 
+               where ne.id_funcionario_celular_numero = v_parametros.id_funcionario_celular
+               order by ne.fecha_reg desc LIMIT 1;
             	 
             else
             	v_id_funcionario_celular = v_parametros.id_funcionario_celular;
@@ -385,12 +454,16 @@ BEGIN
                                         from gecom.taccesorio ac) as ac
                                where ac.id_accesorio in
                                      (SELECT element ::integer
-                                        FROM UNNEST(string_to_array(fc.id_accesorios, '','')) as element)) as accesorios2
+                                        FROM UNNEST(string_to_array(fc.id_accesorios, '','')) as element)) as accesorios2,
+                           fc.estado_reg as estado_equipo,
+                           fcn.estado_reg as estado_numero             
                       from gecom.tfuncionario_celular fc
                       join orga.vfuncionario f on fc.id_funcionario = f.id_funcionario
                       join gecom.tequipo e on fc.id_equipo = e.id_equipo
                       left join gecom.tequipo_movil em on e.id_equipo = em.id_equipo and em.estado_reg = ''activo''
-                      left join gecom.tnumero_celular nc on em.id_numero_celular = nc.id_numero_celular
+                      left join gecom.tnumero_equipo ne on fc.id_funcionario_celular = ne.id_funcionario_celular_equipo
+                      left join gecom.tfuncionario_celular fcn on ne.id_funcionario_celular_numero = fcn.id_funcionario_celular
+                      left join gecom.tnumero_celular nc on fcn.id_numero_celular = nc.id_numero_celular
                       left join gecom.tcuenta_proveedor cp on nc.id_cuenta = cp.id_cuenta
                       left join param.vproveedor pro on pro.id_proveedor = cp.id_proveedor
                       LEFT JOIN param.vtipo_cc tcc ON nc.id_tipo_cc = tcc.id_tipo_cc
@@ -406,6 +479,89 @@ BEGIN
 
 		end;
     
+    /*********************************
+ 	#TRANSACCION:  'GC_DISMOV_SEL'
+ 	#DESCRIPCION:	Consulta de datos para reporte asignacion
+ 	#AUTOR:		Yamil Medina
+ 	#FECHA:		07-05-2021 10:10:19
+	***********************************/
+
+	elsif(p_transaccion='GC_DISMOV_SEL')then
+
+    	begin
+        	
+    		--Sentencia de la consulta
+			v_consulta:= ' select e.id_equipo,
+                                 f.desc_funcionario1 ::varchar,
+                                 uo.nombre_unidad::varchar,
+                                 uo2.nombre_unidad::varchar as nombre_departamento,
+                                 tco.nombre::varchar as tipo_contrato,
+                                 e.tipo,
+                                 (select c.descripcion
+                                    from param.tcatalogo c
+                                    LEFT JOIN param.tcatalogo_tipo ct ON c.id_catalogo_tipo = ct.id_catalogo_tipo
+                                   WHERE c.codigo = e.tipo
+                                     and ct.tabla = ''tequipo''
+                                     and ct.nombre = ''tipo_equipo_movil'')::varchar AS tipo_desc,
+                                 e.marca,
+                                 e.modelo,
+                                 e.num_serie,
+                                 em.color,
+                                 ''''::varchar as rom,
+                                 ''''::varchar as ram,
+                                 em.imei,
+                                 em.imei2,
+                                 (SELECT array_to_string(array_agg(ac.resumen), ''<br>'' ::text) ::character varying
+                                    from (select ac.*,
+                                                 (ac.nombre || '' '' || ac.marca || '' '' || ac.modelo ||
+                                                 '' - '' || ac.num_serie) ::varchar as resumen
+                                            from gecom.taccesorio ac) as ac
+                                   where ac.id_accesorio in
+                                         (SELECT element ::integer
+                                            FROM UNNEST(string_to_array(fc.id_accesorios, '','')) as element)) as desc_accesorios,
+                                 e.estado_fisico,
+                                 (select eh.fecha_reg
+                                    from gecom.tequipo_historico eh
+                                   where eh.id_equipo = e.id_equipo
+                                     and eh.id_funcionario_celular = fc.id_funcionario_celular
+                                     and eh.operacion = ''asignacion'') as fecha_asignacion,
+                                 (select eh.fecha_reg
+                                    from gecom.tequipo_historico eh
+                                   where eh.id_equipo = e.id_equipo
+                                     and eh.id_funcionario_celular = fc.id_funcionario_celular
+                                     and eh.operacion = ''devolucion'') as fecha_devolucion,
+                                 e.estado,
+                                 (p.nombre || '' '' || p.apellido_paterno || '' '' || p.apellido_materno) ::varchar as asignador,
+                                 e.observaciones
+                            from gecom.tequipo e
+                            left join gecom.tequipo_movil em on e.id_equipo = em.id_equipo
+                            
+                            left join gecom.tfuncionario_celular fc on e.id_equipo = fc.id_equipo and fc.estado_reg = ''activo''
+                            left join orga.vfuncionario_persona vp on fc.id_funcionario = vp.id_funcionario
+                            left join segu.tusuario u on fc.id_usuario_reg = u.id_usuario
+                            left join segu.tpersona p on u.id_persona = p.id_persona
+                            left join orga.vfuncionario f on fc.id_funcionario = f.id_funcionario
+                            left join orga.tuo_funcionario tuofun on fc.id_funcionario = tuofun.id_funcionario
+                            and tuofun.id_uo_funcionario =
+                                 (select max(tu.id_uo_funcionario)
+                                    from orga.tuo_funcionario tu
+                                   where tu.id_funcionario = fc.id_funcionario
+                                     and now()::date between tu.fecha_asignacion 
+                                     and COALESCE(tu.fecha_finalizacion, (now() ::date + interval ''1 year'') ::date))
+                            left join orga.tuo uo on orga.f_get_uo_gerencia(tuofun.id_uo, NULL, NULL) = uo.id_uo
+                             
+                            left join orga.tuo uo2 on orga.f_get_uo_departamento(tuofun.id_uo, fc.id_funcionario, NULL) = uo2.id_uo 
+                            left join orga.tcargo tcar on tcar.id_cargo = tuofun.id_cargo
+                            left join orga.ttipo_contrato tco on tco.id_tipo_contrato = tcar.id_tipo_contrato
+                           where e.tipo in (''movil'', ''dongle'', ''gps'', ''centel'') ';
+
+            --v_consulta:=v_consulta||' order by d.id_institucion, d.id_deuda, d.monto_solicitado, p.fecha ';
+			v_consulta:=v_consulta||' order by fc.estado_reg ';
+            
+			--Devuelve la respuesta
+			return v_consulta;
+
+		end;
     /*********************************
  	#TRANSACCION:  'GC_TIPEQU_SEL'
  	#DESCRIPCION:	Consulta de datos para reporte asignacion

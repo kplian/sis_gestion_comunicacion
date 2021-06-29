@@ -18,7 +18,30 @@ header("content-type: text/javascript; charset=UTF-8");
             this.iniciarEventos();
         },
         iniciarEventos : function () {
+            this.Cmp.id_funcionario.hide();
+            this.Cmp.id_funcionario.allowBlank=true;
 
+            this.Cmp.tipo_reporte.on('select',function(cmb,r,i) {
+                if (r.data.field1 == 'Equipos Persona') {
+                    this.Cmp.id_funcionario.show();
+                    this.Cmp.id_funcionario.allowBlank=false;
+                    this.Cmp.tipo.hide();
+                    this.Cmp.tipo.allowBlank=true;
+                }else if(r.data.field1 == 'Registro de Dispositivos moviles'){
+                    this.Cmp.tipo.hide();
+                    this.Cmp.tipo.allowBlank=true;
+                    this.Cmp.id_funcionario.hide();
+                    this.Cmp.id_funcionario.allowBlank=true;
+                }else if(r.data.field1 == 'Formulario'){
+                    this.Cmp.tipo.show();
+                    this.Cmp.tipo.allowBlank=false;
+                    this.Cmp.id_funcionario.hide();
+                    this.Cmp.id_funcionario.allowBlank=true;
+                }else{
+                    this.Cmp.id_funcionario.hide();
+                    this.Cmp.id_funcionario.allowBlank=true;
+                }
+            },this);
         },
         Atributos:[
             {
@@ -33,7 +56,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     mode: 'local',
                     anchor: '100%',
                     gwidth: 200,
-                    store:['Formulario','otros'],
+                    store:['Formulario', 'Equipos Persona', 'Registro de Dispositivos moviles'],
                 },
                 type:'ComboBox',
                 id_grupo:1,
@@ -46,7 +69,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     name:'tipo',
                     fieldLabel : 'Tipo de Equipo',
                     resizable:true,
-                    allowBlank:true,
+                    allowBlank:false,
                     emptyText:'Elija una opción...',
                     store: new Ext.data.JsonStore({
                         url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
@@ -87,7 +110,28 @@ header("content-type: text/javascript; charset=UTF-8");
                 id_grupo:0,
                 grid:true,
                 form:true
-            }
+            },
+            {
+                config:{
+                    name:'id_funcionario',
+                    hiddenName: 'id_funcionario',
+                    origen:'FUNCIONARIOCAR',
+                    fieldLabel:'Funcionario',
+                    allowBlank:true,
+                    anchor: '100%',
+                    gwidth: 100,
+                    valueField: 'id_funcionario',
+                    gdisplayField: 'desc_funcionario1',
+                    baseParams: { es_combo_solicitud : 'si' },
+                    renderer:function(value, p, record){return String.format('{0}', record.data['desc_funcionario1']);}
+                },
+                type:'ComboRec',//ComboRec
+                id_grupo:0,
+                filters:{pfiltro:'fun.desc_funcionario1',type:'string'},
+                bottom_filter:true,
+                grid:true,
+                form:true
+            },
         ],
         title : 'Reporte de Reporte',
         topBar : true,

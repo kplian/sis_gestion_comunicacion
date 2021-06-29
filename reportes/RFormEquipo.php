@@ -94,7 +94,7 @@ class RFormEquipo extends  ReportePDF {
 				$this->datos_mensaje = "<b>Importante: </b>A partir de la fecha de devolución, el usuario se deslinda de las responsabilidades del equipo estacionario. ";
 				$this->datos_mensaje_1 = "";
 			}
-        }elseif($this->tipo_equipo == 'telfip'){
+        }else{//if($this->tipo_equipo == 'telfip'){
             if ($this->datos_estructura == 'asignacion'){
 				$this->datos_estructura = "ASIGNACION TELEFONO IP";
 				$this->num_form = "5-R-508/0";
@@ -121,7 +121,7 @@ class RFormEquipo extends  ReportePDF {
 			include(dirname(__FILE__).'/../reportes/equipo/cuerpo.php');
 		}elseif($this->tipo_equipo == 'pc'){
 			include(dirname(__FILE__).'/../reportes/equipo/cuerpoPc.php');
-		}elseif($this->tipo_equipo == 'telfip'){
+		}else{ //if($this->tipo_equipo == 'telfip'){
 			include(dirname(__FILE__).'/../reportes/equipo/cuerpoTELIP.php');
 		}
         $content = ob_get_clean();

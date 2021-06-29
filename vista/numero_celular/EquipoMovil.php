@@ -208,39 +208,97 @@ header("content-type: text/javascript; charset=UTF-8");
                         },
                     },
                     type:'ComboBox',
-                    filters:{pfiltro:'equ.gama',type:'string'},
+					bottom_filter : true,
+                    filters:{pfiltro:'em.gama',type:'string'},
                     id_grupo:0,
                     grid:true,
                     form:true
                 },
                 {
-                    config:{
-                        name: 'estado_fisico',
-                        fieldLabel: 'estado_fisico',
-                        allowBlank: true,
+                    config : {
+                        name:'estado_fisico',
+                        fieldLabel : 'Estado Fisico',
+                        resizable:true,
+                        allowBlank:false,
+                        emptyText:'Elija una opción...',
+                        store: new Ext.data.JsonStore({
+                            url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                            id: 'id_catalogo',
+                            root: 'datos',
+                            sortInfo:{
+                                field: 'descripcion',
+                                direction: 'ASC'
+                            },
+                            totalProperty: 'total',
+                            fields: ['id_catalogo','codigo','descripcion'],
+                            // turn on remote sorting
+                            remoteSort: true,
+                            baseParams: {par_filtro:'descripcion',cod_subsistema:'GECOM',catalogo_tipo:'estado_fisico'}
+                        }),
+                        enableMultiSelect:true,
+                        valueField: 'codigo',
+                        displayField: 'descripcion',
+                        gdisplayField: 'estado_fisico_desc',
+                        triggerAction: 'all',
+                        lazyRender:true,
+                        mode:'remote',
+                        pageSize:15,
+                        queryDelay: 1000,
                         anchor: '80%',
                         gwidth: 100,
-                        maxLength:30
+                        listeners: {
+                            beforequery: function(qe){
+                                delete qe.combo.lastQuery;
+                            }
+                        },
                     },
-                    type:'TextField',
-                    filters:{pfiltro:'equ.estado_fisico',type:'string'},
-                    id_grupo:1,
+                    type:'ComboBox',
+                    filters:{pfiltro:'estado_fisico_desc',type:'string'},
+                    id_grupo:0,
                     grid:true,
                     form:true
                 },
-
                 {
-                    config:{
-                        name: 'marca',
-                        fieldLabel: 'marca',
-                        allowBlank: false,
+                    config : {
+                        name:'marca',
+                        fieldLabel : 'Marca',
+                        resizable:true,
+                        allowBlank:false,
+                        emptyText:'Elija una opción...',
+                        store: new Ext.data.JsonStore({
+                            url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                            id: 'id_catalogo',
+                            root: 'datos',
+                            sortInfo:{
+                                field: 'descripcion',
+                                direction: 'ASC'
+                            },
+                            totalProperty: 'total',
+                            fields: ['id_catalogo','codigo','descripcion'],
+                            // turn on remote sorting
+                            remoteSort: true,
+                            baseParams: {par_filtro:'descripcion',cod_subsistema:'GECOM',catalogo_tipo:'marca'}
+                        }),
+                        enableMultiSelect:true,
+                        valueField: 'codigo',
+                        displayField: 'descripcion',
+                        gdisplayField: 'marca_desc',
+                        triggerAction: 'all',
+                        lazyRender:true,
+                        mode:'remote',
+                        pageSize:15,
+                        queryDelay: 1000,
                         anchor: '80%',
                         gwidth: 100,
-                        maxLength:200
+                        listeners: {
+                            beforequery: function(qe){
+                                delete qe.combo.lastQuery;
+                            }
+                        },
                     },
-                    type:'TextField',
-                    filters:{pfiltro:'equ.marca',type:'string'},
-                    id_grupo:1,
+                    type:'ComboBox',
+                    filters:{pfiltro:'marca_desc',type:'string'},
+                    id_grupo:0,
                     grid:true,
                     form:true
                 },
@@ -254,6 +312,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         maxLength:200
                     },
                     type:'TextField',
+					bottom_filter : true,
                     filters:{pfiltro:'equ.modelo',type:'string'},
                     id_grupo:1,
                     grid:true,
@@ -275,6 +334,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         value:'no'
                     },
                     type:'ComboBox',
+					bottom_filter : true,
                     filters:{pfiltro:'equ.estado',
                         type: 'list',
                         options: ['disponible','almacen']
@@ -302,7 +362,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 {
                     config:{
                         name: 'num_serie',
-                        fieldLabel: 'num_serie',
+                        fieldLabel: 'Número de serie',
                         allowBlank: false,
                         anchor: '80%',
                         gwidth: 100,
@@ -310,21 +370,6 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type:'TextField',
                     filters:{pfiltro:'equ.num_serie',type:'string'},
-                    id_grupo:1,
-                    grid:true,
-                    form:true
-                },
-                {
-                    config:{
-                        name: 'observaciones',
-                        fieldLabel: 'observaciones',
-                        allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 100,
-                        maxLength:500
-                    },
-                    type:'TextField',
-                    filters:{pfiltro:'equ.observaciones',type:'string'},
                     id_grupo:1,
                     grid:true,
                     form:true
@@ -383,6 +428,21 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type:'TextField',
                     filters:{pfiltro:'equ.sn',type:'string'},
+                    id_grupo:1,
+                    grid:true,
+                    form:true
+                },
+                {
+                    config:{
+                        name: 'observaciones',
+                        fieldLabel: 'Observaciones',
+                        allowBlank: true,
+                        anchor: '80%',
+                        gwidth: 200,
+                        maxLength:500
+                    },
+                    type:'TextArea',
+                    filters:{pfiltro:'equ.observaciones',type:'string'},
                     id_grupo:1,
                     grid:true,
                     form:true
@@ -602,7 +662,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 }
             ],
             tam_pag:50,
-            title:'Equipos',
+            title:'Dispositivo Movil',
             ActSave:'../../sis_gestion_comunicacion/control/Equipo/insertarEquipo',
             ActDel:'../../sis_gestion_comunicacion/control/Equipo/eliminarEquipo',
             ActList:'../../sis_gestion_comunicacion/control/Equipo/listarEquipoMovil',
@@ -646,7 +706,8 @@ header("content-type: text/javascript; charset=UTF-8");
                 {name:'imei2', type: 'string'},
                 {name:'tipo_servicio', type: 'string'},
                 {name:'tipo_servicio_desc', type: 'string'},
-
+                {name:'estado_fisico_desc', type: 'string'},
+                {name:'marca_desc', type: 'string'},
             ],
             sortInfo:{
                 field: 'id_equipo',
@@ -659,7 +720,6 @@ header("content-type: text/javascript; charset=UTF-8");
                 this.Cmp.id_numero_celular.show();
                 this.Cmp.color.show();
                 this.Cmp.imei.show();
-                this.Cmp.sn.show();
                 this.Cmp.tamano_pantalla.hide();
                 this.Cmp.tarjeta_video.hide();
                 this.Cmp.teclado.hide();
@@ -676,7 +736,6 @@ header("content-type: text/javascript; charset=UTF-8");
                 this.Cmp.id_numero_celular.show();
                 this.Cmp.color.show();
                 this.Cmp.imei.show();
-                this.Cmp.sn.show();
                 this.Cmp.tamano_pantalla.hide();
                 this.Cmp.tarjeta_video.hide();
                 this.Cmp.teclado.hide();

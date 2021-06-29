@@ -382,7 +382,7 @@ header("content-type: text/javascript; charset=UTF-8");
                             totalProperty: 'total',
                             fields: ['id_accesorio', 'resumen', 'marca'],
                             remoteSort: true,
-                            baseParams: {par_filtro: 'acc.id_accesorio#acc.resumen', disponibles: 'SI'}
+                            baseParams: {par_filtro: 'acc.id_accesorio#acc.resumen', disponibles: 'SI', tipo_equipo: 'movil'}
                         }),
                         tpl:'<tpl for="."><div class="x-combo-list-item" ><div class="awesomecombo-item {checked}"><p><b></b>{resumen}</p></div>\</div></tpl>',
                         valueField: 'id_accesorio',

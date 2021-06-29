@@ -59,7 +59,7 @@ BEGIN
                         usu2.cuenta as usr_mod,
                         pro.desc_proveedor,
                         uo.nombre_unidad as desc_nombre_unidad,
-                        (cup.nro_cuenta || '' - '' || pro.desc_proveedor)::varchar as desc_cuenta_prov
+                        (cup.nro_cuenta || '' - '' || pro.desc_proveedor || '' - '' || uo.nombre_unidad)::varchar as desc_cuenta_prov
                         FROM gecom.tcuenta_proveedor cup
                         JOIN segu.tusuario usu1 ON usu1.id_usuario = cup.id_usuario_reg
                         LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cup.id_usuario_mod

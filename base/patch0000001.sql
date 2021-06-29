@@ -277,6 +277,8 @@ CREATE TABLE gecom.tequipo_pc (
                                   sistema_operativo VARCHAR(300),
                                   accesorios VARCHAR(300),
 								  mac varchar(500),
+                                  tipo_memoria_ram varchar(300),
+                                  tipo_almacenamiento varchar(300),
                                   CONSTRAINT tequipo_pc_pkey PRIMARY KEY(id_equipo_pc)
 ) INHERITS (pxp.tbase)
 WITH (oids = false);

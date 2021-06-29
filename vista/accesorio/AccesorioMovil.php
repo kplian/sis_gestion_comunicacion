@@ -1,7 +1,7 @@
 <?php
 /****************************************************************************************
 *@package pXP
-*@file gen-Accesorio.php
+*@file gen-AccesorioMovil.php
 *@author  (ymedina)
 *@date 29-05-2021 16:19:41
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
@@ -16,12 +16,12 @@ HISTORIAL DE MODIFICACIONES:
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
-Phx.vista.Accesorio=Ext.extend(Phx.gridInterfaz,{
+Phx.vista.AccesorioMovil=Ext.extend(Phx.gridInterfaz,{
 
     constructor:function(config){
         this.maestro=config.maestro;
         //llama al constructor de la clase padre
-        Phx.vista.Accesorio.superclass.constructor.call(this,config);
+        Phx.vista.AccesorioMovil.superclass.constructor.call(this,config);
         this.init();
         this.load({params:{start:0, limit:this.tam_pag}})
     },
@@ -63,50 +63,113 @@ Phx.vista.Accesorio=Ext.extend(Phx.gridInterfaz,{
                 form:false
 		},
         {
+            config : {
+                name:'tipo',
+                fieldLabel : 'Tipo',
+                resizable:true,
+                allowBlank:false,
+                emptyText:'Elija una opción...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                    id: 'id_catalogo',
+                    root: 'datos',
+                    sortInfo:{
+                        field: 'orden',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_catalogo','codigo','descripcion'],
+                    // turn on remote sorting
+                    remoteSort: true,
+                    baseParams: {par_filtro:'descripcion',cod_subsistema:'GECOM',catalogo_tipo:'accesorio_telefono'}
+                }),
+                enableMultiSelect:true,
+                valueField: 'codigo',
+                displayField: 'descripcion',
+                gdisplayField: 'tipo_desc',
+                triggerAction: 'all',
+                lazyRender:true,
+                mode:'remote',
+                pageSize:15,
+                queryDelay: 1000,
+                anchor: '80%',
+                gwidth: 100,
+                renderer : function(value, p, record) {
+                    return String.format('{0}', record.data['tipo_desc']);
+                },
+                listeners: {
+                    beforequery: function(qe){
+                        delete qe.combo.lastQuery;
+                    }
+                },
+            },
+            type:'ComboBox',
+            bottom_filter : true,
+            filters:{pfiltro:'acc.tipo',type:'string'},
+            id_grupo:0,
+            grid:true,
+            form:true
+        },
+        {
             config:{
                 name: 'nombre',
                 fieldLabel: 'nombre',
                 allowBlank: false,
                 anchor: '80%',
                 gwidth: 100,
-            	maxLength:200
+                maxLength:200
             },
-                type:'TextField',
-                filters:{pfiltro:'acc.nombre',type:'string'},
-                id_grupo:1,
-                grid:true,
-                form:true
-		},
-		{
-            config:{
-                name: 'tipo',
-                fieldLabel: 'Tipo',
-                allowBlank: true,
-                anchor: '80%',
-                gwidth: 100,
-            	maxLength:300
-            },
-                type:'TextField',
-                filters:{pfiltro:'acc.tipo',type:'string'},
-                id_grupo:1,
-                grid:true,
-                form:true
-		},
+            type:'TextField',
+            bottom_filter : true,
+            filters:{pfiltro:'acc.nombre',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
         {
-            config:{
-                name: 'marca',
-                fieldLabel: 'marca',
-                allowBlank: true,
+            config : {
+                name:'marca',
+                fieldLabel : 'Marca',
+                resizable:true,
+                allowBlank:false,
+                emptyText:'Elija una opción...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                    id: 'id_catalogo',
+                    root: 'datos',
+                    sortInfo:{
+                        field: 'descripcion',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_catalogo','codigo','descripcion'],
+                    // turn on remote sorting
+                    remoteSort: true,
+                    baseParams: {par_filtro:'descripcion',cod_subsistema:'GECOM',catalogo_tipo:'marca'}
+                }),
+                enableMultiSelect:true,
+                valueField: 'codigo',
+                displayField: 'descripcion',
+                gdisplayField: 'marca_desc',
+                triggerAction: 'all',
+                lazyRender:true,
+                mode:'remote',
+                pageSize:15,
+                queryDelay: 1000,
                 anchor: '80%',
                 gwidth: 100,
-            	maxLength:200
+                listeners: {
+                    beforequery: function(qe){
+                        delete qe.combo.lastQuery;
+                    }
+                },
             },
-                type:'TextField',
-                filters:{pfiltro:'acc.marca',type:'string'},
-                id_grupo:1,
-                grid:true,
-                form:true
-		},
+            type:'ComboBox',
+            filters:{pfiltro:'marca_desc',type:'string'},
+            id_grupo:0,
+            grid:true,
+            form:true
+        },
 		{
             config:{
                 name: 'modelo',
@@ -125,48 +188,78 @@ Phx.vista.Accesorio=Ext.extend(Phx.gridInterfaz,{
         {
             config:{
                 name: 'num_serie',
-                fieldLabel: 'Numero de Serie',
+                fieldLabel: 'Número de serie',
                 allowBlank: true,
                 anchor: '80%',
                 gwidth: 100,
             	maxLength:300
             },
-                type:'TextField',
-                filters:{pfiltro:'acc.num_serie',type:'string'},
-                id_grupo:1,
-                grid:true,
-                form:true
+			type:'TextField',
+			bottom_filter : true,
+			filters:{pfiltro:'acc.num_serie',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
 		},
         {
-            config:{
-                name: 'estado_fisico',
-                fieldLabel: 'Estado Fisico',
-                allowBlank: true,
+            config : {
+                name:'estado_fisico',
+                fieldLabel : 'Estado Fisico',
+                resizable:true,
+                allowBlank:false,
+                emptyText:'Elija una opción...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                    id: 'id_catalogo',
+                    root: 'datos',
+                    sortInfo:{
+                        field: 'descripcion',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_catalogo','codigo','descripcion'],
+                    // turn on remote sorting
+                    remoteSort: true,
+                    baseParams: {par_filtro:'descripcion',cod_subsistema:'GECOM',catalogo_tipo:'estado_fisico'}
+                }),
+                enableMultiSelect:true,
+                valueField: 'codigo',
+                displayField: 'descripcion',
+                gdisplayField: 'estado_fisico_desc',
+                triggerAction: 'all',
+                lazyRender:true,
+                mode:'remote',
+                pageSize:15,
+                queryDelay: 1000,
                 anchor: '80%',
                 gwidth: 100,
-            	maxLength:200
+                listeners: {
+                    beforequery: function(qe){
+                        delete qe.combo.lastQuery;
+                    }
+                },
             },
-                type:'TextField',
-                filters:{pfiltro:'acc.estado_fisico',type:'string'},
-                id_grupo:1,
-                grid:true,
-                form:true
-		},
+            type:'ComboBox',
+            filters:{pfiltro:'estado_fisico_desc',type:'string'},
+            id_grupo:0,
+            grid:true,
+            form:true
+        },
         {
             config:{
                 name: 'observaciones',
                 fieldLabel: 'Observaciones',
                 allowBlank: true,
                 anchor: '80%',
-                gwidth: 100,
-            	maxLength:400
+                gwidth: 200,
+                maxLength:500
             },
-                type:'TextField',
-                filters:{pfiltro:'acc.observaciones',type:'string'},
-                id_grupo:1,
-                grid:true,
-                form:true
-		},
+            type:'TextArea',
+            filters:{pfiltro:'acc.observaciones',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
         {
             config:{
                 name: 'usr_reg',
@@ -261,10 +354,10 @@ Phx.vista.Accesorio=Ext.extend(Phx.gridInterfaz,{
 		}
     ],
     tam_pag:50,    
-    title:'Accesorios',
+    title:'Accesorio Movil',
     ActSave:'../../sis_gestion_comunicacion/control/Accesorio/insertarAccesorio',
     ActDel:'../../sis_gestion_comunicacion/control/Accesorio/eliminarAccesorio',
-    ActList:'../../sis_gestion_comunicacion/control/Accesorio/listarAccesorio',
+    ActList:'../../sis_gestion_comunicacion/control/Accesorio/listarAccesorioMovil',
     id_store:'id_accesorio',
     fields: [
 		{name:'id_accesorio', type: 'numeric'},
@@ -285,6 +378,9 @@ Phx.vista.Accesorio=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_mod', type: 'string'},
         {name:'tipo', type: 'string'},
 		{name:'modelo', type: 'string'},
+        {name:'tipo_desc', type: 'string'},
+        {name:'marca_desc', type: 'string'},
+        {name:'estado_fisico_desc', type: 'string'},
     ],
     sortInfo:{
         field: 'id_accesorio',
@@ -302,7 +398,7 @@ Phx.vista.Accesorio=Ext.extend(Phx.gridInterfaz,{
     },
     loadValoresIniciales:function()
     {
-        Phx.vista.Accesorio.superclass.loadValoresIniciales.call(this);
+        Phx.vista.AccesorioMovil.superclass.loadValoresIniciales.call(this);
         /*this.getComponente('id_equipo').setValue(this.maestro.id_equipo);*/
     },
     }
