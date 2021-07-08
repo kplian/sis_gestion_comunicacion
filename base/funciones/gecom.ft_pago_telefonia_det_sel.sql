@@ -103,7 +103,10 @@ BEGIN
                         gruta.salida,
                         nucel.id_numero_celular,
                         nucel.numero,
-                        pro.desc_proveedor
+                        pro.desc_proveedor,
+
+                        ot.id_orden_trabajo,
+                        ot.desc_orden
 
 						from gecom.tpago_telefonia_det detpagte
 						inner join segu.tusuario usu1 on usu1.id_usuario = detpagte.id_usuario_reg
@@ -114,6 +117,8 @@ BEGIN
                         left join gecom.truta gruta on gruta.cod_compania = detpagte.cod_compania and gruta.nro_ruta = detpagte.ruta
                         left join gecom.tnumero_celular nucel on nucel.id_numero_celular = gruta.id_numero_celular
                         left join param.vproveedor2 pro on pro.id_proveedor =  gruta.id_proveedor
+
+                        left join conta.torden_trabajo ot on ot.id_orden_trabajo = detpagte.id_orden_trabajo
 
 				        where  ';
 
@@ -147,6 +152,8 @@ BEGIN
                         left join gecom.truta gruta on gruta.cod_compania = detpagte.cod_compania and gruta.nro_ruta = detpagte.ruta
                         left join gecom.tnumero_celular nucel on nucel.id_numero_celular = gruta.id_numero_celular
                         left join param.vproveedor2 pro on pro.id_proveedor =  gruta.id_proveedor
+
+                        left join conta.torden_trabajo ot on ot.id_orden_trabajo = detpagte.id_orden_trabajo
 
 					    where ';
 

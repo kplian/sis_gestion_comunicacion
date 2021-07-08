@@ -291,3 +291,11 @@ ADD COLUMN  nro_tramite VARCHAR(200);
 ALTER TABLE gecom.tnumero_celular
   ADD UNIQUE (numero);
 /***********************************F-SCP-IRVA-GECOM-0-27/05/2021****************************************/
+
+/***********************************F-SCP-MAY-GECOM-0-07/07/2021****************************************/
+ALTER TABLE gecom.tpago_telefonia_det
+ADD COLUMN  id_orden_trabajo INTEGER;
+
+COMMENT ON COLUMN gecom.tpago_telefonia_det.id_orden_trabajo
+IS 'identificador orden de trabajo';
+/***********************************F-SCP-MAY-GECOM-0-07/07/2021****************************************/

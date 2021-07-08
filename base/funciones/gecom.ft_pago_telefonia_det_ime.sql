@@ -31,6 +31,9 @@ DECLARE
 	v_id_pago_telefonia_det	integer;
     v_id_centro_costo		integer;
 
+    --07-07-2021 (may)
+    v_id_orden_trabajo		integer;
+
 
 BEGIN
 
@@ -55,6 +58,20 @@ BEGIN
             inner join param.tgestion ges ON ges.id_gestion = cec.id_gestion
             where cc.codigo = v_parametros.cod_centro_costo
             and ges.gestion = extract(year from now()::date);
+
+
+            --07-07-2021 (may) inserte tambien id_orden de trabajo
+            SELECT ot.id_orden_trabajo
+            INTO v_id_orden_trabajo
+            FROM orga.tcargo_presupuesto carpre
+            inner join orga.tcargo tca on tca.id_cargo = carpre.id_cargo
+            INNER JOIN param.tgestion tg on tg.id_gestion = carpre.id_gestion
+            left join orga.tuo_funcionario tuo on tuo.id_cargo = carpre.id_cargo and coalesce(tuo.fecha_finalizacion,('31/12/'||tg.gestion)::date)  between  carpre.fecha_ini and coalesce(carpre.fecha_fin,('31/12/'||tg.gestion)::date)
+            left join orga.tfuncionario fun on fun.id_funcionario = tuo.id_funcionario
+            left join conta.torden_trabajo ot on ot.id_orden_trabajo = carpre.id_ot
+            WHERE fun.codigo = v_parametros.cod_empleado
+            and tca.estado_reg = 'activo'
+            and tg.gestion = extract(year from now()::date);
 
 
         	--Sentencia de la insercion
@@ -107,8 +124,11 @@ BEGIN
 			id_usuario_ai,
 			usuario_ai,
 			id_usuario_mod,
-			fecha_mod
-          	) values(
+			fecha_mod,
+            --07-07-2021 (may)
+            id_orden_trabajo
+
+            ) values(
 			'activo',
 			v_parametros.id_pago_telefonia,
 			v_parametros.fecha,
@@ -157,9 +177,9 @@ BEGIN
 			v_parametros._id_usuario_ai,
 			v_parametros._nombre_usuario_ai,
 			null,
-			null
-
-
+			null,
+            --07-07-2021 (may)
+            v_id_orden_trabajo
 
 			)RETURNING id_pago_telefonia_det into v_id_pago_telefonia_det;
 

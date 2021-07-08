@@ -655,6 +655,25 @@ Phx.vista.PagoTelefoniaDet=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:false
 		},
+        {
+            config:{
+                name:'id_orden_trabajo',
+                fieldLabel: 'Orden Trabajo',
+                sysorigen:'sis_contabilidad',
+                origen:'OT',
+                allowBlank:false,
+                anchor:'80%',
+                gwidth:150,
+                baseParams:{par_filtro:'desc_orden#motivo_orden'},
+                renderer:function(value, p, record){return String.format('{0}', record.data['desc_orden']);}
+
+            },
+            type:'ComboRec',
+            id_grupo:0,
+            filters:{pfiltro:'ot.motivo_orden#ot.desc_orden',type:'string'},
+            grid:true,
+            form:true
+        },
 		{
 				config:{
 						name: 'id_concepto_ingas',
@@ -960,6 +979,8 @@ Phx.vista.PagoTelefoniaDet=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_numero_celular', type: 'numeric'},
 		{name:'numero', type: 'string'},
 		{name:'desc_proveedor', type: 'string'},
+		{name:'id_orden_trabajo', type: 'numeric'},
+		{name:'desc_orden', type: 'string'},
 
 
 	],

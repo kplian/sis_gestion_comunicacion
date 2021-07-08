@@ -48,8 +48,18 @@ Phx.vista.PagoTelefonia=Ext.extend(Phx.gridInterfaz,{
 				handler:this.onCalcPorcentual,
 				tooltip: '<b>Calculo porcentual:</b>'
 		});
+        //07-04-2021 (may) boton adjuntar archivos
+        this.addButton('archivo', {
+            text: 'Adjuntar Archivo',
+            iconCls: 'bfolder',
+            disabled: false,
+            handler: this.archivo,
+            tooltip: '<b>Adjuntar Archivo</b><br><b>Nos permite adjuntar documentos de un funcionario.</b>',
+            grupo: [0,1]
+        });
 
-		Ext.Ajax.request({
+
+        Ext.Ajax.request({
 				url: '../../sis_parametros/control/Gestion/obtenerGestionByFecha',
 				params: {fecha: new Date()},
 				success: function (resp) {
@@ -511,6 +521,7 @@ Phx.vista.PagoTelefonia=Ext.extend(Phx.gridInterfaz,{
 
         Phx.vista.PagoTelefonia.superclass.preparaMenu.call(this, n);
 
+        this.getBoton('archivo').setDisabled(false);
         console.log('llegadata', data)
 
         if (data['estado'] == 'cargado' && data['nro_tramite'] == 'si') {
@@ -526,11 +537,36 @@ Phx.vista.PagoTelefonia=Ext.extend(Phx.gridInterfaz,{
         var tb = Phx.vista.PagoTelefonia.superclass.liberaMenu.call(this);
         if (tb) {
             this.getBoton('btnsubir_archivo').disable();
+
+            this.getBoton('archivo').setDisabled(true);
         }
         return tb
     },
 
-	tabsouth:[
+    archivo: function () {
+
+        var rec = this.getSelectedData();
+        //enviamos el id seleccionado para cual el archivo se deba subir
+        rec.datos_extras_id = rec.id_pago_telefonia;
+        //enviamos el nombre de la tabla
+        rec.datos_extras_tabla = 'gecom.tpago_telefonia';
+        //enviamos el codigo ya que una tabla puede tener varios archivos diferentes como ci,pasaporte,contrato,slider,fotos,etc
+        rec.datos_extras_codigo = '';
+
+        //esto es cuando queremos darle una ruta personalizada
+        //rec.datos_extras_ruta_personalizada = './../../../uploaded_files/favioVideos/videos/';
+
+        Phx.CP.loadWindows('../../../sis_parametros/vista/archivo/Archivo.php',
+            'Archivo',
+            {
+                width: '80%',
+                height: '100%'
+            }, rec, this.idContenedor, 'Archivo');
+
+    },
+
+
+    tabsouth:[
 		{
 				url:'../../../sis_gestion_comunicacion/vista/pago_telefonia_det/PagoTelefoniaDet.php',
 				title:'Detalle Pagos telefonia',

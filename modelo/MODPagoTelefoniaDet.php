@@ -81,6 +81,9 @@ class MODPagoTelefoniaDet extends MODbase{
 		$this->captura('numero','varchar');
 		$this->captura('desc_proveedor','varchar');
 
+		$this->captura('id_orden_trabajo','int4');
+		$this->captura('desc_orden','varchar');
+
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -141,7 +144,7 @@ class MODPagoTelefoniaDet extends MODbase{
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
-
+//var_dump('llega', $this->respuesta);
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
