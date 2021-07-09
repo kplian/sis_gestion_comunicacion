@@ -66,12 +66,23 @@ BEGIN
             FROM orga.tcargo_presupuesto carpre
             inner join orga.tcargo tca on tca.id_cargo = carpre.id_cargo
             INNER JOIN param.tgestion tg on tg.id_gestion = carpre.id_gestion
-            left join orga.tuo_funcionario tuo on tuo.id_cargo = carpre.id_cargo and coalesce(tuo.fecha_finalizacion,('31/12/'||tg.gestion)::date)  between  carpre.fecha_ini and coalesce(carpre.fecha_fin,('31/12/'||tg.gestion)::date)
+            left join orga.tuo_funcionario tuo on tuo.id_cargo = carpre.id_cargo --and coalesce(tuo.fecha_finalizacion,('31/12/'||tg.gestion)::date)  between  carpre.fecha_ini and coalesce(carpre.fecha_fin,('31/12/'||tg.gestion)::date)
             left join orga.tfuncionario fun on fun.id_funcionario = tuo.id_funcionario
             left join conta.torden_trabajo ot on ot.id_orden_trabajo = carpre.id_ot
             WHERE fun.codigo = v_parametros.cod_empleado
-            and tca.estado_reg = 'activo'
+            --and tca.estado_reg = 'activo'
             and tg.gestion = extract(year from now()::date);
+
+            IF (v_id_orden_trabajo is not null) THEN
+            	v_id_orden_trabajo = v_id_orden_trabajo;
+            ELSE
+            	--para que la OT sea 28 Regional CBB por GENESYS = contact center
+            	IF (v_parametros.cod_empleado = '71386' and upper(v_parametros.nombre_empleado) = 'GENESYS') THEN
+                	v_id_orden_trabajo = 28;
+                ELSE
+                	raise exception 'El ID Orden de Trabajo esta nulo para el empleado %',v_parametros.nombre_empleado;
+                END IF;
+            END IF;
 
 
         	--Sentencia de la insercion
