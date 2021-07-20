@@ -13,7 +13,7 @@
         <td colspan="2" style="text-align: center ; font-size: 13px;"><b><?= $this->datos_estructura ?></b></td>
     </tr>
     <tr>
-        <td colspan="4" style="text-align: center ; background-color: #34495E; color: white; ">DATOS GENERALES</td>
+        <td colspan="4" style="text-align: center ; background-color: #34495E; color: white; font-size: 10px;">DATOS GENERALES</td>
     </tr>
     <tr>
         <td style="background-color: #BDD7EE; font-size: 10px;">NOMBRE DEL SOLICITANTE</td>
@@ -34,7 +34,7 @@
         <td style="background-color: #BDD7EE; font-size: 10px;">MODELO</td>
         <td><?= $this->datos_persona[0]['modelo'];?></td>
         <td width="25%" style="background-color: #BDD7EE; font-size: 10px;">CONSUMO CONTROLADO</td>
-        <td width="25%"><?= $this->datos_persona[0]['numero'];?></td>
+        <td width="25%"><?= $this->datos_persona[0]['tarifa'];?></td>
     </tr>
     <tr>
         <td style="background-color: #BDD7EE; font-size: 10px;">NUMERO DE SERIE</td>
@@ -50,7 +50,7 @@
     </tr>
     <tr>
         <td style="background-color: #BDD7EE; font-size: 10px;">IMEI 2</td>
-        <td><?= $this->datos_persona[0]['imei'];?></td>
+        <td><?= $this->datos_persona[0]['imei2'];?></td>
         <td style="background-color: #BDD7EE; font-size: 10px;">OBSERVACIONES</td>
         <td><?= $this->datos_persona[0]['observaciones'];?></td>
     </tr>
@@ -76,7 +76,7 @@
         <td rowspan="2" style="font-size: 10px;">CONFORMIDAD DE ASIGNACION</td>
         <td><br><br><br></td>
         <td rowspan="2" style="font-size: 10px;">FECHA DE ENTREGA</td>
-        <td><?= $this->datos_persona[0]['fecha_entrega'];?></td>
+        <td><?=  date("d-m-Y");?></td>
     </tr>
     <tr>
         <td style="background-color: #BDD7EE; "><?= $this->datos_persona[0]['asignador'];?></td>

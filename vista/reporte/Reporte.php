@@ -27,19 +27,29 @@ header("content-type: text/javascript; charset=UTF-8");
                     this.Cmp.id_funcionario.allowBlank=false;
                     this.Cmp.tipo.hide();
                     this.Cmp.tipo.allowBlank=true;
-                }else if(r.data.field1 == 'Registro de Dispositivos moviles'){
+                    this.Cmp.formato_reporte.hide();
+                }else if( [ '5-R-510 Registro de computador portatil',
+                            '5-R-511 Registro de cpu y monitor',
+                            '5-R-512 Registro de accesorios adicionales',
+                            '5-R-513 Registro de telefono IP',
+                            '5-R-514 Registro de dispositivos moviles',
+                            '5-R-515 Registro de lineas corporativas'].includes(r.data.field1)){
                     this.Cmp.tipo.hide();
                     this.Cmp.tipo.allowBlank=true;
                     this.Cmp.id_funcionario.hide();
                     this.Cmp.id_funcionario.allowBlank=true;
+                    this.Cmp.formato_reporte.show();
+                    this.Cmp.formato_reporte.allowBlank=false;
                 }else if(r.data.field1 == 'Formulario'){
                     this.Cmp.tipo.show();
                     this.Cmp.tipo.allowBlank=false;
                     this.Cmp.id_funcionario.hide();
                     this.Cmp.id_funcionario.allowBlank=true;
+                    this.Cmp.formato_reporte.hide();
                 }else{
                     this.Cmp.id_funcionario.hide();
                     this.Cmp.id_funcionario.allowBlank=true;
+                    this.Cmp.formato_reporte.hide();
                 }
             },this);
         },
@@ -56,7 +66,15 @@ header("content-type: text/javascript; charset=UTF-8");
                     mode: 'local',
                     anchor: '100%',
                     gwidth: 200,
-                    store:['Formulario', 'Equipos Persona', 'Registro de Dispositivos moviles'],
+                    store:['Formulario',
+                           'Equipos Persona',
+                           '5-R-510 Registro de computador portatil',
+                           '5-R-511 Registro de cpu y monitor',
+                           '5-R-512 Registro de accesorios adicionales',
+                           '5-R-513 Registro de telefono IP',
+                           '5-R-514 Registro de dispositivos moviles',
+                           '5-R-515 Registro de lineas corporativas'
+                    ],
                 },
                 type:'ComboBox',
                 id_grupo:1,
@@ -130,6 +148,31 @@ header("content-type: text/javascript; charset=UTF-8");
                 filters:{pfiltro:'fun.desc_funcionario1',type:'string'},
                 bottom_filter:true,
                 grid:true,
+                form:true
+            },
+            {
+                config:{
+                    name:'formato_reporte',
+                    fieldLabel:'Formato del Reporte',
+                    typeAhead: true,
+                    allowBlank:true,
+                    hidden:true,
+                    triggerAction: 'all',
+                    emptyText:'Formato...',
+                    selectOnFocus:true,
+                    mode:'local',
+                    store:new Ext.data.ArrayStore({
+                        fields: ['ID', 'valor'],
+                        data :[ ['pdf','PDF'],
+                            ['csv','CSV']]
+                    }),
+                    valueField:'ID',
+                    displayField:'valor',
+                    width:250,
+                    anchor:'100%'
+                },
+                type:'ComboBox',
+                id_grupo:1,
                 form:true
             },
         ],

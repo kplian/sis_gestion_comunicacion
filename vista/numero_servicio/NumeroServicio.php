@@ -154,7 +154,7 @@ Phx.vista.NumeroServicio=Ext.extend(Phx.gridInterfaz,{
         {
             config:{
                 name: 'tarifa',
-                fieldLabel: 'Tarifa',
+                fieldLabel: 'Tarifa (Bs.)',
                 allowBlank: true,
                 anchor: '80%',
                 gwidth: 120,

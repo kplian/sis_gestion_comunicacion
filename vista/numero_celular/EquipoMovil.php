@@ -659,7 +659,16 @@ header("content-type: text/javascript; charset=UTF-8");
                     id_grupo:1,
                     grid:true,
                     form:false
-                }
+                },
+				{
+                    config:{
+                        labelSeparator:'',
+                        inputType:'hidden',
+                        name: 'codigo_inmovilizado'
+                    },
+                    type:'Field',
+                    form:true
+                },
             ],
             tam_pag:50,
             title:'Dispositivo Movil',
@@ -708,6 +717,8 @@ header("content-type: text/javascript; charset=UTF-8");
                 {name:'tipo_servicio_desc', type: 'string'},
                 {name:'estado_fisico_desc', type: 'string'},
                 {name:'marca_desc', type: 'string'},
+				
+				{name:'codigo_inmovilizado', type: 'string'},
             ],
             sortInfo:{
                 field: 'id_equipo',

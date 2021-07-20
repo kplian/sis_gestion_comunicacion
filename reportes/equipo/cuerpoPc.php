@@ -67,13 +67,13 @@
         <td style="background-color: #BDD7EE; font-size: 10px;">MARCA</td>
         <td><?= $this->datos_persona[0]['monitor_marca'];?></td>
         <td style="background-color: #BDD7EE; font-size: 10px;">TAMAÑO</td>
-        <td><?= $this->datos_persona[0]['tamano_pantalla'];?></td>
+        <td><?= $this->datos_persona[0]['monitor_tamano'];?></td>
     </tr>
 	<tr>
         <td style="background-color: #BDD7EE; font-size: 10px;">MODELO</td>
         <td><?= $this->datos_persona[0]['monitor_modelo'];?></td>
         <td style="background-color: #BDD7EE; font-size: 10px;">CODIGO DE INMOVILIZADO</td>
-        <td><?= $this->datos_persona[0]['codigo_inmovilizado'];?></td>
+        <td><?= $this->datos_persona[0]['monitor_codigo_inmovilizado'];?></td>
     </tr>
 	<tr>
         <td style="background-color: #BDD7EE; font-size: 10px;">NUMERO DE SERIE</td>
@@ -100,17 +100,17 @@
         <td style="background-color: #BDD7EE; font-size: 10px;">FECHA</td>
     </tr>
     <tr>
-        <td rowspan="2" style="font-size: 10px;">CONFORMIDAD DE RECEPCION</td>
+        <td rowspan="2" style="font-size: 10px;"><?= $this->conformidad_funcionario ?></td>
         <td><br><br><br></td>
-        <td rowspan="2" style="font-size: 10px;">FECHA DE ENTREGA</td>
-        <td><?=  date("d-m-Y", strtotime($this->datos_persona[0]['fecha_entrega']));?></td>
+        <td rowspan="2" style="font-size: 10px;"><?= $this->conformidad_fecha ?></td>
+        <td><?=  date("d-m-Y");?></td>
     </tr>
     <tr>
         <td style="background-color: #BDD7EE;"><?= $this->datos_persona[0]['solicitante'];?></td>
         <td style="background-color: #BDD7EE; ">&nbsp;</td>
     </tr>
     <tr>
-        <td rowspan="2" style="font-size: 10px;">CONFORMIDAD DE ENTREGA</td>
+        <td rowspan="2" style="font-size: 10px;"><?= $this->conformidad_asignador ?></td>
         <td><br><br><br></td>
         <td rowspan="2" colspan="2">&nbsp;</td>
     </tr>

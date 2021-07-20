@@ -1,8 +1,8 @@
 /***********************************I-SCP-JRR-GECOM-0-21/07/2014****************************************/
 
-
+/*
 INSERT INTO segu.tsubsistema ("codigo", "nombre", "fecha_reg", "prefijo", "estado_reg", "nombre_carpeta", "id_subsis_orig")
-VALUES (E'GECOM', E'Gestión de Comunicación', E'2014-07-21', E'GC', E'activo', E'gestion_comunicacion', NULL);
+VALUES (E'GECOM', E'Gestión de Comunicación', E'2014-07-21', E'GC', E'activo', E'gestion_comunicacion', NULL);*/
 
 CREATE TABLE gecom.tnumero_celular (
   id_numero_celular SERIAL NOT NULL, 
@@ -332,3 +332,57 @@ alter table gecom.tservicio alter column codigo_servicio drop not null;
 alter table gecom.tservicio alter column defecto drop not null;
 
 /***********************************F-SCP-YMR-GECOM-1-30/05/2021****************************************/
+
+/***********************************I-SCP-YMR-GECOM-8-20/07/2021****************************************/
+CREATE TABLE gecom.tfuncionario_accesorio (
+                                              id_funcionario_accesorio SERIAL,
+                                              id_funcionario_celular INTEGER,
+                                              id_accesorio INTEGER,
+                                              fecha_inicio DATE NOT NULL,
+                                              fecha_fin DATE,
+                                              observaciones TEXT,
+                                              acoplado VARCHAR(10),
+                                              CONSTRAINT tfuncionario_accesorio_pkey PRIMARY KEY(id_funcionario_accesorio),
+                                              CONSTRAINT fk_tfuncionario_celular_id FOREIGN KEY (id_funcionario_celular)
+                                                  REFERENCES gecom.tfuncionario_celular(id_funcionario_celular)
+                                                  MATCH FULL
+                                                  ON DELETE NO ACTION
+                                                  ON UPDATE NO ACTION
+                                                  NOT DEFERRABLE,
+                                              CONSTRAINT fk_tfuncionario_celular_accesorio FOREIGN KEY (id_accesorio)
+                                                  REFERENCES gecom.taccesorio(id_accesorio)
+                                                  MATCH FULL
+                                                  ON DELETE NO ACTION
+                                                  ON UPDATE NO ACTION
+                                                  NOT DEFERRABLE
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+
+CREATE TABLE gecom.tnumero_equipo (
+  id_numero_equipo SERIAL,
+  id_funcionario_celular_numero INTEGER,
+  id_funcionario_celular_equipo INTEGER,
+  CONSTRAINT tnumero_equipo_pkey PRIMARY KEY(id_numero_equipo),
+  CONSTRAINT fk_tnumero_equipo_id_equipo FOREIGN KEY (id_funcionario_celular_equipo)
+    REFERENCES gecom.tfuncionario_celular(id_funcionario_celular)
+    MATCH FULL
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE,
+  CONSTRAINT fk_tnumero_equipo_id_numero FOREIGN KEY (id_funcionario_celular_numero)
+    REFERENCES gecom.tfuncionario_celular(id_funcionario_celular)
+    MATCH FULL
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+
+alter table gecom.tequipo add column codigo_inmovilizado VARCHAR(300);
+
+alter table gecom.taccesorio add column acoplado VARCHAR(10);
+alter table gecom.taccesorio add column codigo_inmovilizado VARCHAR(300);
+alter table gecom.taccesorio add column tamano VARCHAR(200);
+
+alter table gecom.tequipo_pc add column tipo_procesador VARCHAR(100);
+/***********************************F-SCP-YMR-GECOM-8-20/07/2021****************************************/

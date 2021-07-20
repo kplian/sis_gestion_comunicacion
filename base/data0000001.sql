@@ -193,4 +193,48 @@ select param.f_import_tcatalogo ('insert','GECOM','Camara Web','camaraweb','acce
 select param.f_import_tcatalogo ('insert','GECOM','Microfono','microfono','accesorio_equipo',NULL);
 select param.f_import_tcatalogo ('insert','GECOM','Hub Usb','hubusb','accesorio_equipo',NULL);
 
+select pxp.f_insert_tgui ('Accesorio Movil', 'Accesorio Movil', 'ACCMOV', 'si', 6, 'sis_gestion_comunicacion/vista/accesorio/AccesorioMovil.php', 3, '', 'AccesorioMovil', 'GECOM');
+select pxp.f_insert_tgui ('Accesorio Escritorio', 'Accesorio Escritorio', 'ACCESC', 'si', 3, 'sis_gestion_comunicacion/vista/accesorio/AccesorioEscritorio.php', 3, '', 'AccesorioEscritorio', 'GECOM');
+
 /*****************************F-DAT-YMR-GECOM-1-30/05/2021*************************************/
+
+/*****************************I-DAT-YMR-GECOM-8-20/07/2021*************************************/
+
+select param.f_import_tcatalogo_tipo ('insert','procesador','GECOM','tequipo');
+select param.f_import_tcatalogo ('insert','GECOM','AMD Ryzen 9','AMDRYZEN9','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','AMD Ryzen 7','AMDRYZEN7','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Intel Core i9','INTELCOREI9','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Intel Core i7','INTELCOREI7','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','AMD Ryzen 5','AMDRYZEN5','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Intel Xeon','INTELXEON','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Intel Core i5','INTELCOREI5','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','AMD Ryzen 3','AMDRYZEN3','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Intel Core i3','INTELCOREI3','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','AMD Athlon Silver','AMDATHLONSILVER','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','AMD A12-9720P','AMDA12-9720P','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','AMD 3020E','AMD3020E','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Intel Core m3','INTELCOREM3','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Intel Celeron','INTELCELERON','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Intel Core m5','INTELCOREM5','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','AMD A10','AMDA10','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Intel Pentium 4','INTELPENTIUM4','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Intel Pentium','INTELPENTIUM','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Intel Core','INTELCORE','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','AMD A9','AMDA9','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','AMD A6','AMDA6','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Intel Atom','INTELATOM','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','AMD FX','AMDFX','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','AMD Phenom II','AMDPHENOMII','procesador',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Otro','otro','procesador',NULL);
+
+select param.f_import_tcatalogo ('insert','GECOM','Otro','otro_equipo','accesorio_equipo',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Otro','otro_movil','accesorio_telefono',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Otro','otro','so',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Otro','otro','almacenamiento',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Otro','otro','ram',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Otro','otro','teclado_idioma',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Otro','otro','teclado',NULL);
+select param.f_import_tcatalogo ('insert','GECOM','Otro','otro','marca',NULL);
+
+
+/*****************************F-DAT-YMR-GECOM-8-20/07/2021*************************************/

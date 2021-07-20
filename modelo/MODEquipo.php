@@ -76,6 +76,21 @@ class MODEquipo extends MODbase{
         $this->captura('tipo_almacenamiento','varchar');
         $this->captura('tipo_almacenamiento_desc','varchar');
         $this->captura('sistema_operativo_desc','varchar');
+        $this->captura('tipo_procesador','varchar');
+        $this->captura('tipo_procesador_desc','varchar');
+        $this->captura('codigo_inmovilizado','varchar');
+
+        $this->captura('id_accesorio','int4');
+        $this->captura('acc_estado_reg','varchar');
+        $this->captura('acc_nombre','varchar');
+        $this->captura('acc_marca','varchar');
+        $this->captura('acc_marca_desc','varchar');
+        $this->captura('acc_modelo','varchar');
+        $this->captura('acc_num_serie','varchar');
+        $this->captura('acc_estado_fisico','varchar');
+        $this->captura('acc_estado_fisico_desc','varchar');
+        $this->captura('acc_codigo_inmovilizado','varchar');
+        $this->captura('acc_tamano','varchar');
         
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -143,6 +158,17 @@ class MODEquipo extends MODbase{
 		$this->setParametro('mac','mac','varchar');
         $this->setParametro('tipo_memoria_ram','tipo_memoria_ram','varchar');
         $this->setParametro('tipo_almacenamiento','tipo_almacenamiento','varchar');
+        $this->setParametro('tipo_procesador','tipo_procesador','varchar');
+        $this->setParametro('codigo_inmovilizado','codigo_inmovilizado','varchar');
+
+        $this->setParametro('acc_estado_reg','acc_estado_reg','varchar');
+        $this->setParametro('acc_nombre','acc_nombre','varchar');
+        $this->setParametro('acc_marca','acc_marca','varchar');
+        $this->setParametro('acc_modelo','acc_modelo','varchar');
+        $this->setParametro('acc_num_serie','acc_num_serie','varchar');
+        $this->setParametro('acc_estado_fisico','acc_estado_fisico','varchar');
+        $this->setParametro('acc_codigo_inmovilizado','acc_codigo_inmovilizado','varchar');
+        $this->setParametro('acc_tamano','acc_tamano','varchar');
 		
 
         //Ejecuta la instruccion
@@ -190,6 +216,18 @@ class MODEquipo extends MODbase{
 		$this->setParametro('mac','mac','varchar');
         $this->setParametro('tipo_memoria_ram','tipo_memoria_ram','varchar');
         $this->setParametro('tipo_almacenamiento','tipo_almacenamiento','varchar');
+        $this->setParametro('tipo_procesador','tipo_procesador','varchar');
+        $this->setParametro('codigo_inmovilizado','codigo_inmovilizado','varchar');
+
+        $this->setParametro('id_accesorio','id_accesorio','int4');
+        $this->setParametro('acc_estado_reg','acc_estado_reg','varchar');
+        $this->setParametro('acc_nombre','acc_nombre','varchar');
+        $this->setParametro('acc_marca','acc_marca','varchar');
+        $this->setParametro('acc_modelo','acc_modelo','varchar');
+        $this->setParametro('acc_num_serie','acc_num_serie','varchar');
+        $this->setParametro('acc_estado_fisico','acc_estado_fisico','varchar');
+        $this->setParametro('acc_codigo_inmovilizado','acc_codigo_inmovilizado','varchar');
+        $this->setParametro('acc_tamano','acc_tamano','varchar');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -372,6 +410,8 @@ class MODEquipo extends MODbase{
         $this->captura('accesorios2','varchar');
         $this->captura('estado_equipo','varchar');
         $this->captura('estado_numero','varchar');
+        $this->captura('imei2','varchar');
+        $this->captura('tarifa','varchar');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -419,6 +459,8 @@ class MODEquipo extends MODbase{
 		$this->captura('monitor_estado_fisico','varchar');
 		$this->captura('tipo_desc','varchar');
 		$this->captura('mac','varchar');
+        $this->captura('monitor_codigo_inmovilizado','varchar');
+        $this->captura('monitor_tamano','varchar');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -460,6 +502,192 @@ class MODEquipo extends MODbase{
         $this->captura('estado','varchar');
         $this->captura('asignador','varchar');
         $this->captura('observaciones','varchar');
+
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+
+    function recuperarDatos510(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='gecom.ft_equipo_sel';
+        $this->transaccion='GC_DISPOR_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setCount(false);
+
+        $this->setParametro('id_funcionario','id_funcionario','int4');
+        $this->setParametro('id_funcionario_celular','id_funcionario_celular','int4');
+
+        //Definicion de la lista del resultado del query
+        $this->captura('id_equipo','int4');
+        $this->captura('desc_funcionario1','varchar');
+        $this->captura('nombre_unidad','varchar');
+        $this->captura('marca','varchar');
+        $this->captura('modelo','varchar');
+        $this->captura('num_serie','varchar');
+        $this->captura('tamano_pantalla','varchar');
+        $this->captura('tarjeta_video','varchar');
+        $this->captura('teclado','varchar');
+        $this->captura('procesador','varchar');
+        $this->captura('memoria_ram','varchar');
+        $this->captura('almacenamiento','varchar');
+        $this->captura('sistema_operativo','varchar');
+        $this->captura('estado_fisico','varchar');
+        $this->captura('accesorios','varchar');
+        $this->captura('codigo_inmovilizado','varchar');
+        $this->captura('fecha_inicio','date');
+        $this->captura('fecha_fin','date');
+        $this->captura('asignador','varchar');
+        $this->captura('observaciones','text');
+
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+
+    function recuperarDatos511(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='gecom.ft_equipo_sel';
+        $this->transaccion='GC_DISPC_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setCount(false);
+
+        $this->setParametro('id_funcionario','id_funcionario','int4');
+        $this->setParametro('id_funcionario_celular','id_funcionario_celular','int4');
+
+        //Definicion de la lista del resultado del query
+        $this->captura('id_equipo','int4');
+        $this->captura('desc_funcionario1','varchar');
+        $this->captura('nombre_unidad','varchar');
+        $this->captura('marca','varchar');
+        $this->captura('modelo','varchar');
+        $this->captura('num_serie','varchar');
+        $this->captura('tarjeta_video','varchar');
+        $this->captura('procesador','varchar');
+        $this->captura('memoria_ram','varchar');
+        $this->captura('almacenamiento','varchar');
+        $this->captura('sistema_operativo','varchar');
+        $this->captura('mouse','varchar');
+        $this->captura('teclado','varchar');
+        $this->captura('accesorios','varchar');
+        $this->captura('estado_fisico','varchar');
+        $this->captura('codigo_inmovilizado','varchar');
+        $this->captura('monitor_tamano','varchar');
+        $this->captura('monitor_marca','varchar');
+        $this->captura('monitor_modelo','varchar');
+        $this->captura('monitor_num_serie','varchar');
+        $this->captura('monitor_estado_fisico','varchar');
+        $this->captura('monitor_codigo_inmovilizado','varchar');
+        $this->captura('fecha_inicio','date');
+        $this->captura('fecha_fin','date');
+        $this->captura('asignador','varchar');
+        $this->captura('observaciones','text');
+
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+
+    function recuperarDatos512(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='gecom.ft_equipo_sel';
+        $this->transaccion='GC_DISACC_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setCount(false);
+
+        $this->setParametro('id_funcionario','id_funcionario','int4');
+        $this->setParametro('id_funcionario_celular','id_funcionario_celular','int4');
+
+        //Definicion de la lista del resultado del query
+        $this->captura('id_accesorio','int4');
+        $this->captura('desc_funcionario1','varchar');
+        $this->captura('nombre_unidad','varchar');
+        $this->captura('tipo','varchar');
+        $this->captura('marca','varchar');
+        $this->captura('modelo','varchar');
+        $this->captura('num_serie','varchar');
+        $this->captura('estado_fisico','varchar');
+        $this->captura('fecha_inicio','date');
+        $this->captura('fecha_fin','date');
+        $this->captura('asignador','varchar');
+        $this->captura('observaciones','text');
+
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+
+    function recuperarDatos513(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='gecom.ft_equipo_sel';
+        $this->transaccion='GC_DISTEL_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setCount(false);
+
+        $this->setParametro('id_funcionario','id_funcionario','int4');
+        $this->setParametro('id_funcionario_celular','id_funcionario_celular','int4');
+
+        //Definicion de la lista del resultado del query
+        $this->captura('id_equipo','int4');
+        $this->captura('desc_funcionario1','varchar');
+        $this->captura('nombre_unidad','varchar');
+        $this->captura('marca','varchar');
+        $this->captura('modelo','varchar');
+        $this->captura('num_serie','varchar');
+        $this->captura('mac','varchar');
+        $this->captura('estado_fisico','varchar');
+        $this->captura('codigo_inmovilizado','varchar');
+        $this->captura('fecha_inicio','date');
+        $this->captura('fecha_fin','date');
+        $this->captura('asignador','varchar');
+        $this->captura('observaciones','text');
+
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+
+    function recuperarDatos515(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='gecom.ft_equipo_sel';
+        $this->transaccion='GC_DISLIN_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setCount(false);
+
+        $this->setParametro('id_funcionario','id_funcionario','int4');
+        $this->setParametro('id_funcionario_celular','id_funcionario_celular','int4');
+
+        //Definicion de la lista del resultado del query
+        $this->captura('id_numero_celular','int4');
+        $this->captura('desc_funcionario1','varchar');
+        $this->captura('nombre_unidad','varchar');
+        $this->captura('tipo_contrato','varchar');
+        $this->captura('telco','varchar');
+        $this->captura('numero','varchar');
+        $this->captura('nombre_servicio','varchar');
+        $this->captura('tarifa','numeric');
+        $this->captura('nro_cuenta','integer');
+        $this->captura('codigo','varchar');
+        $this->captura('fecha_inicio','date');
+        $this->captura('fecha_fin','date');
+        $this->captura('asignador','varchar');
+        $this->captura('estado','varchar');
+        $this->captura('observaciones','text');
 
 
         //Ejecuta la instruccion

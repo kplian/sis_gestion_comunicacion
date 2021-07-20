@@ -166,15 +166,24 @@ BEGIN
                                   WHERE c.codigo = funcel.tipo_servicio and ct.tabla = ''tservicio'' and ct.nombre = ''tipo_servicio'') AS tipo_servicio_desc,
                            e.tipo as tipo_equipo,
                            funcel.id_accesorios,
-                           (SELECT  array_to_string(array_agg(ac.resumen), ''<br>''::text)::character varying
-                             from 
-                             (select ac.*,
-                                     (ac.nombre||'' ''||ac.marca||'' ''||ac.modelo||'' - ''||ac.num_serie)::varchar as resumen
-                              from gecom.taccesorio ac) as ac
-                             where ac.id_accesorio  in ( SELECT element::integer
-                                                            FROM UNNEST( string_to_array(funcel.id_accesorios,'',''))
-                                                            as element)
-                             ) as desc_accesorios
+                           case 
+                           		when funcel.estado_reg = ''activo'' then
+                                 (SELECT  array_to_string(array_agg(ac.resumen), ''<br>''::text)::character varying
+                                   from 
+                                   (select ac.*,
+                                           (ac.nombre||'' ''||ac.marca||'' ''||ac.modelo||'' - ''||ac.num_serie)::varchar as resumen
+                                    from gecom.taccesorio ac) as ac
+                                   where ac.id_accesorio  in 
+                                         (select fa.id_accesorio from gecom.tfuncionario_accesorio fa where fa.id_funcionario_celular = funcel.id_funcionario_celular and fa.estado_reg = ''activo''))
+                                else
+                                  (SELECT  array_to_string(array_agg(ac.resumen), ''<br>''::text)::character varying
+                                   from 
+                                   (select ac.*,
+                                           (ac.nombre||'' ''||ac.marca||'' ''||ac.modelo||'' - ''||ac.num_serie)::varchar as resumen
+                                    from gecom.taccesorio ac) as ac
+                                   where ac.id_accesorio  in 
+                                         (select fa.id_accesorio from gecom.tfuncionario_accesorio fa where fa.id_funcionario_celular = funcel.id_funcionario_celular and fa.estado_reg = ''inactivo''))
+                          end ::varchar as desc_accesorios
                       from gecom.tfuncionario_celular funcel
                       JOIN segu.tusuario usu1 ON usu1.id_usuario = funcel.id_usuario_reg
                       LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = funcel.id_usuario_mod
@@ -353,6 +362,8 @@ BEGIN
        
        if v_parametros.id_tipo_empleados = 1 then
          v_consulta := v_consulta || 'and now()::date between tuofun.fecha_asignacion and COALESCE(tuofun.fecha_finalizacion, (now()::date + interval ''1 year'')::date)';
+       elsif v_parametros.id_tipo_empleados = 3  then
+       	 v_consulta := v_consulta || 'and tuofun.id_funcionario not in (select id_funcionario from orga.tuo_funcionario tff where  now()::date between tff.fecha_asignacion and COALESCE(tff.fecha_finalizacion, (now()::date + interval ''1 year'')::date)) ';
        end if;
        
        v_consulta := v_consulta || '  group by funcio.id_funcionario, PERSON.id_persona, person.nombre_completo2, person.nombre_completo1, usu1.id_usuario, usu2.id_usuario, person.ci,
@@ -435,6 +446,8 @@ BEGIN
          
          if v_parametros.id_tipo_empleados = 1 then
            v_consulta := v_consulta || 'and now()::date between tuofun.fecha_asignacion and COALESCE(tuofun.fecha_finalizacion, (now()::date + interval ''1 year'')::date)';
+         elsif v_parametros.id_tipo_empleados = 3  then
+           v_consulta := v_consulta || 'and tuofun.id_funcionario not in (select id_funcionario from orga.tuo_funcionario tff where  now()::date between tff.fecha_asignacion and COALESCE(tff.fecha_finalizacion, (now()::date + interval ''1 year'')::date)) ';
          end if;
          
          v_consulta := v_consulta || ' group by funcio.id_funcionario ) as funcionarios ';

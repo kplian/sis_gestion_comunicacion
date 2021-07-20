@@ -1,5 +1,5 @@
 /***********************************I-DEP-JRR-GECOM-0-21/07/2014****************************************/
-
+/*
 ALTER TABLE gecom.tnumero_celular
   ADD CONSTRAINT fk_tnumero_celular__id_proveedor FOREIGN KEY (id_proveedor)
     REFERENCES param.tproveedor(id_proveedor)
@@ -87,7 +87,7 @@ ALTER TABLE gecom.tconsumo
     MATCH FULL
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
-    NOT DEFERRABLE;
+    NOT DEFERRABLE;*/
 
 /***********************************F-DEP-JRR-GECOM-0-21/07/2014****************************************/
 
@@ -131,5 +131,8 @@ select pxp.f_insert_testructura_gui ('ASGNUMM', 'DISP_MOV');
 select pxp.f_insert_testructura_gui ('EQUU', 'EQU_INF');
 select pxp.f_insert_testructura_gui ('DISMOV', 'DISP_MOV');
 select pxp.f_insert_testructura_gui ('ACCSE', 'GECOM');
+
+select pxp.f_insert_testructura_gui ('ACCMOV', 'DISP_MOV');
+select pxp.f_insert_testructura_gui ('ACCESC', 'EQU_INF');
 
 /***********************************F-DEP-YMR-GECOM-1-30/05/2021****************************************/

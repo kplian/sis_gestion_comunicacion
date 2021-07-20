@@ -151,18 +151,18 @@ class RFormularioR515Xls
         $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(0,$fila,'NRO');
         $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(1,$fila,'NOMBRE');
         $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(2,$fila,'GERENCIA');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(4,$fila,'MODALIDAD DE CONTRATO');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(5,$fila,'TELCO');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(6,$fila,'LINEA');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(7,$fila,'SERVICIO');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(8,$fila,'LIMITE DE CONSUMO');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(9,$fila,'CUENTA TELCO');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(10,$fila,'CUENTA DE GASTO ETR');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(11,$fila,'FECHA DE ASIGNACION');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(12,$fila,'FECHA DE DEVOLUCION');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(13,$fila,'RESPONSABLE DE ASIGNACION');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(14,$fila,'ESTADO');
-        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(15,$fila,'OBSERVACIONES');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(3,$fila,'MODALIDAD DE CONTRATO');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(4,$fila,'TELCO');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(5,$fila,'LINEA');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(6,$fila,'SERVICIO');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(7,$fila,'LIMITE DE CONSUMO');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(8,$fila,'CUENTA TELCO');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(9,$fila,'CUENTA DE GASTO ETR');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(10,$fila,'FECHA DE ASIGNACION');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(11,$fila,'FECHA DE DEVOLUCION');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(12,$fila,'RESPONSABLE DE ASIGNACION');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(13,$fila,'ESTADO');
+        $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(14,$fila,'OBSERVACIONES');
 
 
 
@@ -190,24 +190,18 @@ class RFormularioR515Xls
             $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(0,$fila,$fi+1);
             $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(1,$fila,$value['desc_funcionario1']);
             $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(2,$fila,$value['nombre_unidad']);
-            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(3,$fila,$value['nombre_departamento']);
-            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(4,$fila,$value['tipo_contrato']);
-            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(5,$fila,$value['tipo_desc']);
-            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(6,$fila,$value['marca']);
-            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(7,$fila,$value['modelo']);
-            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(8,$fila,$value['num_serie']);
-            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(9,$fila,$value['color']);
-            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(10,$fila,$value['rom']);
-            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(11,$fila,$value['ram']);
-            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(12,$fila,$value['imei']);
-            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(13,$fila,$value['imei2']);
-            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(14,$fila,$value['desc_accesorios']);
-            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(15,$fila,$value['estado_fisico']);
-            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(16,$fila,$value['fecha_asignacion']);
-            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(17,$fila,$value['fecha_devolucion']);
-            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(18,$fila,$value['estado']);
-            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(19,$fila,$value['asignador']);
-            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(20,$fila,$value['observaciones']);
+            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(3,$fila,$value['tipo_contrato']);
+            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(4,$fila,$value['telco']);
+            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(5,$fila,$value['numero']);
+            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(6,$fila,$value['nombre_servicio']);
+            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(7,$fila,$value['tarifa']);
+            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(8,$fila,$value['nro_cuenta']);
+            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(9,$fila,$value['codigo']);
+            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(10,$fila,$value['fecha_inicio']);
+            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(11,$fila,$value['fecha_fin']);
+            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(12,$fila,$value['asignador']);
+            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(13,$fila,$value['estado']);
+            $this->docexcel->getActiveSheet()->setCellValueByColumnAndRow(14,$fila,$value['observaciones']);
 
             $fila++;
         }
@@ -215,26 +209,12 @@ class RFormularioR515Xls
         $this->docexcel->getActiveSheet()->getColumnDimension('A')->setWidth(5);
         $this->docexcel->getActiveSheet()->getColumnDimension('B')->setWidth(45);
 
-        foreach(range('C','U') as $columnID) {
+        foreach(range('C','O') as $columnID) {
             $this->docexcel->getActiveSheet()->getColumnDimension($columnID)->setWidth(30);
         }
 
-        $this->docexcel->getActiveSheet()->getStyle("C6:U$fila")
-            ->getAlignment()->setWrapText(true);
+        $this->docexcel->getActiveSheet()->getStyle("C6:O$fila")->getAlignment()->setWrapText(true);
 
-        /*$this->docexcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-        $this->docexcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
-        $this->docexcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
-
-        for ($i = 4; $i <= $this->anios+4; ++$i) {
-            $this->docexcel->getActiveSheet()->getColumnDimension($this->equivalencias[$i])->setWidth(14);
-        }
-
-        $this->docexcel->getActiveSheet()->getStyle('B1:B'.$this->docexcel->getActiveSheet()->getHighestRow())
-            ->getAlignment()->setWrapText(true);
-
-        $this->docexcel->getActiveSheet()->getStyle('C1:C'.$this->docexcel->getActiveSheet()->getHighestRow())
-            ->getAlignment()->setWrapText(true);*/
     }
 
     function imprimeTitulo($sheetNumber,$titulo,$value){
@@ -250,21 +230,21 @@ class RFormularioR515Xls
         );
 
         $sheet->setCellValueByColumnAndRow(2,2,strtoupper($titulo));
-        $sheet->mergeCells('C2:R2');
+        $sheet->mergeCells('C2:M2');
         $sheet->getRowDimension('2')->setRowHeight(30);
 
         $sheet->setCellValueByColumnAndRow(2,3,'REGISTRO');
-        $sheet->mergeCells('C3:J3');
+        $sheet->mergeCells('C3:H3');
         $sheet->getRowDimension('3')->setRowHeight(30);
 
-        $sheet->setCellValueByColumnAndRow(10,3,'REGISTRO DE LINEAS CORPORATIVAS');
-        $sheet->mergeCells('K3:R3');
+        $sheet->setCellValueByColumnAndRow(8,3,'REGISTRO DE LINEAS CORPORATIVAS');
+        $sheet->mergeCells('I3:M3');
 
-        $sheet->getStyle("C2:U3")->applyFromArray($styleArrayGroupTitle);
+        $sheet->getStyle("C2:O3")->applyFromArray($styleArrayGroupTitle);
 
-        $sheet->getStyle('S2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $sheet->setCellValueByColumnAndRow(18,2,'5-R-515/0');
-        $sheet->mergeCells('S2:U3');
+        $sheet->getStyle('N2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $sheet->setCellValueByColumnAndRow(13,2,'5-R-515/0');
+        $sheet->mergeCells('N2:O3');
 
         $sheet->setTitle("$value");
 

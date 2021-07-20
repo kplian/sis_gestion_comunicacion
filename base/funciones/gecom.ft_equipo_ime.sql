@@ -65,7 +65,8 @@ BEGIN
             fecha_reg,
             usuario_ai,
             id_usuario_reg,
-            estado
+            estado,
+            codigo_inmovilizado
               ) VALUES (
             v_parametros.estado_fisico,
             v_parametros.observaciones,
@@ -78,7 +79,8 @@ BEGIN
             now(),
             v_parametros._nombre_usuario_ai,
             p_id_usuario,
-            v_parametros.estado
+            v_parametros.estado,
+            v_parametros.codigo_inmovilizado
             ) RETURNING id_equipo into v_id_equipo;
             
             if v_parametros.tipo in ('movil','dongle','gps','centel') then
@@ -128,7 +130,8 @@ BEGIN
                   teclado_idioma,
                   mac,
                   tipo_almacenamiento,
-                  tipo_memoria_ram
+                  tipo_memoria_ram,
+                  tipo_procesador
                 )
                 VALUES (
                   p_id_usuario,
@@ -146,8 +149,43 @@ BEGIN
                   v_parametros.teclado_idioma,
                   v_parametros.mac,
                   v_parametros.tipo_almacenamiento,
-                  v_parametros.tipo_memoria_ram
+                  v_parametros.tipo_memoria_ram,
+                  v_parametros.tipo_procesador
                 );
+                
+                if v_parametros.tipo = 'pc' and v_parametros.acc_nombre is not null then
+                	INSERT INTO gecom.taccesorio(
+                                estado_reg,
+                                nombre,
+                                marca,
+                                num_serie,
+                                estado_fisico,
+                                observaciones,
+                                id_usuario_reg,
+                                fecha_reg,
+                                id_equipo,
+                                tipo,
+                                modelo,
+                                codigo_inmovilizado,
+                                acoplado,
+                                tamano
+                                  ) VALUES (
+                                'activo',
+                                v_parametros.acc_nombre,
+                                v_parametros.acc_marca,
+                                v_parametros.acc_num_serie,
+                                v_parametros.acc_estado_fisico,
+                                v_parametros.observaciones,
+                                p_id_usuario,
+                                now(),
+                                v_id_equipo,
+                                'monitor',
+                                v_parametros.acc_modelo,
+                                v_parametros.acc_codigo_inmovilizado,
+                                'pc-monitor',
+                                v_parametros.acc_tamano
+                                ) RETURNING id_accesorio into v_id_accesorio;
+                end if;
             end if;
             
             --Definicion de la respuesta
@@ -186,7 +224,8 @@ BEGIN
             id_usuario_mod = p_id_usuario,
             id_usuario_ai = v_parametros._id_usuario_ai,
             usuario_ai = v_parametros._nombre_usuario_ai,
-            estado = v_parametros.estado
+            estado = v_parametros.estado,
+            codigo_inmovilizado = v_parametros.codigo_inmovilizado
             WHERE id_equipo=v_parametros.id_equipo;
             
             if v_parametros.tipo = 'movil' then
@@ -219,8 +258,25 @@ BEGIN
                     teclado_idioma = v_parametros.teclado_idioma,
                     mac = v_parametros.mac,
                     tipo_memoria_ram = v_parametros.tipo_memoria_ram,
-                    tipo_almacenamiento = v_parametros.tipo_almacenamiento
+                    tipo_almacenamiento = v_parametros.tipo_almacenamiento,
+                    tipo_procesador = v_parametros.tipo_procesador
                 WHERE id_equipo_pc = v_parametros.id_equipo_pc;
+                
+                if v_parametros.tipo = 'pc' then
+                  UPDATE gecom.taccesorio SET
+                  nombre = v_parametros.acc_nombre,
+                  marca = v_parametros.acc_marca,
+                  num_serie = v_parametros.acc_num_serie,
+                  estado_fisico = v_parametros.acc_estado_fisico,
+                  observaciones = v_parametros.observaciones,
+                  id_usuario_mod = p_id_usuario,
+                  fecha_mod = now(),
+                  id_equipo = v_parametros.id_equipo,
+                  modelo = v_parametros.acc_modelo,
+                  codigo_inmovilizado = v_parametros.acc_codigo_inmovilizado,
+                  tamano = v_parametros.acc_tamano
+                  WHERE id_accesorio=v_parametros.id_accesorio;
+                end if;
             end if;
             
             select fc.id_funcionario_celular into v_id_funcionario_celular 
@@ -330,14 +386,17 @@ BEGIN
             	fecha_fin = v_parametros.fecha_fin
             where fc.id_funcionario_celular = v_parametros.id_funcionario_celular;
             
-            if v_funcionario_celular.id_accesorios != '' then
+            /*if v_funcionario_celular.id_accesorios != '' then
               select COALESCE(regexp_split_to_array(v_funcionario_celular.id_accesorios,','),'{0}') into v_arr_accesorios;
               FOREACH v_id_accesorio IN ARRAY v_arr_accesorios LOOP
                   UPDATE gecom.taccesorio 
                   SET id_equipo = null
                   WHERE id_accesorio = v_id_accesorio;
               END LOOP;
-            end if;
+            end if;*/
+            update gecom.tfuncionario_accesorio fa
+               set estado_reg = 'inactivo'
+             where fa.id_funcionario_celular = v_parametros.id_funcionario_celular;
             
             if v_funcionario_celular.tipo_asignacion_equipo = 'equipo' then
             	update gecom.tequipo e
@@ -420,14 +479,18 @@ BEGIN
                     set id_numero_celular = null
                     where em.id_equipo = v_funcionario_numero.id_equipo and em.estado_reg = 'activo';
                     
-                    if v_funcionario_numero.id_accesorios != '' then
+                    /*if v_funcionario_numero.id_accesorios != '' then
                       select COALESCE(regexp_split_to_array(v_funcionario_numero.id_accesorios,','),'{0}') into v_arr_accesorios;
                       FOREACH v_id_accesorio IN ARRAY v_arr_accesorios LOOP
                           UPDATE gecom.taccesorio 
                           SET id_equipo = null
                           WHERE id_accesorio = v_id_accesorio;
                       END LOOP;
-                    end if;
+                    end if;*/
+                    
+                    update gecom.tfuncionario_accesorio fa
+                       set estado_reg = 'inactivo'
+                     where fa.id_funcionario_celular = v_funcionario_numero.id_funcionario_celular;
                     
                     INSERT INTO gecom.tequipo_historico
                       (

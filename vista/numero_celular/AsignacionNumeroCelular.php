@@ -565,7 +565,8 @@ header("content-type: text/javascript; charset=UTF-8");
             store:new Ext.data.ArrayStore({
                 fields: ['ID', 'valor'],
                 data :	[[1,'Activos'],
-                    [2,'Todos']]
+                         [3,'Inactivos'],
+                         [2,'Todos']]
 
             }),
             valueField: 'ID',

@@ -62,9 +62,20 @@ header("content-type: text/javascript; charset=UTF-8");
                     tooltip : '<b>Reporte Formulario Asignación</b>'
                 });
 
+                this.addButton('btnAccesorios',{
+                    text :'Accesorios',
+                    grupo:[0,1,2,3,4],
+                    iconCls : 'bchecklist',
+                    disabled: true,
+                    handler : this.accesorios,
+                    tooltip : '<b>Accesorios del dispositivo</b><br/><b></b>'
+                });
+
                 this.getBoton('btnFormAsignacion').hide();
                 this.getBoton('btnFormDevolucion').hide();
                 this.getBoton('btnCambio').hide();
+                this.getBoton('btnAccesorios').hide();
+
                 this.iniciarEventos();
 
             },
@@ -113,6 +124,20 @@ header("content-type: text/javascript; charset=UTF-8");
                     timeout : this.timeout,
                     scope : this
                 });
+            },
+            accesorios:function() {
+                var rec=this.sm.getSelected();
+                var data = { id_funcionario_celular: rec.data.id_funcionario_celular,
+                             id_equipo: rec.data.id_equipo,
+                             estado_reg: rec.data.estado_reg,
+                             tipo_acc: 'movil'};
+                Phx.CP.loadWindows('../../../sis_gestion_comunicacion/vista/accesorio/EquipoAccesorio.php',
+                    'Accesorios',
+                    { width:'70%', height:'60%' },
+                    data,
+                    this.idContenedor,
+                    'EquipoAccesorio'
+                )
             },
             iniciarEventos: function (){
                 var me = this;
@@ -530,6 +555,8 @@ header("content-type: text/javascript; charset=UTF-8");
             bdel:true,
             bnew: true,
             bsave: false,
+            bedit: false,
+            bdel: false,
             onReloadPage:function(m){
                 this.maestro=m;
                 console.log(this.maestro);
@@ -550,7 +577,6 @@ header("content-type: text/javascript; charset=UTF-8");
             },
             preparaMenu:function(n){
                 var data = this.getSelectedData();
-                console.log('hoyyy',data);
                 var tb =this.tbar;
                 Phx.vista.NumeroAsignado.superclass.preparaMenu.call(this,n);
                 this.getBoton('btnFormAsignacion').hide();
@@ -560,8 +586,8 @@ header("content-type: text/javascript; charset=UTF-8");
                 if(data.estado_reg == 'activo'){
                     this.getBoton('btnDevolucion').enable();
                     this.getBoton('btnCambio').enable();
-                    this.getBoton('edit').enable();
-                    this.getBoton('del').enable();
+                    /*this.getBoton('edit').enable();
+                    this.getBoton('del').enable();*/
                     this.getBoton('btnFormAsignacion').show();
                     if(data.tipo_asignacion_equipo == 'numero'){
                         this.getBoton('btnCambio').show();
@@ -569,10 +595,17 @@ header("content-type: text/javascript; charset=UTF-8");
                 }else{
                     this.getBoton('btnDevolucion').disable();
                     this.getBoton('btnCambio').disable();
-                    this.getBoton('edit').disable();
-                    this.getBoton('del').disable();
+                    /*this.getBoton('edit').disable();
+                    this.getBoton('del').disable();*/
                     this.getBoton('btnFormDevolucion').show();
                 }
+
+                if(data.id_equipo > 0){
+                    this.getBoton('btnAccesorios').show();
+                }else{
+                    this.getBoton('btnAccesorios').hide();
+                }
+
 
                 return tb
             },
@@ -593,8 +626,9 @@ header("content-type: text/javascript; charset=UTF-8");
                 if(tb){
                     this.getBoton('btnDevolucion').disable();
                     this.getBoton('btnCambio').disable();
-                    this.getBoton('edit').disable();
-                    this.getBoton('del').disable();
+                    /*this.getBoton('edit').disable();
+                    this.getBoton('del').disable();*/
+                    this.getBoton('btnAccesorios').hide();
                 }
                 return tb
             },

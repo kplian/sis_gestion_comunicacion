@@ -29,7 +29,7 @@ DECLARE
     v_nombre_funcion           TEXT;
     v_mensaje_error            TEXT;
     v_id_accesorio    INTEGER;
-                
+    v_accesorios			   VARCHAR;            
 BEGIN
 
     v_nombre_funcion = 'gecom.ft_accesorio_ime';
@@ -61,7 +61,9 @@ BEGIN
             fecha_mod,
             id_equipo,
             tipo,
-            modelo
+            modelo,
+            codigo_inmovilizado,
+            tamano
               ) VALUES (
             'activo',
             v_parametros.nombre,
@@ -77,7 +79,9 @@ BEGIN
             null,
             v_parametros.id_equipo,
             v_parametros.tipo,
-            v_parametros.modelo
+            v_parametros.modelo,
+            v_parametros.codigo_inmovilizado,
+            v_parametros.tamano
             ) RETURNING id_accesorio into v_id_accesorio;
             
             --Definicion de la respuesta
@@ -112,7 +116,9 @@ BEGIN
             usuario_ai = v_parametros._nombre_usuario_ai,
             id_equipo = v_parametros.id_equipo,
             tipo = v_parametros.tipo,
-            modelo = v_parametros.modelo
+            modelo = v_parametros.modelo,
+            codigo_inmovilizado = v_parametros.codigo_inmovilizado,
+            tamano = v_parametros.tamano
             WHERE id_accesorio=v_parametros.id_accesorio;
                
             --Definicion de la respuesta
@@ -146,6 +152,89 @@ BEGIN
             RETURN v_resp;
 
         END;
+    
+    /*********************************    
+     #TRANSACCION:  'GC_ACCFUN_INS'
+     #DESCRIPCION:    Modificacion de registros
+     #AUTOR:        ymedina    
+     #FECHA:        29-05-2021 16:19:41
+    ***********************************/
+
+    ELSIF (p_transaccion='GC_ACCFUN_INS') THEN
+
+        BEGIN
+            
+        	/*select fc.id_accesorios into v_accesorios
+            from gecom.tfuncionario_celular fc
+            where fc.id_funcionario_celular = v_parametros.id_funcionario_celular;
+            
+            if length(v_accesorios) > 0 then
+            	v_accesorios = v_accesorios || ','||v_parametros.id_accesorio;
+            else
+            	v_accesorios = v_parametros.id_accesorio;    
+            end if;
+            
+        	update gecom.tfuncionario_celular fc
+            set id_accesorios = v_accesorios
+            where fc.id_funcionario_celular = v_parametros.id_funcionario_celular;*/
+            
+            INSERT INTO gecom.tfuncionario_accesorio(
+                          id_usuario_reg,
+                          fecha_reg,
+                          estado_reg,
+                          id_funcionario_celular,
+                          id_accesorio,
+                          fecha_inicio,
+                          fecha_fin,
+                          observaciones
+                        )
+                        VALUES (
+                          p_id_usuario,
+                          now(),
+                          'activo',
+                          v_parametros.id_funcionario_celular,
+                          v_parametros.id_accesorio,
+                          v_parametros.fecha_inicio,
+                  		  v_parametros.fecha_fin,
+                     	  v_parametros.observaciones);
+            
+            update gecom.taccesorio a 
+            set codigo_inmovilizado = v_parametros.codigo_inmovilizado
+            where a.id_accesorio = v_parametros.id_accesorio;
+               
+            --Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Accesorios modificado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_accesorio',v_parametros.id_accesorio::varchar);
+               
+            --Devuelve la respuesta
+            RETURN v_resp;
+            
+        END;
+    
+    /*********************************    
+     #TRANSACCION:  'GC_ACC_RET'
+     #DESCRIPCION:  Devolicion de accesorio
+     #AUTOR:        ymedina    
+     #FECHA:        06-07-2021 16:01:48
+    ***********************************/
+
+    ELSIF (p_transaccion='GC_ACC_RET') THEN
+
+        BEGIN
+        
+        	update gecom.tfuncionario_accesorio fa
+        	   set estado_reg = 'inactivo'
+             where fa.id_funcionario_celular = v_parametros.id_funcionario_celular
+               and fa.id_accesorio = v_parametros.id_accesorio;
+               
+            --Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Accesorio devuelto'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_accesorio',v_parametros.id_accesorio::varchar);
+              
+            --Devuelve la respuesta
+            RETURN v_resp;
+
+        END;
          
     ELSE
      
@@ -170,4 +259,3 @@ CALLED ON NULL INPUT
 SECURITY INVOKER
 PARALLEL UNSAFE
 COST 100;
-

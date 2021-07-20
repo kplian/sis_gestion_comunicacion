@@ -39,6 +39,9 @@ class RFormEquipo extends  ReportePDF {
 		$this->recomendaciones_1 = '';
 		$this->recomendaciones_2 = '';
 
+        $this->conformidad_funcionario = '';
+        $this->conformidad_asignador = '';
+        $this->conformidad_fecha = '';
         //$this->imagenes = 'http://172.18.79.207/ymedinaetr/sis_seguridad/control/foto_persona/ActionObtenerFoto.php?file='.$this->datos_persona[0]['nombre_archivo_foto'];
         ob_start();
         //include_once(dirname(__FILE__).'/../../lib/lib_general/ExcelInput.php');
@@ -74,6 +77,10 @@ class RFormEquipo extends  ReportePDF {
 					"- En circunstancias donde las computadoras fueran robadas, encontrándose en el interior de un vehículo, lamentablemente la Póliza de Seguro no podrá ser activada, porque queda excluida de la cobertura de robos cuando las pérdidas de los bienes se hallen descuidados y/o abandonados, en cualquier lugar , incluyendo el interior de vehículos motorizados, aun cuando sea dejado por breves minutos. Así mismo si se deja por descuido dentro de un taxi, trufi, transporte público, restaurantes, entre otros.<br>".
 					"- En circunstancias de que pueda ser robada del interior de su vivienda, se debe realizar la respectiva denuncia a la FELCC, documento imprescindible para realizar las gestiones con la Cía. De Seguros para la reposición de la computadora portátil.<br><br>".
 					"Ante cualquier daño y/o problema de este tipo, agradeceremos comunicarse con el Depto. de Tecnologías de Información.";
+
+                $this->conformidad_funcionario = 'CONFORMIDAD DE RECEPCIÓN';
+                $this->conformidad_asignador = 'CONFORMIDAD DE ASIGNACIÓN';
+                $this->conformidad_fecha = 'FECHA DE ENTREGA';
 			}else if($this->datos_estructura == 'devolucion'){
 				$this->datos_estructura = "DEVOLUCION DE COMPUTADOR PORTATIL";
 				$this->num_form = "5-R-503/0";
@@ -81,6 +88,10 @@ class RFormEquipo extends  ReportePDF {
 				$this->datos_mensaje = "A partir de la fecha de devolución, el usuario se deslinda de las responsabilidades sobre el equipo informatico";
 				$this->recomendaciones_1 = "";
 				$this->recomendaciones_2 = '';
+
+                $this->conformidad_funcionario = 'CONFORMIDAD DE DEVOLUCIÓN';
+                $this->conformidad_asignador = 'CONFORMIDAD DE RECEPCIÓN';
+                $this->conformidad_fecha = 'FECHA DE RECEPCIÓN';
 			}
         }elseif($this->tipo_equipo == 'pc'){
             if ($this->datos_estructura == 'asignacion'){
@@ -88,11 +99,19 @@ class RFormEquipo extends  ReportePDF {
 				$this->num_form = "5-R-504/0";
 				$this->datos_mensaje = "<b>Importante: </b>En caso de el equipo presente fallos en su funcionamiento, ya sea hardware y/o software, debe reportarse a Departamento de Tecnologías de Información, via mail o sistema de soporte de Ende Transmision S.A.";
 				$this->datos_mensaje_1 = "A partir de la fecha de asignación, el RECEPTOR se hace UNICO RESPONSABLE del equipo y accesorios que se le entrega bajo este documento.";
+
+                $this->conformidad_funcionario = 'CONFORMIDAD DE RECEPCIÓN';
+                $this->conformidad_asignador = 'CONFORMIDAD DE ASIGNACIÓN';
+                $this->conformidad_fecha = 'FECHA DE ENTREGA';
 			}else if($this->datos_estructura == 'devolucion'){
 				$this->datos_estructura = "DEVOLUCION COMPUTADOR DE ESCRITORIO";
 				$this->num_form = "5-R-505/0";
 				$this->datos_mensaje = "<b>Importante: </b>A partir de la fecha de devolución, el usuario se deslinda de las responsabilidades del equipo estacionario. ";
 				$this->datos_mensaje_1 = "";
+
+                $this->conformidad_funcionario = 'CONFORMIDAD DE DEVOLUCIÓN';
+                $this->conformidad_asignador = 'CONFORMIDAD DE RECEPCIÓN';
+                $this->conformidad_fecha = 'FECHA DE RECEPCIÓN';
 			}
         }else{//if($this->tipo_equipo == 'telfip'){
             if ($this->datos_estructura == 'asignacion'){
@@ -100,11 +119,19 @@ class RFormEquipo extends  ReportePDF {
 				$this->num_form = "5-R-508/0";
 				$this->datos_mensaje = "<b>Importante: </b>En caso de el equipo presente fallos en su funcionamiento, ya sea hardware y/o software, debe reportarse a Departamento de Tecnologías de Información, via mail o sistema de soporte de Ende Transmision S.A.";
 				$this->datos_mensaje_1 = "A partir de la fecha de asignación, el RECEPTOR se hace UNICO RESPONSABLE del equipo de comunicación y accesorios que se le entrega bajo este documento.";
+
+                $this->conformidad_funcionario = 'CONFORMIDAD DE RECEPCIÓN';
+                $this->conformidad_asignador = 'CONFORMIDAD DE ASIGNACIÓN';
+                $this->conformidad_fecha = 'FECHA DE ENTREGA';
 			}else if($this->datos_estructura == 'devolucion'){
 				$this->datos_estructura = "DEVOLUCION TELEFONO IP";
 				$this->num_form = "5-R-509/0";
 				$this->datos_mensaje = "<b>Importante: </b>A partir de la fecha de devolución, el usuario se deslinda de las responsabilidades sobre el equipo de comunicación. ";
 				$this->datos_mensaje_1 = "";
+
+                $this->conformidad_funcionario = 'CONFORMIDAD DE DEVOLUCIÓN';
+                $this->conformidad_asignador = 'CONFORMIDAD DE RECEPCIÓN';
+                $this->conformidad_fecha = 'FECHA DE RECEPCIÓN';
 			}
         }
 

@@ -51,6 +51,15 @@ header("content-type: text/javascript; charset=UTF-8");
                     tooltip : '<b>Reporte Formulario Asignación</b>'
                 });
 
+                this.addButton('btnAccesorios',{
+                    text :'Accesorios',
+                    grupo:[0,1,2,3,4],
+                    iconCls : 'bchecklist',
+                    disabled: true,
+                    handler : this.accesorios,
+                    tooltip : '<b>Accesorios del dispositivo</b><br/><b></b>'
+                });
+
                 this.getBoton('btnAsignacion').hide();
                 this.getBoton('btnFormDevolucion').hide();
                 this.iniciarEventos();
@@ -106,6 +115,20 @@ header("content-type: text/javascript; charset=UTF-8");
                 },this);*/
 				cmbAccesorios.store.baseParams.id_equip = cmbEquipo.getValue();
 
+            },
+            accesorios:function() {
+                var rec=this.sm.getSelected();
+                var data = { id_funcionario_celular: rec.data.id_funcionario_celular,
+                             id_equipo: rec.data.id_equipo,
+                             estado_reg: rec.data.estado_reg,
+                             tipo_acc: 'equipo'};
+                Phx.CP.loadWindows('../../../sis_gestion_comunicacion/vista/accesorio/EquipoAccesorio.php',
+                    'Accesorios',
+                    { width:'70%', height:'60%' },
+                    data,
+                    this.idContenedor,
+                    'EquipoAccesorio'
+                )
             },
             Atributos:[
                 {
@@ -312,6 +335,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         name: 'codigo_inmovilizado',
                         fieldLabel: 'Codigo Inmovilizado',
                         allowBlank: true,
+                        hidden: true,
                         anchor: '60%',
                         gwidth: 100,
                         maxLength:200
@@ -496,6 +520,8 @@ header("content-type: text/javascript; charset=UTF-8");
             bdel:true,
             bnew: true,
             bsave: false,
+            bedit: false,
+            bdel: false,
             onReloadPage:function(m){
                 this.maestro=m;
                 console.log(this.maestro);
@@ -535,17 +561,18 @@ header("content-type: text/javascript; charset=UTF-8");
                 Phx.vista.EquipoAsignado.superclass.preparaMenu.call(this,n);
                 this.getBoton('btnAsignacion').hide();
                 this.getBoton('btnFormDevolucion').hide();
+                this.getBoton('btnAccesorios').enable();
 
                 if(data.estado_reg == 'activo'){
                     this.getBoton('btnDevolucion').enable();
-                    this.getBoton('edit').enable();
-                    this.getBoton('del').enable();
+                    /*this.getBoton('edit').enable();
+                    this.getBoton('del').enable();*/
                     this.getBoton('btnAsignacion').enable();
                     this.getBoton('btnAsignacion').show();
                 }else{
                     this.getBoton('btnDevolucion').disable();
-                    this.getBoton('edit').disable();
-                    this.getBoton('del').disable();
+                    /*this.getBoton('edit').disable();
+                    this.getBoton('del').disable();*/
                     this.getBoton('btnAsignacion').disable();
                     this.getBoton('btnFormDevolucion').show();
                 }
@@ -556,9 +583,10 @@ header("content-type: text/javascript; charset=UTF-8");
                 var tb = Phx.vista.EquipoAsignado.superclass.liberaMenu.call(this);
                 if(tb){
                     this.getBoton('btnDevolucion').disable();
-                    this.getBoton('edit').disable();
-                    this.getBoton('del').disable();
+                    /*this.getBoton('edit').disable();
+                    this.getBoton('del').disable();*/
                     this.getBoton('btnAsignacion').disable();
+                    this.getBoton('btnAccesorios').disable();
                 }
                 return tb
             },

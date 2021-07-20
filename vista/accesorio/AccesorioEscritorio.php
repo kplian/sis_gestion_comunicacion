@@ -23,9 +23,22 @@ header("content-type: text/javascript; charset=UTF-8");
                 //llama al constructor de la clase padre
                 Phx.vista.AccesorioEscritorio.superclass.constructor.call(this,config);
                 this.init();
+                this.iniciarEventos();
                 this.load({params:{start:0, limit:this.tam_pag}})
             },
-
+            iniciarEventos:function () {
+                this.Cmp.tipo.on('select',function(c,r,i) {
+                    if(r.data.codigo == 'monitor'){
+                        this.Cmp.codigo_inmovilizado.show();
+                        this.Cmp.codigo_inmovilizado.allowBlank=false;
+                        this.Cmp.tamano.show();
+                    }else{
+                        this.Cmp.codigo_inmovilizado.hide();
+                        this.Cmp.codigo_inmovilizado.allowBlank=true;
+                        this.Cmp.tamano.hide();
+                    }
+                },this);
+            },
             Atributos:[
                 {
                     //configuracion del componente
@@ -247,6 +260,65 @@ header("content-type: text/javascript; charset=UTF-8");
                 },
                 {
                     config:{
+                        name: 'codigo_inmovilizado',
+                        fieldLabel: 'Codigo Inmovilizado',
+                        allowBlank: true,
+                        anchor: '80%',
+                        gwidth: 100,
+                        maxLength:200
+                    },
+                    type:'TextField',
+                    filters:{pfiltro:'codigo_inmovilizado',type:'string'},
+                    id_grupo:1,
+                    grid:false,
+                    form:true
+                },
+                {
+                    config : {
+                        name:'tamano',
+                        fieldLabel : 'Tamaño Pantalla',
+                        resizable:true,
+                        allowBlank:true,
+                        emptyText:'Elija una opción...',
+                        store: new Ext.data.JsonStore({
+                            url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                            id: 'id_catalogo',
+                            root: 'datos',
+                            sortInfo:{
+                                field: 'descripcion',
+                                direction: 'ASC'
+                            },
+                            totalProperty: 'total',
+                            fields: ['id_catalogo','codigo','descripcion'],
+                            // turn on remote sorting
+                            remoteSort: true,
+                            baseParams: {par_filtro:'descripcion',cod_subsistema:'GECOM',catalogo_tipo:'pantalla'}
+                        }),
+                        enableMultiSelect:true,
+                        valueField: 'codigo',
+                        displayField: 'descripcion',
+                        gdisplayField: 'tamano',
+                        triggerAction: 'all',
+                        lazyRender:true,
+                        mode:'remote',
+                        pageSize:15,
+                        queryDelay: 1000,
+                        anchor: '80%',
+                        gwidth: 100,
+                        listeners: {
+                            beforequery: function(qe){
+                                delete qe.combo.lastQuery;
+                            }
+                        },
+                    },
+                    type:'ComboBox',
+                    filters:{pfiltro:'tamano',type:'string'},
+                    id_grupo:0,
+                    grid:true,
+                    form:true
+                },
+                {
+                    config:{
                         name: 'observaciones',
                         fieldLabel: 'Observaciones',
                         allowBlank: true,
@@ -381,6 +453,8 @@ header("content-type: text/javascript; charset=UTF-8");
                 {name:'tipo_desc', type: 'string'},
                 {name:'marca_desc', type: 'string'},
                 {name:'estado_fisico_desc', type: 'string'},
+                {name:'codigo_inmovilizado', type: 'string'},
+                {name:'tamano', type: 'string'},
             ],
             sortInfo:{
                 field: 'id_accesorio',
@@ -400,6 +474,25 @@ header("content-type: text/javascript; charset=UTF-8");
             {
                 Phx.vista.AccesorioEscritorio.superclass.loadValoresIniciales.call(this);
                 /*this.getComponente('id_equipo').setValue(this.maestro.id_equipo);*/
+            },
+            onButtonNew:function(){
+                Phx.vista.AccesorioEscritorio.superclass.onButtonNew.call(this);
+                this.Cmp.codigo_inmovilizado.hide();
+                this.Cmp.tamano.hide();
+            },
+            onButtonEdit: function() {
+                Phx.vista.AccesorioEscritorio.superclass.onButtonEdit.call(this);
+                var sel = this.sm.getSelected().data;
+
+                if(sel.tipo == 'monitor'){
+                    this.Cmp.codigo_inmovilizado.show();
+                    this.Cmp.codigo_inmovilizado.allowBlank=false;
+                    this.Cmp.tamano.show();
+                }else{
+                    this.Cmp.codigo_inmovilizado.hide();
+                    this.Cmp.codigo_inmovilizado.allowBlank=true;
+                    this.Cmp.tamano.hide();
+                }
             },
         }
     )

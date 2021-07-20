@@ -49,6 +49,24 @@ header("content-type: text/javascript; charset=UTF-8");
                 },
                 {
                     config:{
+                        labelSeparator:'',
+                        inputType:'hidden',
+                        name: 'codigo_inmovilizado'
+                    },
+                    type:'Field',
+                    form:true
+                },
+                {
+                    config:{
+                        labelSeparator:'',
+                        inputType:'hidden',
+                        name: 'tamano'
+                    },
+                    type:'Field',
+                    form:true
+                },
+                {
+                    config:{
                         name: 'estado_reg',
                         fieldLabel: 'Estado Reg.',
                         allowBlank: true,
@@ -381,6 +399,8 @@ header("content-type: text/javascript; charset=UTF-8");
                 {name:'tipo_desc', type: 'string'},
                 {name:'marca_desc', type: 'string'},
                 {name:'estado_fisico_desc', type: 'string'},
+                {name:'codigo_inmovilizado', type: 'string'},
+                {name:'tamano', type: 'string'},
             ],
             sortInfo:{
                 field: 'id_accesorio',

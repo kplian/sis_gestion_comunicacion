@@ -17,7 +17,34 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
     Phx.vista.Equipo=Ext.extend(Phx.gridInterfaz,{
-
+        Grupos: [
+            {
+                layout: 'form',
+                border: false,
+                defaults: {
+                    border: false
+                },
+                items: [{
+                    bodyStyle: 'padding-right:5px;',
+                    items: [{
+                        xtype: 'fieldset',
+                        title: 'Datos Equipo',
+                        autoHeight: true,
+                        items: [],
+                        id_grupo:0
+                    }]
+                },{
+                    bodyStyle: 'padding-left:5px;',
+                    items: [{
+                        xtype: 'fieldset',
+                        title: 'Datos Monitor',
+                        autoHeight: true,
+                        items: [],
+                        id_grupo:1
+                    }]
+                }]
+            }
+        ],
             constructor:function(config){
                 this.maestro=config.maestro;
                 //llama al constructor de la clase padre
@@ -38,12 +65,14 @@ header("content-type: text/javascript; charset=UTF-8");
                         this.Cmp.teclado.hide();
                         this.Cmp.teclado_idioma.hide();
                         this.Cmp.procesador.hide();
+                        this.Cmp.tipo_procesador.hide();
                         this.Cmp.memoria_ram.hide();
                         this.Cmp.almacenamiento.hide();
                         this.Cmp.sistema_operativo.hide();
                         this.Cmp.mac.hide();
                         this.Cmp.tipo_memoria_ram.hide();
                         this.Cmp.tipo_almacenamiento.hide();
+                        this.ocultarGrupo(1);
                     }else if (["laptop", "pc"].includes(r.data.codigo)){
                         this.Cmp.id_numero_celular.hide();
                         this.Cmp.color.hide();
@@ -58,12 +87,22 @@ header("content-type: text/javascript; charset=UTF-8");
                         this.Cmp.teclado.show();
                         this.Cmp.teclado_idioma.show();
                         this.Cmp.procesador.show();
+                        this.Cmp.tipo_procesador.show();
                         this.Cmp.memoria_ram.show();
                         this.Cmp.almacenamiento.show();
                         this.Cmp.sistema_operativo.show();
                         this.Cmp.mac.hide();
                         this.Cmp.tipo_memoria_ram.show();
                         this.Cmp.tipo_almacenamiento.show();
+                        if(r.data.codigo == 'pc'){
+                            this.mostrarGrupo(1);
+                            this.Cmp.acc_nombre.allowBlank=false;
+                            this.Cmp.acc_marca.allowBlank=false;
+                            this.Cmp.acc_modelo.allowBlank=false;
+                            this.Cmp.acc_num_serie.allowBlank=false;
+                        }else{
+                            this.ocultarGrupo(1);
+                        }
                     }else if (["telfip"].includes(r.data.codigo)){
                         this.Cmp.mac.show();
                         this.Cmp.id_numero_celular.hide();
@@ -75,11 +114,13 @@ header("content-type: text/javascript; charset=UTF-8");
                         this.Cmp.teclado.hide();
                         this.Cmp.teclado_idioma.hide();
                         this.Cmp.procesador.hide();
+                        this.Cmp.tipo_procesador.hide();
                         this.Cmp.memoria_ram.hide();
                         this.Cmp.almacenamiento.hide();
                         this.Cmp.sistema_operativo.hide();
                         this.Cmp.tipo_memoria_ram.hide();
                         this.Cmp.tipo_almacenamiento.hide();
+                        this.ocultarGrupo(1);
                     }else{
                         this.Cmp.id_numero_celular.hide();
                         this.Cmp.color.hide();
@@ -90,12 +131,14 @@ header("content-type: text/javascript; charset=UTF-8");
                         this.Cmp.teclado.hide();
                         this.Cmp.teclado_idioma.hide();
                         this.Cmp.procesador.hide();
+                        this.Cmp.tipo_procesador.hide();
                         this.Cmp.memoria_ram.hide();
                         this.Cmp.almacenamiento.hide();
                         this.Cmp.sistema_operativo.hide();
                         this.Cmp.mac.hide();
                         this.Cmp.tipo_memoria_ram.hide();
                         this.Cmp.tipo_almacenamiento.hide();
+                        this.ocultarGrupo(1);
                     }
                 },this);
             },
@@ -281,7 +324,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     type:'TextField',
                     bottom_filter : true,
                     filters:{pfiltro:'equ.modelo',type:'string'},
-                    id_grupo:1,
+                    id_grupo:0,
                     grid:true,
                     form:true
                 },
@@ -296,7 +339,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type:'TextField',
                     filters:{pfiltro:'equ.mac',type:'string'},
-                    id_grupo:1,
+                    id_grupo:0,
                     grid:true,
                     form:true
                 },
@@ -321,7 +364,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         type: 'list',
                         options: ['disponible','almacen']
                     },
-                    id_grupo:1,
+                    id_grupo:0,
                     valorInicial: 'disponible',
                     grid:true,
                     form:true
@@ -337,7 +380,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type:'TextField',
                     filters:{pfiltro:'equ.estado_reg',type:'string'},
-                    id_grupo:1,
+                    id_grupo:0,
                     grid:true,
                     form:false
                 },
@@ -353,7 +396,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     type:'TextField',
                     bottom_filter : true,
                     filters:{pfiltro:'equ.num_serie',type:'string'},
-                    id_grupo:1,
+                    id_grupo:0,
                     grid:true,
                     form:true
                 },
@@ -368,7 +411,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type:'TextField',
                     filters:{pfiltro:'equ.color',type:'string'},
-                    id_grupo:1,
+                    id_grupo:0,
                     grid:true,
                     form:true
                 },
@@ -383,7 +426,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type:'TextField',
                     filters:{pfiltro:'equ.imei',type:'string'},
-                    id_grupo:1,
+                    id_grupo:0,
                     grid:true,
                     form:true
                 },
@@ -398,7 +441,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type:'TextField',
                     filters:{pfiltro:'equ.sn',type:'string'},
-                    id_grupo:1,
+                    id_grupo:0,
                     grid:true,
                     form:true
                 },
@@ -457,7 +500,51 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type:'TextField',
                     filters:{pfiltro:'equ.tarjeta_video',type:'string'},
-                    id_grupo:1,
+                    id_grupo:0,
+                    grid:true,
+                    form:true
+                },
+                {
+                    config : {
+                        name:'tipo_procesador',
+                        fieldLabel : 'Tipo de Procesador',
+                        resizable:true,
+                        allowBlank:true,
+                        emptyText:'Elija una opción...',
+                        store: new Ext.data.JsonStore({
+                            url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                            id: 'id_catalogo',
+                            root: 'datos',
+                            sortInfo:{
+                                field: 'descripcion',
+                                direction: 'ASC'
+                            },
+                            totalProperty: 'total',
+                            fields: ['id_catalogo','codigo','descripcion'],
+                            // turn on remote sorting
+                            remoteSort: true,
+                            baseParams: {par_filtro:'descripcion',cod_subsistema:'GECOM',catalogo_tipo:'procesador'}
+                        }),
+                        enableMultiSelect:true,
+                        valueField: 'codigo',
+                        displayField: 'descripcion',
+                        gdisplayField: 'tipo_procesador_desc',
+                        triggerAction: 'all',
+                        lazyRender:true,
+                        mode:'remote',
+                        pageSize:15,
+                        queryDelay: 1000,
+                        anchor: '50%',
+                        gwidth: 100,
+                        listeners: {
+                            beforequery: function(qe){
+                                delete qe.combo.lastQuery;
+                            }
+                        },
+                    },
+                    type:'ComboBox',
+                    filters:{pfiltro:'tipo_procesador_desc',type:'string'},
+                    id_grupo:0,
                     grid:true,
                     form:true
                 },
@@ -472,7 +559,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type:'TextField',
                     filters:{pfiltro:'equ.procesador',type:'string'},
-                    id_grupo:1,
+                    id_grupo:0,
                     grid:true,
                     form:true
                 },
@@ -619,7 +706,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type:'NumberField',
                     filters:{pfiltro:'equ.sn',type:'string'},
-                    id_grupo:1,
+                    id_grupo:0,
                     grid:true,
                     form:true
                 },
@@ -678,7 +765,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type:'NumberField',
                     filters:{pfiltro:'equ.almacenamiento',type:'string'},
-                    id_grupo:1,
+                    id_grupo:0,
                     grid:true,
                     form:true
                 },
@@ -772,6 +859,21 @@ header("content-type: text/javascript; charset=UTF-8");
                 },
                 {
                     config:{
+                        name: 'codigo_inmovilizado',
+                        fieldLabel: 'Codigo Inmovilizado',
+                        allowBlank: true,
+                        anchor: '60%',
+                        gwidth: 100,
+                        maxLength:200
+                    },
+                    type:'TextField',
+                    filters:{pfiltro:'equ.codigo_inmovilizado',type:'string'},
+                    id_grupo:0,
+                    grid:true,
+                    form:true
+                },
+                {
+                    config:{
                         name: 'observaciones',
                         fieldLabel: 'Observaciones',
                         allowBlank: true,
@@ -781,7 +883,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type:'TextArea',
                     filters:{pfiltro:'equ.observaciones',type:'string'},
-                    id_grupo:1,
+                    id_grupo:0,
                     grid:true,
                     form:true
                 },
@@ -796,7 +898,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type:'TextField',
                     filters:{pfiltro:'equ.accesorios',type:'string'},
-                    id_grupo:1,
+                    id_grupo:0,
                     grid:true,
                     form:true
                 },
@@ -812,7 +914,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type:'Field',
                     filters:{pfiltro:'equ.id_usuario_ai',type:'numeric'},
-                    id_grupo:1,
+                    id_grupo:0,
                     grid:false,
                     form:false
                 },
@@ -828,7 +930,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type:'DateField',
                     filters:{pfiltro:'equ.fecha_reg',type:'date'},
-                    id_grupo:1,
+                    id_grupo:0,
                     grid:true,
                     form:false
                 },
@@ -843,7 +945,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type:'TextField',
                     filters:{pfiltro:'equ.usuario_ai',type:'string'},
-                    id_grupo:1,
+                    id_grupo:0,
                     grid:true,
                     form:false
                 },
@@ -858,7 +960,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type:'Field',
                     filters:{pfiltro:'usu1.cuenta',type:'string'},
-                    id_grupo:1,
+                    id_grupo:0,
                     grid:true,
                     form:false
                 },
@@ -874,7 +976,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type:'DateField',
                     filters:{pfiltro:'equ.fecha_mod',type:'date'},
-                    id_grupo:1,
+                    id_grupo:0,
                     grid:true,
                     form:false
                 },
@@ -889,10 +991,224 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type:'Field',
                     filters:{pfiltro:'usu2.cuenta',type:'string'},
+                    id_grupo:0,
+                    grid:true,
+                    form:false
+                },
+                {
+                    config:{
+                        labelSeparator:'',
+                        inputType:'hidden',
+                        name: 'id_accesorio'
+                    },
+                    type:'Field',
+                    form:true
+                },
+                {
+                    config:{
+                        name: 'acc_estado_reg',
+                        fieldLabel: 'Estado Reg.',
+                        allowBlank: true,
+                        anchor: '80%',
+                        gwidth: 100,
+                        maxLength:10
+                    },
+                    type:'TextField',
+                    filters:{pfiltro:'acc.estado_reg',type:'string'},
                     id_grupo:1,
                     grid:true,
                     form:false
-                }
+                },
+                {
+                    config:{
+                        name: 'acc_nombre',
+                        fieldLabel: 'nombre',
+                        allowBlank: true,
+                        anchor: '80%',
+                        gwidth: 100,
+                        maxLength:200
+                    },
+                    type:'TextField',
+                    id_grupo:1,
+                    grid:true,
+                    form:true
+                },
+                {
+                    config : {
+                        name:'acc_marca',
+                        fieldLabel : 'Marca',
+                        resizable:true,
+                        allowBlank:true,
+                        emptyText:'Elija una opción...',
+                        store: new Ext.data.JsonStore({
+                            url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                            id: 'id_catalogo',
+                            root: 'datos',
+                            sortInfo:{
+                                field: 'descripcion',
+                                direction: 'ASC'
+                            },
+                            totalProperty: 'total',
+                            fields: ['id_catalogo','codigo','descripcion'],
+                            // turn on remote sorting
+                            remoteSort: true,
+                            baseParams: {par_filtro:'descripcion',cod_subsistema:'GECOM',catalogo_tipo:'marca'}
+                        }),
+                        enableMultiSelect:true,
+                        valueField: 'codigo',
+                        displayField: 'descripcion',
+                        gdisplayField: 'acc_marca_desc',
+                        triggerAction: 'all',
+                        lazyRender:true,
+                        mode:'remote',
+                        pageSize:15,
+                        queryDelay: 1000,
+                        anchor: '80%',
+                        gwidth: 100,
+                        listeners: {
+                            beforequery: function(qe){
+                                delete qe.combo.lastQuery;
+                            }
+                        },
+                    },
+                    type:'ComboBox',
+                    filters:{pfiltro:'acc_marca_desc',type:'string'},
+                    id_grupo:1,
+                    grid:true,
+                    form:true
+                },
+                {
+                    config:{
+                        name: 'acc_modelo',
+                        fieldLabel: 'Modelo',
+                        allowBlank: true,
+                        anchor: '80%',
+                        gwidth: 100,
+                        maxLength:300
+                    },
+                    type:'TextField',
+                    filters:{pfiltro:'acc_modelo',type:'string'},
+                    id_grupo:1,
+                    grid:true,
+                    form:true
+                },
+                {
+                    config : {
+                        name:'acc_tamano',
+                        fieldLabel : 'Tamaño Pantalla',
+                        resizable:true,
+                        allowBlank:true,
+                        emptyText:'Elija una opción...',
+                        store: new Ext.data.JsonStore({
+                            url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                            id: 'id_catalogo',
+                            root: 'datos',
+                            sortInfo:{
+                                field: 'descripcion',
+                                direction: 'ASC'
+                            },
+                            totalProperty: 'total',
+                            fields: ['id_catalogo','codigo','descripcion'],
+                            // turn on remote sorting
+                            remoteSort: true,
+                            baseParams: {par_filtro:'descripcion',cod_subsistema:'GECOM',catalogo_tipo:'pantalla'}
+                        }),
+                        enableMultiSelect:true,
+                        valueField: 'codigo',
+                        displayField: 'descripcion',
+                        gdisplayField: 'acc_tamano',
+                        triggerAction: 'all',
+                        lazyRender:true,
+                        mode:'remote',
+                        pageSize:15,
+                        queryDelay: 1000,
+                        anchor: '80%',
+                        gwidth: 100,
+                        listeners: {
+                            beforequery: function(qe){
+                                delete qe.combo.lastQuery;
+                            }
+                        },
+                    },
+                    type:'ComboBox',
+                    filters:{pfiltro:'acc_tamano',type:'string'},
+                    id_grupo:1,
+                    grid:true,
+                    form:true
+                },
+                {
+                    config:{
+                        name: 'acc_codigo_inmovilizado',
+                        fieldLabel: 'Codigo Inmovilizado',
+                        allowBlank: true,
+                        anchor: '50%',
+                        gwidth: 100,
+                        maxLength:200
+                    },
+                    type:'TextField',
+                    filters:{pfiltro:'acc_codigo_inmovilizado',type:'string'},
+                    id_grupo:1,
+                    grid:false,
+                    form:true
+                },
+                {
+                    config:{
+                        name: 'acc_num_serie',
+                        fieldLabel: 'Número de serie',
+                        allowBlank: true,
+                        anchor: '80%',
+                        gwidth: 100,
+                        maxLength:300
+                    },
+                    type:'TextField',
+                    id_grupo:1,
+                    grid:true,
+                    form:true
+                },
+                {
+                    config : {
+                        name:'acc_estado_fisico',
+                        fieldLabel : 'Estado Fisico',
+                        resizable:true,
+                        allowBlank:true,
+                        emptyText:'Elija una opción...',
+                        store: new Ext.data.JsonStore({
+                            url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                            id: 'id_catalogo',
+                            root: 'datos',
+                            sortInfo:{
+                                field: 'descripcion',
+                                direction: 'ASC'
+                            },
+                            totalProperty: 'total',
+                            fields: ['id_catalogo','codigo','descripcion'],
+                            // turn on remote sorting
+                            remoteSort: true,
+                            baseParams: {par_filtro:'descripcion',cod_subsistema:'GECOM',catalogo_tipo:'estado_fisico'}
+                        }),
+                        enableMultiSelect:true,
+                        valueField: 'codigo',
+                        displayField: 'descripcion',
+                        gdisplayField: 'acc_estado_fisico_desc',
+                        triggerAction: 'all',
+                        lazyRender:true,
+                        mode:'remote',
+                        pageSize:15,
+                        queryDelay: 1000,
+                        anchor: '80%',
+                        gwidth: 100,
+                        listeners: {
+                            beforequery: function(qe){
+                                delete qe.combo.lastQuery;
+                            }
+                        },
+                    },
+                    type:'ComboBox',
+                    filters:{pfiltro:'acc_estado_fisico_desc',type:'string'},
+                    id_grupo:1,
+                    grid:true,
+                    form:true
+                },
             ],
             tam_pag:50,
             title:'Equipos',
@@ -946,7 +1262,20 @@ header("content-type: text/javascript; charset=UTF-8");
                 {name:'tipo_almacenamiento_desc', type: 'string'},
                 {name:'sistema_operativo_desc', type: 'string'},
                 {name:'teclado_desc', type: 'string'},
-
+                {name:'id_accesorio', type: 'numeric'},
+                {name:'acc_estado_reg', type: 'string'},
+                {name:'acc_nombre', type: 'string'},
+                {name:'acc_marca', type: 'string'},
+                {name:'acc_marca_desc', type: 'string'},
+                {name:'acc_modelo', type: 'string'},
+                {name:'acc_num_serie', type: 'string'},
+                {name:'acc_estado_fisico', type: 'string'},
+                {name:'acc_estado_fisico_desc', type: 'string'},
+                {name:'tipo_procesador', type: 'string'},
+                {name:'tipo_procesador_desc', type: 'string'},
+                {name:'codigo_inmovilizado', type: 'string'},
+                {name:'acc_codigo_inmovilizado', type: 'string'},
+                {name:'acc_tamano', type: 'string'},
             ],
             sortInfo:{
                 field: 'id_equipo',
@@ -965,12 +1294,14 @@ header("content-type: text/javascript; charset=UTF-8");
                 this.Cmp.teclado.hide();
                 this.Cmp.teclado_idioma.hide();
                 this.Cmp.procesador.hide();
+                this.Cmp.tipo_procesador.hide();
                 this.Cmp.memoria_ram.hide();
                 this.Cmp.almacenamiento.hide();
                 this.Cmp.sistema_operativo.hide();
                 this.Cmp.accesorios.hide();
                 this.Cmp.tipo_memoria_ram.hide();
                 this.Cmp.tipo_almacenamiento.hide();
+                this.ocultarGrupo(1);
             },
             onButtonEdit: function() {
                 Phx.vista.Equipo.superclass.onButtonEdit.call(this);
@@ -986,12 +1317,14 @@ header("content-type: text/javascript; charset=UTF-8");
                     this.Cmp.teclado.hide();
                     this.Cmp.teclado_idioma.hide();
                     this.Cmp.procesador.hide();
+                    this.Cmp.tipo_procesador.hide();
                     this.Cmp.memoria_ram.hide();
                     this.Cmp.almacenamiento.hide();
                     this.Cmp.sistema_operativo.hide();
                     this.Cmp.accesorios.hide();
                     this.Cmp.tipo_memoria_ram.hide();
                     this.Cmp.tipo_almacenamiento.hide();
+                    this.ocultarGrupo(1);
                 }else if (["laptop", "pc"].includes(sel.tipo)){
                     this.Cmp.id_numero_celular.hide();
                     this.Cmp.color.hide();
@@ -1006,12 +1339,18 @@ header("content-type: text/javascript; charset=UTF-8");
                     this.Cmp.teclado.show();
                     this.Cmp.teclado_idioma.show();
                     this.Cmp.procesador.show();
+                    this.Cmp.tipo_procesador.show();
                     this.Cmp.memoria_ram.show();
                     this.Cmp.almacenamiento.show();
                     this.Cmp.sistema_operativo.show();
                     this.Cmp.accesorios.hide();
                     this.Cmp.tipo_memoria_ram.show();
                     this.Cmp.tipo_almacenamiento.show();
+                    if(r.data.codigo == 'pc'){
+                        this.mostrarGrupo(1);
+                    }else{
+                        this.ocultarGrupo(1);
+                    }
                 }else{
                     this.Cmp.id_numero_celular.hide();
                     this.Cmp.color.hide();
@@ -1022,12 +1361,14 @@ header("content-type: text/javascript; charset=UTF-8");
                     this.Cmp.teclado.hide();
                     this.Cmp.teclado_idioma.hide();
                     this.Cmp.procesador.hide();
+                    this.Cmp.tipo_procesador.hide();
                     this.Cmp.memoria_ram.hide();
                     this.Cmp.almacenamiento.hide();
                     this.Cmp.sistema_operativo.hide();
                     this.Cmp.accesorios.hide();
                     this.Cmp.tipo_memoria_ram.hide();
                     this.Cmp.tipo_almacenamiento.hide();
+                    this.ocultarGrupo(1);
                 }
             },
         }
