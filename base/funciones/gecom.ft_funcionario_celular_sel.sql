@@ -78,7 +78,10 @@ BEGIN
 						
 						inner join segu.tusuario usu1 on usu1.id_usuario = funcel.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = funcel.id_usuario_mod
-				        where  funcel.estado_reg = ''activo'' and ' || v_filtro_historico;
+				        where  funcel.estado_reg = ''activo'' and ';
+
+                        --24-09-2021 (may) se comenta el filtro historico
+                        --where funcel.estado_reg = ''activo'' and ' || v_filtro_historico;
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -113,7 +116,10 @@ BEGIN
 						left join orga.tcargo cargo on cargo.id_cargo = funcel.id_cargo
 					    inner join segu.tusuario usu1 on usu1.id_usuario = funcel.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = funcel.id_usuario_mod
-					    where funcel.estado_reg = ''activo'' and ' || v_filtro_historico;
+					    where funcel.estado_reg = ''activo'' and  ';
+
+                        --24-09-2021 (may) se comenta el filtro historico
+                        --where funcel.estado_reg = ''activo'' and ' || v_filtro_historico;
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;

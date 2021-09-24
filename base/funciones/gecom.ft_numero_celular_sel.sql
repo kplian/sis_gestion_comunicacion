@@ -62,11 +62,19 @@ BEGIN
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
                         pro.desc_proveedor,
-                        numcel.tipo
+                        numcel.tipo,
+
+						fun.desc_funcionario1::varchar
+
 						from gecom.tnumero_celular numcel
 						inner join segu.tusuario usu1 on usu1.id_usuario = numcel.id_usuario_reg
                         inner join param.vproveedor pro on pro.id_proveedor = numcel.id_proveedor
 						left join segu.tusuario usu2 on usu2.id_usuario = numcel.id_usuario_mod
+
+                        left join  gecom.tfuncionario_celular funcel on funcel.id_numero_celular = numcel.id_numero_celular
+                         	and (funcel.estado_reg = ''activo'' and (funcel.fecha_fin is null or funcel.fecha_fin >= now()::date))
+                        left join orga.vfuncionario fun on fun.id_funcionario = funcel.id_funcionario
+
 				        where  ';
 
 			--Definicion de la respuesta
@@ -88,11 +96,16 @@ BEGIN
 
 		begin
 			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(id_numero_celular)
+			v_consulta:='select count(numcel.id_numero_celular)
 					    from gecom.tnumero_celular numcel
 					    inner join segu.tusuario usu1 on usu1.id_usuario = numcel.id_usuario_reg
                         inner join param.vproveedor pro on pro.id_proveedor = numcel.id_proveedor
 						left join segu.tusuario usu2 on usu2.id_usuario = numcel.id_usuario_mod
+
+                        left join  gecom.tfuncionario_celular funcel on funcel.id_numero_celular = numcel.id_numero_celular
+                         	and (funcel.estado_reg = ''activo'' and (funcel.fecha_fin is null or funcel.fecha_fin >= now()::date))
+                        left join orga.vfuncionario fun on fun.id_funcionario = funcel.id_funcionario
+
 					    where ';
 
 			--Definicion de la respuesta

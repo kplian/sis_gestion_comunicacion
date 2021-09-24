@@ -16,7 +16,7 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 		this.maestro=config.maestro;
 		
 		this.historico = 'no';
-        this.tbarItems = ['-',{
+        /*this.tbarItems = ['-',{
             text: 'Histórico',
             enableToggle: true,
             pressed: false,
@@ -33,7 +33,7 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
                 this.onButtonAct();
              },
             scope: this
-           }];
+           }];*/
            
     	//llama al constructor de la clase padre
 		Phx.vista.FuncionarioCelular.superclass.constructor.call(this,config);
@@ -42,6 +42,23 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 		this.store.baseParams.historico = this.historico;
         this.load({params:{start:0, limit:this.tam_pag}}); 		
 	},
+    bnewGroups:[0],
+    beditGroups:[0,1],
+    bdelGroups:[0],
+    bactGroups:[0,1],
+    gruposBarraTareas: [
+        {name:  'activo', title: '<h1 style="text-align: center; color: #00B167;">ACTIVOS</h1>',grupo: 0, height: 0} ,
+        {name: 'inactivo', title: '<h1 style="text-align: center; color: #FF8F85;">INACTIVOS</h1>', grupo: 1, height: 1}
+    ],
+
+    actualizarSegunTab: function(name, indice){
+        /*if(name == 'activo')
+            this.store.baseParams.estado_func = 'activo';
+        else*/
+        //console.log('entradita', name);
+        this.store.baseParams.estado_asignacion = name;
+        this.load({params: {start: 0, limit: 50}});
+    },
 			
 	Atributos:[
 		{
@@ -59,7 +76,8 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 				name: 'fecha_inicio',
 				fieldLabel: 'Fecha Asignación',
 				allowBlank: false,
-				anchor: '50%',
+				//anchor: '50%',
+                width: 280,
 				gwidth: 100,
 				format: 'd/m/Y',
 				renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
@@ -70,6 +88,23 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
+        {
+            config:{
+                name: 'fecha_fin',
+                fieldLabel: 'Fecha Devolución',
+                allowBlank: true,
+                //anchor: '50%',
+                width: 280,
+                gwidth: 100,
+                format: 'd/m/Y',
+                renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
+            },
+            type:'DateField',
+            filters:{pfiltro:'funcel.fecha_fin',type:'date'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
 		{
 			config:{
 				name: 'tipo',
@@ -80,6 +115,7 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 	       		triggerAction: 'all',
 	       		lazyRender:true,
 	       		mode: 'local',
+                width: 280,
 				gwidth: 120,
 				store:['funcionario','cargo'],
 				value:'no'
@@ -96,6 +132,7 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 				origen:'FUNCIONARIOCAR',
 				fieldLabel:'Funcionario',
 				allowBlank:false,
+                width: 280,
 				gwidth:250,
 				valueField: 'id_funcionario',
 				gdisplayField: 'desc_funcionario1',
@@ -141,7 +178,8 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 				mode: 'remote',
 				pageSize: 15,
 				queryDelay: 1000,
-				anchor: '60%',
+				//anchor: '60%',
+                width: 280,
 				gwidth: 150,
 				minChars: 2,
 				renderer : function(value, p, record) {
@@ -160,6 +198,7 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 			config:{
 				name: 'tipo',
 				fieldLabel: 'Tipo de Número',
+                width: 280,
 				gwidth: 100
 			},
 				type:'TextField',
@@ -202,7 +241,8 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 				mode: 'remote',
 				pageSize: 15,
 				queryDelay: 1000,
-				anchor: '60%',
+				//anchor: '60%',
+                width: 280,
 				gwidth: 150,
 				minChars: 2,
 				renderer : function(value, p, record) {
@@ -227,6 +267,7 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 				triggerAction: 'all',
 				lazyRender:true,
 				mode: 'local',
+                width: 280,
 				gwidth: 90,
 				store:['personal','compartido'],
 				value:'personal'
@@ -245,7 +286,8 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 				name: 'observaciones',
 				fieldLabel: 'Observaciones',
 				allowBlank: true,
-				anchor: '90%',
+				//anchor: '90%',
+                width: 280,
 				gwidth: 200
 			},
 			type:'TextArea',
@@ -253,25 +295,6 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 			id_grupo:1,
 			grid:true,
 			form:true
-		},
-
-
-		
-		{
-			config:{
-				name: 'fecha_fin',
-				fieldLabel: 'Fecha Devolución',
-				allowBlank: true,
-				anchor: '50%',
-				gwidth: 100,
-							format: 'd/m/Y', 
-							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
-			},
-				type:'DateField',
-				filters:{pfiltro:'funcel.fecha_fin',type:'date'},
-				id_grupo:1,
-				grid:true,
-				form:true
 		},
 
 		
@@ -419,7 +442,7 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 		direction: 'ASC'
 	},
 	bedit:true,
-	bsave:true,
+	bsave:false,
 
 	iniciarEventos:function() {
 		this.Cmp.fecha_inicio.on('change',function() {
@@ -489,6 +512,8 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
        }
        
     },
+
+
 	}
 )
 </script>

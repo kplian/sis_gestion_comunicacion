@@ -35,6 +35,15 @@ Phx.vista.NumeroCelular=Ext.extend(Phx.gridInterfaz,{
                 tooltip: 'Subir consumo desde arhcivo CSV'
             }
         );
+        //07-04-2021 (may) boton adjuntar archivos
+        this.addButton('archivo', {
+            text: 'Adjuntar Archivo',
+            iconCls: 'bfolder',
+            disabled: false,
+            handler: this.archivo,
+            tooltip: '<b>Adjuntar Archivo</b><br><b>Nos permite adjuntar documentos de un funcionario.</b>',
+            grupo: [0,1]
+        });
         
 		this.load({params:{start:0, limit:this.tam_pag}})
 	},
@@ -113,6 +122,22 @@ Phx.vista.NumeroCelular=Ext.extend(Phx.gridInterfaz,{
 			bottom_filter:true,
 			form:true
 		},
+        {
+            config:{
+                name: 'desc_funcionario1',
+                fieldLabel: 'Funcionario Asignado',
+                allowBlank: false,
+                anchor: '80%',
+                gwidth: 200,
+                maxLength:20
+            },
+            type:'TextField',
+            filters:{pfiltro:'fun.desc_funcionario1',type:'string'},
+            id_grupo:1,
+            grid:true,
+            bottom_filter:true,
+            form:false
+        },
 		{
 			config:{
 				name: 'roaming',
@@ -282,7 +307,8 @@ Phx.vista.NumeroCelular=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},
+		{name:'usr_reg', type: 'string'},
+		{name:'desc_funcionario1', type: 'string'},
 		
 	],
 	sortInfo:{
@@ -326,15 +352,42 @@ Phx.vista.NumeroCelular=Ext.extend(Phx.gridInterfaz,{
             height:200
         },undefined,this.idContenedor,'ConsumoCsv')
     },
+
+    archivo: function () {
+
+        var rec = this.getSelectedData();
+        //enviamos el id seleccionado para cual el archivo se deba subir
+        rec.datos_extras_id = rec.id_numero_celular;
+        //enviamos el nombre de la tabla
+        rec.datos_extras_tabla = 'gecom.tnumero_celular';
+        //enviamos el codigo ya que una tabla puede tener varios archivos diferentes como ci,pasaporte,contrato,slider,fotos,etc
+        rec.datos_extras_codigo = '';
+
+        //esto es cuando queremos darle una ruta personalizada
+        //rec.datos_extras_ruta_personalizada = './../../../uploaded_files/favioVideos/videos/';
+
+        Phx.CP.loadWindows('../../../sis_parametros/vista/archivo/Archivo.php',
+            'Archivo',
+            {
+                width: '80%',
+                height: '100%'
+            }, rec, this.idContenedor, 'Archivo');
+
+    },
+
 	preparaMenu:function()
     {	        
         this.getBoton('btnDetalleConsumo').enable();            
         Phx.vista.NumeroCelular.superclass.preparaMenu.call(this);
+
+        this.getBoton('archivo').setDisabled(false);
     },
     liberaMenu:function()
     {	
         this.getBoton('btnDetalleConsumo').disable();                  
         Phx.vista.NumeroCelular.superclass.preparaMenu.call(this);
+
+        this.getBoton('archivo').setDisabled(true);
     },
 	}
 )

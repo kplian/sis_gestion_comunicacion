@@ -36,7 +36,9 @@ class MODNumeroCelular extends MODbase{
 		$this->captura('usr_mod','varchar');
 		$this->captura('desc_proveedor','varchar');
 		$this->captura('tipo','varchar');
-		
+
+		$this->captura('desc_funcionario1','varchar');
+
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
