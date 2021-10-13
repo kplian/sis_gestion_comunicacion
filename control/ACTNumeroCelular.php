@@ -15,13 +15,13 @@ class ACTNumeroCelular extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
 		if($this->objParam->getParametro('fecha')!='') {
-            $this->objParam->addFiltro(" id_numero_celular not in (
-            								select id_numero_celular 
-            								from gecom.tfuncionario_celular
+            $this->objParam->addFiltro(" numcel.id_numero_celular not in (
+            								select gfc.id_numero_celular 
+            								from gecom.tfuncionario_celular gfc
             								where id_numero_celular = numcel.id_numero_celular and 
-            									estado_reg = ''activo'' and 
-            									fecha_inicio <= ''".$this->objParam->getParametro('fecha')."'' and 
-            									(fecha_fin is null or fecha_fin >= ''".$this->objParam->getParametro('fecha')."''))");    
+											gfc.estado_reg = ''activo'' and 
+											gfc.fecha_inicio <= ''".$this->objParam->getParametro('fecha')."'' and 
+            									(gfc.fecha_fin is null or gfc.fecha_fin >= ''".$this->objParam->getParametro('fecha')."''))");    
         }
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
