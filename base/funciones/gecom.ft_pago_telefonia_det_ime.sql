@@ -33,6 +33,8 @@ DECLARE
 
     --07-07-2021 (may)
     v_id_orden_trabajo		integer;
+    --05-01-2022 (may)
+    v_reg_gestion			integer;
 
 
 BEGIN
@@ -51,13 +53,22 @@ BEGIN
 
         begin
 
+			--05-01-2022 (may) no deberia buscar centro de costo con la fecha actual, debe ser el periodo de la gestion del registro
+            SELECT ges.gestion
+            INTO v_reg_gestion
+            FROM param.tperiodo per
+            inner join param.tgestion ges on ges.id_gestion = per.id_gestion
+            WHERE per.fecha_ini <= v_parametros.fecha and per.fecha_fin > v_parametros.fecha;
+
+            --
             select cec.id_centro_costo
             	into v_id_centro_costo
             from param.ttipo_cc cc
             inner join param.tcentro_costo cec on cec.id_tipo_cc =  cc.id_tipo_cc
             inner join param.tgestion ges ON ges.id_gestion = cec.id_gestion
             where cc.codigo = v_parametros.cod_centro_costo
-            and ges.gestion = extract(year from now()::date);
+            --and ges.gestion = extract(year from now()::date);
+            and ges.gestion = v_reg_gestion;
 
 
             --07-07-2021 (may) inserte tambien id_orden de trabajo
@@ -71,7 +82,8 @@ BEGIN
             left join conta.torden_trabajo ot on ot.id_orden_trabajo = carpre.id_ot
             WHERE fun.codigo = v_parametros.cod_empleado
             --and tca.estado_reg = 'activo'
-            and tg.gestion = extract(year from now()::date);
+            --and tg.gestion = extract(year from now()::date);
+            and tg.gestion = v_reg_gestion;
 
             IF (v_id_orden_trabajo is not null) THEN
             	v_id_orden_trabajo = v_id_orden_trabajo;
