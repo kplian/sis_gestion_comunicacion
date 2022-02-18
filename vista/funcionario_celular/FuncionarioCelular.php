@@ -449,13 +449,12 @@ Phx.vista.FuncionarioCelular=Ext.extend(Phx.gridInterfaz,{
 			
 			this.Cmp.id_numero_celular.enable();
 			this.Cmp.id_numero_celular.reset();
-			this.Cmp.id_numero_celular.store.baseParams.fecha = 
-				this.Cmp.fecha_inicio.getValue().dateFormat(this.Cmp.fecha_inicio.format);
+			this.Cmp.id_numero_celular.store.baseParams.fecha =  this.Cmp.fecha_inicio.getValue().dateFormat(this.Cmp.fecha_inicio.format);
 			this.Cmp.id_numero_celular.modificado = true;
 			
 			this.Cmp.id_funcionario.enable();
-			this.Cmp.id_funcionario.store.baseParams.fecha = 
-				this.Cmp.fecha_inicio.getValue().dateFormat(this.Cmp.fecha_inicio.format);
+			//18-02-2022 (may) se comenta temporalmente por restructuracion y se necesita registrar de un mes pasado
+			//this.Cmp.id_funcionario.store.baseParams.fecha =  this.Cmp.fecha_inicio.getValue().dateFormat(this.Cmp.fecha_inicio.format);
 			this.Cmp.id_funcionario.reset();
 			this.Cmp.id_funcionario.modificado = true;
 				
